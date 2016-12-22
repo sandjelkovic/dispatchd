@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorator="layouts/defaultLayout"
+>
+<head>
+	<meta charset="UTF-8"/>
+    <title>Dispatchd</title>
+</head>
+<body>
+
+<div th:fragment="content" layout:fragment="content">
+	<a href="eta.html" th:href="@{details}">details</a> <br />
+	<p />
+	<a href="dr.html" th:href="@{/view}">/view</a>
+
+	<h1 th:if="${#httpServletRequest.remoteUser != null}"
+	    th:text="'Hello ' + ${#httpServletRequest.remoteUser} + '!'"></h1>
+</div>
+</body>
+</html>

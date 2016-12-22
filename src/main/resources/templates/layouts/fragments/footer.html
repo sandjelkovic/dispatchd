@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+  </head>
+  <body>
+    <div th:fragment="footer-admin">
+      &copy; 2013 Admin Footer
+    </div>
+    <br/><br/><br/>
+    <div class="row footer" th:fragment="footer">
+      <div class="col-md-4"><p>&copy; 2016 Footer.</p><p></p><p>.col-md-4</p><p>.col-md-4</p><p>.col-md-4</p></div>
+      <div class="col-md-4"><p><a href="../../import/import.html" th:href="@{/import}" th:text="#{footer.importerPage}">Import new</a></p><p>.col-md-4</p><p>.col-md-4</p><p>.col-md-4</p><p>.col-md-4</p></div>
+      <div class="col-md-4"><p>.col-md-4</p><p>.col-md-4</p><p>.col-md-4</p><p>.col-md-4</p><p>.col-md-4</p></div>
+    </div>
+  </body>
+</html>
