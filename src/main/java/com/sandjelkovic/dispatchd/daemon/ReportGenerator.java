@@ -3,6 +3,7 @@ package com.sandjelkovic.dispatchd.daemon;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.data.entities.*;
 import com.sandjelkovic.dispatchd.event.GeneratedReportEvent;
+import com.sandjelkovic.dispatchd.helper.EventDispatcher;
 import com.sandjelkovic.dispatchd.service.ReportGenerationJobService;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.slf4j.Logger;
@@ -33,6 +34,9 @@ public class ReportGenerator {
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
+
+	@Autowired
+	private EventDispatcher eventDispatcher;
 
 	@Autowired
 	private ReportGenerationJobService jobService;

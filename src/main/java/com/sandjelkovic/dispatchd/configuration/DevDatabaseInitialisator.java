@@ -28,7 +28,7 @@ public class DevDatabaseInitialisator {
 
 	@Bean
 	@Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
-	public CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder,
+	public CommandLineRunner devUsersRefresher(PasswordEncoder passwordEncoder,
 	                                           List<User> users) {
 		return args -> {
 			users.forEach(user -> {
