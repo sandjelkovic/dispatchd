@@ -36,15 +36,17 @@ public class ReportGeneratorIntegrationTest {
 
 	@Autowired
 	private ReportTemplateRepository reportTemplateRepository;
-
 	@Autowired
 	private GeneratedReportRepository generatedReportRepository;
-
 	@Autowired
 	private ReportService reportService;
-
 	@Autowired
 	private ReportGenerator target;
+
+	@Test
+	public void getGenerationInterval() throws Exception {
+		assertThat("Generation interval hasn't been loaded and default hasn't been set", target.getGenerationInterval(), notNullValue());
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -92,13 +94,13 @@ public class ReportGeneratorIntegrationTest {
 	}
 
 	private ReportTemplate generateOneTemplateWithTimeToGenerate(ZonedDateTime zonedDateTime) {
-		return createTemplateStub()
+		return createTemplateStub(null)
 				.timeToGenerateReport(zonedDateTime);
 	}
 
-	private ReportTemplate createTemplateStub() {
+	private ReportTemplate createTemplateStub(Long id) {
 		return new ReportTemplate().
-				id(null).
+				id(id).
 				active(true).
 				name("Template stub").
 				description("Description of a stub").
