@@ -79,7 +79,7 @@ public class ReportGenerator {
 	}
 
 	private void updateGenerationTimes(ReportTemplate reportTemplate) {
-		reportTemplate.setTimeOfLastGeneratedReport(ZonedDateTime.now());
+		reportTemplate.setTimeOfLastGeneratedReport(reportTemplate.getTimeToGenerateReport());
 		reportTemplate.setTimeToGenerateReport(getNewGenerationTime(reportTemplate));
 
 		reportService.save(reportTemplate);
@@ -90,7 +90,7 @@ public class ReportGenerator {
 				.map(ReportTemplate2TvShow::getTvShow)
 				.map(TvShow::getEpisodes)
 				.flatMap(Collection::stream)
-				.filter(episode -> episode.getAirdate().isBefore(ZonedDateTime.now()))
+				.filter(episode -> episode.getAirdate().isBefore(reportTemplate.getTimeToGenerateReport()))
 				.filter(episode -> episode.getAirdate().isAfter(reportTemplate.getTimeOfLastGeneratedReport()))
 				.collect(toList());
 	}
