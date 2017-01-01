@@ -2,6 +2,7 @@ package com.sandjelkovic.dispatchd.controllers.rest;
 
 import com.sandjelkovic.dispatchd.api.resources.ReportDTOResource;
 import com.sandjelkovic.dispatchd.api.resources.UserReportContentResource;
+import com.sandjelkovic.dispatchd.api.resources.UserReportListResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.data.dto.EpisodeDTO;
 import com.sandjelkovic.dispatchd.data.dto.ReportDTO;
@@ -13,15 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,8 +44,10 @@ public class ReportController {
 	private ReportService reportService;
 
 	@RequestMapping(method = GET)
-	public List<ReportDTO> getReportsForCurrentUser(Principal principal, Pageable pageable) {
-		return new ArrayList<>();
+	public UserReportListResource getReportsForCurrentUser(@RequestParam(required = false) Long templateId,
+	                                                       Principal principal, Pageable pageable) {
+		Page<GeneratedReport> reportPage = reportService.findGeneratedByTemplateForUser(pageable, templateId, principal.getName());
+		return new UserReportListResource(reportPage.map(source -> conversionService.convert(source, ReportDTO.class)));
 	}
 
 	@RequestMapping(value = "/{reportId}", method = GET)

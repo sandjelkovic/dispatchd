@@ -72,6 +72,22 @@ public class DefaultReportService implements ReportService {
 	}
 
 	@Override
+	public Page<GeneratedReport> findGeneratedForUser(Pageable pageable, String username) {
+		return generatedReportRepository.findByReportTemplateUserUsername(pageable, username);
+	}
+
+	@Override
+	public Page<GeneratedReport> findGeneratedByTemplateForUser(Pageable pageable, Long templateId, String username) {
+		Page<GeneratedReport> reportPage;
+		if (templateId != null) {
+			reportPage = generatedReportRepository.findByReportTemplateIdAndReportTemplateUserUsername(pageable, templateId, username);
+		} else {
+			reportPage = generatedReportRepository.findByReportTemplateUserUsername(pageable, username);
+		}
+		return reportPage;
+	}
+
+	@Override
 	public Optional<GeneratedReport> findGenerated(Long id) {
 		return Optional.ofNullable(generatedReportRepository.findOne(id));
 	}
