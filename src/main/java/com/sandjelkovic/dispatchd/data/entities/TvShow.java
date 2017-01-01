@@ -22,7 +22,8 @@ public class TvShow extends BasicEntity implements Serializable {
 	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(nullable = true, length = 1500)
+	@Lob
+	@Column(nullable = true)
 	private String description;
 
 	@Column(length = 20)
@@ -31,7 +32,7 @@ public class TvShow extends BasicEntity implements Serializable {
 	@Column(nullable = false, length = 50)
 	private String status;
 
-	@Column(nullable = false, length = 255)
+	@Column(nullable = false)
 	private String title;
 
 	@Column(length = 20)

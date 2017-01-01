@@ -25,6 +25,7 @@ public class Episode extends BasicEntity implements Serializable {
 	@Column(nullable = true, length = 50)
 	private String customNumbering;
 
+	@Lob()
 	@Column(nullable = true)
 	private String description;
 
@@ -68,9 +69,9 @@ public class Episode extends BasicEntity implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "UserWatchedEpisode",
 			joinColumns = {
-					@JoinColumn(name = "Episode", nullable = false) },
+					@JoinColumn(name = "Episode", nullable = false)},
 			inverseJoinColumns = {
-					@JoinColumn(name = "User", nullable = false) }
+					@JoinColumn(name = "User", nullable = false)}
 	)
 	private List<User> users;
 

@@ -22,7 +22,8 @@ public class Season extends BasicEntity implements Serializable {
 	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(nullable = true, length = 1000)
+	@Lob
+	@Column(nullable = true)
 	private String description;
 
 	@Column(length = 20)
