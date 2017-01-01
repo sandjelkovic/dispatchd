@@ -18,9 +18,9 @@ public class DefaultTvShowService implements TvShowService {
 	private TvShowRepository repository;
 
 	@Override
-	public Optional<TvShow> save(TvShow tvShow) {
+	public TvShow save(TvShow tvShow) {
 		tvShow.setLastLocalUpdate(Timestamp.from(Instant.now()));
-		return Optional.ofNullable(repository.save(tvShow));
+		return repository.save(tvShow);
 	}
 
 	@Override

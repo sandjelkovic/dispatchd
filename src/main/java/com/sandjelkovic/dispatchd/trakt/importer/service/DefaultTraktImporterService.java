@@ -73,8 +73,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 		Future<List<SeasonTrakt>> seasonsFuture = getSeasonsFromTraktAsync(showId);
 		Future<List<EpisodeTrakt>> episodesFuture = getEpisodesFromTraktAsync(showId);
 
-		TvShow show = tvShowConverter.convertFrom(traktShow);
-		tvShowService.save(show);
+		TvShow show = tvShowService.save(tvShowConverter.convertFrom(traktShow));
 
 		List<Season> seasonsList = retrieveAndConvertSeasons(seasonsFuture);
 		seasonsList.forEach(season -> season.setTvShow(show));

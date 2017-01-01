@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TvShowService {
-	Optional<TvShow> save(TvShow tvShow);
+	TvShow save(TvShow tvShow);
 
 	Optional<TvShow> get(Long id);
 

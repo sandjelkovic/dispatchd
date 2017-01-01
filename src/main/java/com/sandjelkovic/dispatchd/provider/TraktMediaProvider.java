@@ -8,18 +8,18 @@ import java.util.List;
 
 public interface TraktMediaProvider {
 
-	public TvShowTrakt getTvShow(String showId);
+	TvShowTrakt getTvShow(String showId);
 
-	public EpisodeTrakt getEpisode(String showId, String seasonNumber, String episodeNumber);
+	EpisodeTrakt getEpisode(String showId, String seasonNumber, String episodeNumber);
 
-	public List<EpisodeTrakt> getSeasonEpisodes(String showId, String seasonNumber);
+	List<EpisodeTrakt> getSeasonEpisodes(String showId, String seasonNumber);
 
-	public List<EpisodeTrakt> getShowEpisodes(String showId);
+	List<EpisodeTrakt> getShowEpisodes(String showId);
 
-	public List<SeasonTrakt> getSeasons(String showId);
+	List<SeasonTrakt> getSeasons(String showId);
 
-	public List<SeasonTrakt> getSeasonsMinimal(String showId);
+	List<SeasonTrakt> getSeasonsMinimal(String showId);
 
-	public SeasonTrakt getSeason(String showId, String seasonNumber);
+	SeasonTrakt getSeason(String showId, String seasonNumber);
 
 }
