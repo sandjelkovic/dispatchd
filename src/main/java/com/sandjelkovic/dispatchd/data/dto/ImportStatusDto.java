@@ -25,10 +25,6 @@ public class ImportStatusDto implements Serializable {
 	@Length(max = 50)
 	private ImportProgressStatus status;
 
-	@URL
-	@Length(max = 500)
-	private String redirectUrl;
-
 	public ImportStatusDto() {
 	}
 
@@ -70,14 +66,6 @@ public class ImportStatusDto implements Serializable {
 
 	public void setStatus(ImportProgressStatus status) {
 		this.status = status;
-	}
-
-	public String getRedirectUrl() {
-		return redirectUrl;
-	}
-
-	public void setRedirectUrl(String redirectUrl) {
-		this.redirectUrl = redirectUrl;
 	}
 
 }
