@@ -66,7 +66,7 @@ public class DefaultReportService implements ReportService {
 	}
 
 	@Override
-	public Page<ReportTemplate> findAllForCurrentUser(Pageable pageable, String username) {
+	public Page<ReportTemplate> findTemplatesForUser(Pageable pageable, String username) {
 		User user = userRepository.findOneByUsername(username).orElseThrow(UserNotFoundException::new);
 		return reportTemplateRepository.findByUserId(pageable, user.getId());
 	}
@@ -74,12 +74,6 @@ public class DefaultReportService implements ReportService {
 	@Override
 	public Optional<GeneratedReport> findGenerated(Long id) {
 		return Optional.ofNullable(generatedReportRepository.findOne(id));
-	}
-
-	@Override
-	public Optional<GeneratedReport> findPublishedGenerated(Long id) {
-		return this.findGenerated(id)
-				.filter(GeneratedReport::getPublished);
 	}
 
 	public Optional<ReportTemplate> findTemplate(Long id) {

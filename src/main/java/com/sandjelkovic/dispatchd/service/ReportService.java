@@ -23,9 +23,6 @@ public interface ReportService {
 	@PreAuthorize("authentication.name == #generatedReport.reportTemplate.user.username")
 	Optional<GeneratedReport> findGenerated(Long id);
 
-	@PreAuthorize("authentication.name == #generatedReport.reportTemplate.user.username")
-	Optional<GeneratedReport> findPublishedGenerated(Long id);
-
 	@PostAuthorize("returnObject._embedded.username == authentication.name")
 	Optional<ReportTemplate> findTemplate(Long id);
 
@@ -42,7 +39,7 @@ public interface ReportService {
 	Page<ReportTemplate> findAll(Pageable pageable);
 
 	@PreAuthorize("authentication.name == #username")
-	Page<ReportTemplate> findAllForCurrentUser(Pageable pageable, String username);
+	Page<ReportTemplate> findTemplatesForUser(Pageable pageable, String username);
 
 	ZonedDateTime getNewGenerationTimeForTemplate(ReportTemplate reportTemplate);
 }

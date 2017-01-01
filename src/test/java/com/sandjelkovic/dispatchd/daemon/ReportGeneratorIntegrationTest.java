@@ -75,7 +75,6 @@ public class ReportGeneratorIntegrationTest {
 		assertThat(retrievedReport.getId(), notNullValue());
 		assertThat(retrievedReport.getReportTemplate(), notNullValue());
 		assertThat(retrievedReport.getReportTemplate().getId(), equalTo(reportTemplate.getId()));
-		assertThat(retrievedReport.getPublished(), equalTo(false));
 		assertThat(retrievedReport.getGeneratedReportContents().size(), is(0));
 
 		ZonedDateTime timeOfLastGeneratedReport = retrievedReport.getReportTemplate().getTimeOfLastGeneratedReport();

@@ -9,7 +9,6 @@ import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
 import com.sandjelkovic.dispatchd.data.entities.GeneratedReportContent;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import com.sandjelkovic.dispatchd.service.ReportService;
-import com.sandjelkovic.dispatchd.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,17 +41,14 @@ public class ReportController {
 	@Autowired
 	private ReportService reportService;
 
-	@Autowired
-	private UserService userService;
-
 	@RequestMapping(method = GET)
-	public List<ReportDTO> getReportsForCurrentUser() {
+	public List<ReportDTO> getReportsForCurrentUser(Principal principal, Pageable pageable) {
 		return new ArrayList<>();
 	}
 
 	@RequestMapping(value = "/{reportId}", method = GET)
 	public ReportDTOResource getReport(@PathVariable Long reportId) {
-		GeneratedReport generatedReport = reportService.findPublishedGenerated(reportId)
+		GeneratedReport generatedReport = reportService.findGenerated(reportId)
 				.orElseThrow(ResourceNotFoundException::new);
 		return conversionService.convert(generatedReport, ReportDTOResource.class);
 	}

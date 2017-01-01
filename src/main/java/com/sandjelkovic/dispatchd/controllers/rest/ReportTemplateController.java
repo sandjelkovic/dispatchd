@@ -53,7 +53,7 @@ public class ReportTemplateController {
 
 	@RequestMapping(method = GET)
 	public UsersReportTemplatesDTOListResource getTemplates(Pageable pageable, Principal user) {
-		Page<ReportTemplateDTO> convertedPage = reportService.findAllForCurrentUser(pageable, user.getName())
+		Page<ReportTemplateDTO> convertedPage = reportService.findTemplatesForUser(pageable, user.getName())
 				.map(template2DTOConverter);
 		return new UsersReportTemplatesDTOListResource(convertedPage);
 	}

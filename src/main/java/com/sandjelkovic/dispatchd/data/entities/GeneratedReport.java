@@ -21,9 +21,6 @@ public class GeneratedReport extends BasicEntity implements Serializable {
 	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(nullable = false)
-	private boolean published;
-
 	@Column(nullable = true, length = 150)
 	private String text;
 
@@ -45,14 +42,6 @@ public class GeneratedReport extends BasicEntity implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public boolean getPublished() {
-		return this.published;
-	}
-
-	public void setPublished(boolean published) {
-		this.published = published;
 	}
 
 	public String getText() {
