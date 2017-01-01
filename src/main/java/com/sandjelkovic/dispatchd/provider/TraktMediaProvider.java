@@ -3,8 +3,10 @@ package com.sandjelkovic.dispatchd.provider;
 import com.sandjelkovic.dispatchd.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 public interface TraktMediaProvider {
 
@@ -21,5 +23,26 @@ public interface TraktMediaProvider {
 	List<SeasonTrakt> getSeasonsMinimal(String showId);
 
 	SeasonTrakt getSeason(String showId, String seasonNumber);
+
+	@Async
+	Future<TvShowTrakt> getTvShowAsync(String showId);
+
+	@Async
+	Future<EpisodeTrakt> getEpisodeAsync(String showId, String seasonNumber, String episodeNumber);
+
+	@Async
+	Future<List<EpisodeTrakt>> getSeasonEpisodesAsync(String showId, String seasonNumber);
+
+	@Async
+	Future<List<EpisodeTrakt>> getShowEpisodesAsync(String showId);
+
+	@Async
+	Future<List<SeasonTrakt>> getSeasonsAsync(String showId);
+
+	@Async
+	Future<List<SeasonTrakt>> getSeasonsMinimalAsync(String showId);
+
+	@Async
+	Future<SeasonTrakt> getSeasonAsync(String showId, String seasonNumber);
 
 }

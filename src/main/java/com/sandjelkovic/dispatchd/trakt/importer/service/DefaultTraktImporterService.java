@@ -19,8 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
@@ -149,17 +147,12 @@ public class DefaultTraktImporterService implements TraktImporterService {
 		return EmptyCollections.list();
 	}
 
-	//todo fix async
-	@Async
-	public Future<List<SeasonTrakt>> getSeasonsFromTraktAsync(String showId) {
-		log.debug("DefaultTraktImporterService.getSeasonsFromTraktAsync");
-		return new AsyncResult<List<SeasonTrakt>>(provider.getSeasons(showId));
+	private Future<List<SeasonTrakt>> getSeasonsFromTraktAsync(String showId) {
+		return provider.getSeasonsAsync(showId);
 	}
 
-	@Async
-	public Future<List<EpisodeTrakt>> getEpisodesFromTraktAsync(String showId) {
-		log.debug("DefaultTraktImporterService.getEpisodesFromTraktAsync");
-		return new AsyncResult<List<EpisodeTrakt>>(provider.getShowEpisodes(showId));
+	private Future<List<EpisodeTrakt>> getEpisodesFromTraktAsync(String showId) {
+		return provider.getShowEpisodesAsync(showId);
 	}
 
 	private void checkForExistingShow(TvShowTrakt traktShow) {

@@ -7,6 +7,7 @@ import com.sandjelkovic.dispatchd.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,7 +15,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.Resource;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Component
@@ -62,7 +65,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 		List<SeasonTrakt> seasons = getSeasonsMinimal(showId);
 		return seasons.stream()
 				.map(season -> getSeasonEpisodes(showId, season.getNumber()))
-				.flatMap(episodes -> episodes.stream())
+				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
 	}
 
@@ -97,8 +100,43 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 		return season;
 	}
 
+	@Override
+	public Future<TvShowTrakt> getTvShowAsync(String showId) {
+		return new AsyncResult<>(getTvShow(showId));
+	}
+
+	@Override
+	public Future<EpisodeTrakt> getEpisodeAsync(String showId, String seasonNumber, String episodeNumber) {
+		return new AsyncResult<>(getEpisode(showId, seasonNumber, episodeNumber));
+	}
+
+	@Override
+	public Future<List<EpisodeTrakt>> getSeasonEpisodesAsync(String showId, String seasonNumber) {
+		return new AsyncResult<>(getSeasonEpisodes(showId, seasonNumber));
+	}
+
+	@Override
+	public Future<List<EpisodeTrakt>> getShowEpisodesAsync(String showId) {
+		return new AsyncResult<>(getShowEpisodes(showId));
+	}
+
+	@Override
+	public Future<List<SeasonTrakt>> getSeasonsAsync(String showId) {
+		return new AsyncResult<>(getSeasons(showId));
+	}
+
+	@Override
+	public Future<List<SeasonTrakt>> getSeasonsMinimalAsync(String showId) {
+		return new AsyncResult<>(getSeasonsMinimal(showId));
+	}
+
+	@Override
+	public Future<SeasonTrakt> getSeasonAsync(String showId, String seasonNumber) {
+		return new AsyncResult<>(getSeason(showId, seasonNumber));
+	}
+
 	private Object extractItemFromArray(Object[] array, Integer index) {
-		return (array.length>index) ? array[index] : null;
+		return (array.length > index) ? array[index] : null;
 	}
 
 }
