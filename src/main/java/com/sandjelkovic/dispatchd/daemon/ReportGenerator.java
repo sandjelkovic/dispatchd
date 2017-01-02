@@ -1,10 +1,13 @@
 package com.sandjelkovic.dispatchd.daemon;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
-import com.sandjelkovic.dispatchd.data.entities.*;
+import com.sandjelkovic.dispatchd.data.entities.Episode;
+import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
+import com.sandjelkovic.dispatchd.data.entities.GeneratedReportContent;
+import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
+import com.sandjelkovic.dispatchd.data.entities.ReportTemplate2TvShow;
+import com.sandjelkovic.dispatchd.data.entities.TvShow;
 import com.sandjelkovic.dispatchd.event.GeneratedReportEvent;
-import com.sandjelkovic.dispatchd.helper.EventDispatcher;
-import com.sandjelkovic.dispatchd.service.ReportGenerationJobService;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.mail.MailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,16 +38,7 @@ public class ReportGenerator {
 	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
-	private EventDispatcher eventDispatcher;
-
-	@Autowired
-	private ReportGenerationJobService jobService;
-
-	@Autowired
 	private ReportService reportService;
-
-	@Autowired
-	private MailSender mailSender;
 
 	@Autowired
 	@Qualifier(Constants.CONVERSION_SERVICE_BEAN_NAME)

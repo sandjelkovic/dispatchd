@@ -4,7 +4,6 @@ import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.configuration.ApplicationConfiguration;
 import com.sandjelkovic.dispatchd.configuration.SecurityConfiguration;
 import com.sandjelkovic.dispatchd.configuration.TraktConfiguration;
-import com.sandjelkovic.dispatchd.configuration.WebMvcConfiguration;
 import com.sandjelkovic.dispatchd.data.entities.ReportRepeatType;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
 import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
@@ -24,7 +23,7 @@ import java.time.temporal.ChronoUnit;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DispatchdApplication.class, ApplicationConfiguration.class,
-		SecurityConfiguration.class, TraktConfiguration.class, WebMvcConfiguration.class})
+		SecurityConfiguration.class, TraktConfiguration.class})
 @WebAppConfiguration
 public class DefaultReportServiceTest {
 
