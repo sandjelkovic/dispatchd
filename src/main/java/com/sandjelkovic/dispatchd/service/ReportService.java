@@ -14,10 +14,10 @@ import java.util.Optional;
 public interface ReportService {
 	List<ReportTemplate> getReportTemplatesToBeGeneratedBetween(ZonedDateTime from, ZonedDateTime until);
 
-	@PreAuthorize("authentication.name == @defaultReportService.findGenerated(#generatedReport.id).get().reportTemplate.user.username")
+	@PreAuthorize("#generatedReport.id == null or authentication.name == @defaultReportService.findGenerated(#generatedReport.id).get().reportTemplate.user.username")
 	GeneratedReport save(GeneratedReport generatedReport);
 
-	@PreAuthorize("authentication.name == @defaultReportService.findTemplate(#reportTemplate.id).get().user.username")
+	@PreAuthorize("#reportTemplate.id == null or authentication.name == @defaultReportService.findTemplate(#reportTemplate.id).get().user.username")
 	ReportTemplate save(ReportTemplate reportTemplate);
 
 	@PreAuthorize("authentication.name == #generatedReport.reportTemplate.user.username")

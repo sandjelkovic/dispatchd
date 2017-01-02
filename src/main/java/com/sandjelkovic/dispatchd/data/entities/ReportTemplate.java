@@ -2,7 +2,18 @@ package com.sandjelkovic.dispatchd.data.entities;
 
 import com.sandjelkovic.dispatchd.data.EmptyCollections;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -32,15 +43,14 @@ public class ReportTemplate extends BasicEntity implements Serializable {
 	@NotNull
 	private boolean active;
 
-	@Column(nullable = true, length = 255)
+	@Column(nullable = true, length = 2000)
 	private String description;
 
 	@Column(nullable = false, length = 100)
 	@NotNull
 	private String name;
 
-	@Column(nullable = false)
-	@NotNull
+	@Column(nullable = true)
 	private ChronoUnit repeatInterval;
 
 	@Column(nullable = false)
