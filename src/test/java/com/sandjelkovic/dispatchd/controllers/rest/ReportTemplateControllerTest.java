@@ -8,7 +8,6 @@ import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
 import com.sandjelkovic.dispatchd.data.entities.User;
 import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
-import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -29,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -41,7 +39,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = {DispatchdApplication.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @Transactional
-public class ReportTemplateControllerTest {
+public class ReportTemplateControllerTest extends MockIntegrationTest {
 	public static final String URL_USERS_USER_TEMPLATES = "/users/user/templates";
 	public static final String EMBEDDED = "_embedded";
 	public static final String ID_MATCHER = ".id";
@@ -79,6 +77,7 @@ public class ReportTemplateControllerTest {
 	public void wipeDatabase() {
 		reportTemplateRepository.deleteAll();
 	}
+
 	@Before
 	public void setUp() {
 		RestAssured.reset();
@@ -166,17 +165,6 @@ public class ReportTemplateControllerTest {
 				.statusCode(HttpStatus.CREATED.value());
 	}
 
-	private ReportTemplateDTO getTemplateDTOWithoutId() {
-		return new ReportTemplateDTO()
-				.active(true)
-				.description("[Description] for the test template")
-				.name("Test report template [name]")
-				.repeatType(ReportRepeatType.WEEKLY)
-				.repeatDayOfMonth(2)
-				.repeatDayOfWeek(DayOfWeek.FRIDAY)
-				.timeOfDayToDeliver(LocalTime.NOON);
-	}
-
 	@Test
 	public void basicCreateOnIdTest() {
 		ReportTemplateDTO newTemplate = new ReportTemplateDTO()
@@ -214,7 +202,7 @@ public class ReportTemplateControllerTest {
 
 	@Test
 	public void getTemplate() {
-		ReportTemplate createdTemplate = reportService.save(createTemplateWithIdForUser(null, USER_NAME).name("RNAME !"));
+		ReportTemplate createdTemplate = reportService.save(getTemplateWithIdForUser(null, USER_NAME).name("RNAME !"));
 		given()
 				.auth().basic(USER_NAME, USER_PASSWORD)
 				.and().contentType(ContentType.JSON)
@@ -235,20 +223,6 @@ public class ReportTemplateControllerTest {
 				.get(URL_USERS_USER_TEMPLATES_5555)
 				.then()
 				.statusCode(HttpStatus.NOT_FOUND.value());
-	}
-
-	private ReportTemplate createTemplateWithIdForUser(Long id, String username) {
-		return new ReportTemplate()
-				.id(id)
-				.user(userRepository.findOneByUsername(username).orElseThrow(UserNotFoundException::new))
-				.active(true)
-				.description("[Description] for the test template")
-				.name("Test report template [name]")
-				.repeatType(ReportRepeatType.WEEKLY)
-				.repeatInterval(ChronoUnit.WEEKS)
-				.repeatDayOfMonth(2)
-				.repeatDayOfWeek(DayOfWeek.FRIDAY)
-				.timeOfDayToDeliver(LocalTime.NOON);
 	}
 
 }
