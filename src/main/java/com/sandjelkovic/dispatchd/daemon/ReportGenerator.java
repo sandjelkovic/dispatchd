@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.daemon;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
+import com.sandjelkovic.dispatchd.configuration.ValuesConfiguration;
 import com.sandjelkovic.dispatchd.data.entities.Episode;
 import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
 import com.sandjelkovic.dispatchd.data.entities.GeneratedReportContent;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.scheduling.annotation.Async;
@@ -31,8 +31,8 @@ public class ReportGenerator {
 
 	private static final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
 
-	@Value(value = "${report.generation.interval.seconds:60}")
-	private int generationInterval;
+	@Autowired
+	private ValuesConfiguration valuesConfiguration;
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
@@ -46,7 +46,7 @@ public class ReportGenerator {
 
 	@Transactional
 	public void generateReports() {
-		ZonedDateTime time = ZonedDateTime.now().plusSeconds(generationInterval);
+		ZonedDateTime time = ZonedDateTime.now().plusSeconds(valuesConfiguration.getGenerationInterval());
 		log.debug("Generating reports until time [" + time + "]");
 		List<ReportTemplate> templates = reportService.getReportTemplatesToBeGeneratedBetween(null, time);
 		templates.stream()
@@ -153,7 +153,4 @@ public class ReportGenerator {
 		return 0;
 	}
 
-	public int getGenerationInterval() {
-		return generationInterval;
-	}
 }

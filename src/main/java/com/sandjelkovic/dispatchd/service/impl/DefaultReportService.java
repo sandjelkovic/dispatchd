@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.service.impl;
 
+import com.sandjelkovic.dispatchd.configuration.ValuesConfiguration;
 import com.sandjelkovic.dispatchd.data.TimeGenerator;
 import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
@@ -7,6 +8,7 @@ import com.sandjelkovic.dispatchd.data.entities.User;
 import com.sandjelkovic.dispatchd.data.repositories.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
+import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import java.util.Optional;
 
 @Component
 public class DefaultReportService implements ReportService {
+
+	@Autowired
+	private ValuesConfiguration valuesConfiguration;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -57,6 +62,9 @@ public class DefaultReportService implements ReportService {
 	@Override
 	public ReportTemplate save(@Valid ReportTemplate reportTemplate) {
 		checkAndSaveDefaultsIfNeeded(reportTemplate);
+		if (reportTemplate.getReportTemplate2TvShows().size() > valuesConfiguration.getReportMaxTargetsCount()) {
+			throw new ReportsMaxContentCountReachedException();
+		}
 		return reportTemplateRepository.save(reportTemplate);
 	}
 

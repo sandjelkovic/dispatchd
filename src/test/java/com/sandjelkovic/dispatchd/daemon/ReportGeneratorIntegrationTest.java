@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.sandjelkovic.dispatchd.configuration.Constants.SPRING_PROFILE_TESTING;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,11 +44,6 @@ public class ReportGeneratorIntegrationTest {
 	private ReportService reportService;
 	@Autowired
 	private ReportGenerator target;
-
-	@Test
-	public void getGenerationInterval() throws Exception {
-		assertThat("Generation interval hasn't been loaded and default hasn't been set", target.getGenerationInterval(), notNullValue());
-	}
 
 	@Before
 	public void setUp() throws Exception {
