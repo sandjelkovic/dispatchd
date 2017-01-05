@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.controllers.rest;
 
-import com.sandjelkovic.dispatchd.api.resources.ReportDTOResource;
+import com.sandjelkovic.dispatchd.api.resources.ReportResource;
 import com.sandjelkovic.dispatchd.api.resources.UserReportContentResource;
 import com.sandjelkovic.dispatchd.api.resources.UserReportListResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
@@ -51,10 +51,10 @@ public class ReportController {
 	}
 
 	@RequestMapping(value = "/{reportId}", method = GET)
-	public ReportDTOResource getReport(@PathVariable Long reportId) {
+	public ReportResource getReport(@PathVariable Long reportId) {
 		GeneratedReport generatedReport = reportService.findGenerated(reportId)
 				.orElseThrow(ResourceNotFoundException::new);
-		return conversionService.convert(generatedReport, ReportDTOResource.class);
+		return conversionService.convert(generatedReport, ReportResource.class);
 	}
 
 	@RequestMapping(value = "/{reportId}/content", method = GET)

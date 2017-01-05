@@ -6,7 +6,7 @@ import com.sandjelkovic.dispatchd.api.PageLinksAssembler;
 import com.sandjelkovic.dispatchd.api.RelNamesConstants;
 import com.sandjelkovic.dispatchd.controllers.rest.ReportController;
 import com.sandjelkovic.dispatchd.controllers.rest.ReportTemplateController;
-import com.sandjelkovic.dispatchd.data.dto.ReportDTO;
+import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,25 +14,24 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
-public class UserReportListResource extends PageableListResource {
+public class UsersReportTemplatesListResource extends PageableListResource {
 	@JsonProperty("_embedded")
-	private List<ReportResource> data;
+	private List<ReportTemplateResource> data;
 	@JsonProperty("page")
 	private PageMetadataResource pageMetadataResource;
 
-	public UserReportListResource(Page<ReportDTO> page) {
+	public UsersReportTemplatesListResource(Page<ReportTemplateDTO> page) {
 		super(new PageLinksAssembler(new PageMetadataResource(page), linkTo(ReportController.class)));
 		this.data = page.getContent().stream()
-				.map(ReportResource::new)
+				.map(ReportTemplateResource::new)
 				.collect(toList());
 		this.pageMetadataResource = new PageMetadataResource(page);
 
-		this.add(LinkAssembler.getPageableTemplatedBaseLink(linkTo(ReportController.class)).withSelfRel());
+		this.add(LinkAssembler.getPageableTemplatedBaseLink(linkTo(ReportTemplateController.class)).withSelfRel());
 		this.add(LinkAssembler.getPageableTemplatedBaseLink(linkTo(ReportController.class)).withRel(RelNamesConstants.USER_REPORTS));
-		this.add(linkTo(ReportTemplateController.class).withRel(RelNamesConstants.USER_REPORT_TEMPLATES));
 	}
 
-	public List<ReportResource> getData() {
+	public List<ReportTemplateResource> getData() {
 		return data;
 	}
 

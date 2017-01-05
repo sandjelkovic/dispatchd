@@ -17,4 +17,8 @@ public class ImportStatusResource extends ResourceSupport {
 		this.data = data;
 		this.add(ControllerLinkBuilder.linkTo(methodOn(ImportRestController.class).getImportStatus(data.getId())).withSelfRel());
 	}
+
+	public ImportStatusDto getData() {
+		return data;
+	}
 }

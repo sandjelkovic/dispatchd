@@ -11,16 +11,17 @@ import org.springframework.hateoas.ResourceSupport;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-public class ReportTemplateDTOResource extends ResourceSupport {
+public class ReportTemplateResource extends ResourceSupport {
 
 	@JsonProperty("_embedded")
 	private ReportTemplateDTO data;
 
-	public ReportTemplateDTOResource(ReportTemplateDTO templateDto) {
+	public ReportTemplateResource(ReportTemplateDTO templateDto) {
 		this.data = templateDto;
 		this.add(linkTo(methodOn(ReportTemplateController.class).getTemplate(data.getId())).withSelfRel());
-		this.add(LinkAssembler.getTemplatedForPagingBaseLink(linkTo(ReportTemplateController.class)).withRel(RelNamesConstants.USER_REPORT_TEMPLATES));
-		this.add(linkTo(ReportController.class).withRel("reports")); // todo Implement relation between report <=> report template and make a query from here
+		this.add(LinkAssembler.getPageableTemplatedBaseLink(linkTo(ReportTemplateController.class)).withRel(RelNamesConstants.USER_REPORT_TEMPLATES));
+		this.add(linkTo(ReportController.class).withRel(RelNamesConstants.USER_REPORTS));
+		// todo Implement relation between report <=> report template and make a query from here
 	}
 
 	public ReportTemplateDTO getData() {

@@ -10,4 +10,5 @@ public class RelNamesConstants {
 	public static final String EPISODES = "episodes";
 	public static final String SEASON = "season";
 	public static final String SHOW = "show";
+	public static final String REPORT = "report";
 }

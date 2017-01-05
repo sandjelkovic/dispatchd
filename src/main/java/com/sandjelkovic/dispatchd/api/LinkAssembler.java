@@ -6,11 +6,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public class LinkAssembler {
 
-	public static Link getTemplatedForPagingBaseLink(ControllerLinkBuilder baseLinkBuilder) {
-		return new Link(prepareHref(getFullyTemplatedUriBuilder(baseLinkBuilder)));
+	public static Link getPageableTemplatedBaseLink(ControllerLinkBuilder baseLinkBuilder) {
+		return new Link(hrefFromComponentBuilder(getFullyTemplatedUriBuilder(baseLinkBuilder)));
 	}
 
-	private static String prepareHref(UriComponentsBuilder componentsBuilder) {
+	public static String hrefFromComponentBuilder(UriComponentsBuilder componentsBuilder) {
 		return componentsBuilder.build().toString();
 	}
 

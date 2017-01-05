@@ -22,10 +22,10 @@ public class EpisodeResource extends ResourceSupport {
 		this.add(ControllerLinkBuilder.linkTo(methodOn(ContentController.class).getEpisode(data.getId())).withSelfRel());
 
 		ControllerLinkBuilder episodesOfShowLink = linkTo(methodOn(ContentController.class).getEpisodesOfTvShow(episodeDTO.getTvShowId()));
-		this.add(LinkAssembler.getTemplatedForPagingBaseLink(episodesOfShowLink).withRel(RelNamesConstants.SHOW_EPISODES));
+		this.add(LinkAssembler.getPageableTemplatedBaseLink(episodesOfShowLink).withRel(RelNamesConstants.SHOW_EPISODES));
 
 		ControllerLinkBuilder episodesOfSeasonLink = linkTo(methodOn(ContentController.class).getEpisodesOfSeason(episodeDTO.getTvShowId()));
-		this.add(LinkAssembler.getTemplatedForPagingBaseLink(episodesOfSeasonLink).withRel(RelNamesConstants.SEASON_EPISODES));
+		this.add(LinkAssembler.getPageableTemplatedBaseLink(episodesOfSeasonLink).withRel(RelNamesConstants.SEASON_EPISODES));
 
 		this.add(linkTo(methodOn(ContentController.class).getSeason(data.getSeasonId())).withRel(RelNamesConstants.SEASON));
 		this.add(linkTo((methodOn(ContentController.class).getShow(data.getTvShowId()))).withRel(RelNamesConstants.SHOW));
