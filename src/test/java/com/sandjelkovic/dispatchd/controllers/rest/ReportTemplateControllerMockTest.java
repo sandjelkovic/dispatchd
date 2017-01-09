@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.controllers.rest;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
+import com.sandjelkovic.dispatchd.api.RelNamesConstants;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
@@ -41,14 +42,9 @@ public class ReportTemplateControllerMockTest extends MockIntegrationTest {
 	public static final String EMBEDDED = "_embedded";
 	public static final String ID_MATCHER = ".id";
 	public static final String NAME_MATCHER = ".name";
-	public static final String REPEAT_TYPE_MATCHER = ".repeatType";
-	public static final String REPEAT_DAY_OF_MONTH_MATCHER = ".repeatDayOfMonth";
-	public static final String REPEAT_DAY_OF_WEEK_MATCHER = ".repeatDayOfWeek";
-	public static final String TIME_OF_DAY_TO_DELIVER_MATCHER = ".timeOfDayToDeliver";
 	public static final String USER_NAME = "user";
 	public static final String USER_PASSWORD = "password";
-	public static final String USER_TWO_NAME = "userTwo";
-	public static final String USER_TWO_PASSWORD = "password";
+	public static final String LINKS_MATCHER = "_links";
 
 	@Autowired
 	@Qualifier(Constants.TEST_USERS_INIT_BEAN_NAME)
@@ -74,7 +70,15 @@ public class ReportTemplateControllerMockTest extends MockIntegrationTest {
 				.accept(MediaType.APPLICATION_JSON_UTF8)
 				.content(toJson(newTemplate)))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$." + EMBEDDED + ID_MATCHER).exists());
+				.andExpect(jsonPath("$." + EMBEDDED + ID_MATCHER).exists())
+				.andExpect(jsonPath("$." + LINKS_MATCHER).exists())
+				.andExpect(jsonPath("$." + LINKS_MATCHER).isMap())
+				.andExpect(jsonPath("$." + LINKS_MATCHER).isNotEmpty())
+				.andExpect(jsonPath("$." + LINKS_MATCHER + ".self").exists())
+				.andExpect(jsonPath("$." + LINKS_MATCHER + "." + RelNamesConstants.REPORTS_OF_TEMPLATE).exists())
+				.andExpect(jsonPath("$." + LINKS_MATCHER + "." + RelNamesConstants.USER_REPORTS).exists())
+				.andExpect(jsonPath("$." + LINKS_MATCHER + "." + RelNamesConstants.USER_REPORT_TEMPLATES).exists())
+		;
 	}
 
 	@Test

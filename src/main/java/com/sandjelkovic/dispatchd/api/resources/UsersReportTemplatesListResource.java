@@ -21,7 +21,7 @@ public class UsersReportTemplatesListResource extends PageableListResource {
 	private PageMetadataResource pageMetadataResource;
 
 	public UsersReportTemplatesListResource(Page<ReportTemplateDTO> page) {
-		super(new PageLinksAssembler(new PageMetadataResource(page), linkTo(ReportController.class)));
+		super(new PageLinksAssembler(new PageMetadataResource(page), linkTo(ReportTemplateController.class)));
 		this.data = page.getContent().stream()
 				.map(ReportTemplateResource::new)
 				.collect(toList());
