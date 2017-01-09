@@ -9,6 +9,7 @@ import com.sandjelkovic.dispatchd.data.repositories.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
 import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
+import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,11 +106,33 @@ public class DefaultReportService implements ReportService {
 	}
 
 	public void delete(GeneratedReport generatedReport) {
+		if (generatedReportRepository.findOne(generatedReport.getId()) == null) {
+			throw new ResourceNotFoundException();
+		}
 		generatedReportRepository.delete(generatedReport);
 	}
 
 	public void delete(ReportTemplate reportTemplate) {
+		if (reportTemplateRepository.findOne(reportTemplate.getId()) == null) {
+			throw new ResourceNotFoundException();
+		}
 		reportTemplateRepository.delete(reportTemplate);
+	}
+
+	@Override
+	public void deleteTemplate(Long id) {
+		if (reportTemplateRepository.findOne(id) == null) {
+			throw new ResourceNotFoundException();
+		}
+		reportTemplateRepository.delete(id);
+	}
+
+	@Override
+	public void deleteGenerated(Long id) {
+		if (generatedReportRepository.findOne(id) == null) {
+			throw new ResourceNotFoundException();
+		}
+		generatedReportRepository.delete(id);
 	}
 
 	public List<ReportTemplate> findAll() {

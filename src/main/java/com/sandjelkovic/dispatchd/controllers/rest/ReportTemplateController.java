@@ -20,6 +20,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,7 @@ import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -95,7 +97,7 @@ public class ReportTemplateController {
 		templateDTO.id(templateId);
 
 		ReportTemplate template = conversionService.convert(templateDTO, ReportTemplate.class);
-		checkIfTemplateIsOwnedByUser(templateId, principal);
+		isTemplateIsOwnedByUser(templateId, principal);
 
 		template.setUser(userService.findByUsername(principal.getName())
 				.orElseThrow(UserNotFoundException::new));
@@ -106,7 +108,13 @@ public class ReportTemplateController {
 		return new ReportTemplateResource(returnTemplate);
 	}
 
-	private void checkIfTemplateIsOwnedByUser(Long templateId, Principal principal) {
+	@RequestMapping(value = "/{templateId}", method = DELETE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteTemplate(@PathVariable Long templateId) {
+		reportService.deleteTemplate(templateId);
+	}
+
+	private void isTemplateIsOwnedByUser(Long templateId, Principal principal) {
 		reportService.findTemplate(templateId)
 				.map(ReportTemplate::getUser)
 				.map(User::getUsername)

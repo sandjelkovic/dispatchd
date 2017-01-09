@@ -26,11 +26,13 @@ public interface ReportService {
 	@PostAuthorize("returnObject._embedded.username == authentication.name")
 	Optional<ReportTemplate> findTemplate(Long id);
 
-	@PreAuthorize("authentication.name == #generatedReport.reportTemplate.user.username")
 	void delete(GeneratedReport generatedReport);
 
-	@PreAuthorize("authentication.name == #reportTemplate.user.username")
 	void delete(ReportTemplate reportTemplate);
+
+	void deleteTemplate(Long id);
+
+	void deleteGenerated(Long id);
 
 	@PreAuthorize("hasAnyRole('admin', 'root')")
 	List<ReportTemplate> findAll();
