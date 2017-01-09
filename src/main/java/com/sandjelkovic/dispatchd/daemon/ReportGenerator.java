@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -71,7 +72,7 @@ public class ReportGenerator {
 
 	private List<ReportTemplate2TvShow> getSortedRelationsWithTvShow(ReportTemplate reportTemplate) {
 		return reportTemplate.getReportTemplate2TvShows().stream()
-				.sorted(this::compareShowOrder)
+				.sorted(Comparator.comparingInt(ReportTemplate2TvShow::getOrderInReport))
 				.collect(toList());
 	}
 
@@ -133,24 +134,6 @@ public class ReportGenerator {
 			content.setGeneratedReport(generatedReport);
 			generatedReport.addGeneratedReportContent(content);
 		}
-	}
-
-	private int compareEntryOrder(GeneratedReportContent first, GeneratedReportContent second) {
-		if (first.getOrderInReport() > second.getOrderInReport()) {
-			return 1;
-		} else if (first.getOrderInReport() < second.getOrderInReport()) {
-			return -1;
-		}
-		return 0;
-	}
-
-	private int compareShowOrder(ReportTemplate2TvShow first, ReportTemplate2TvShow second) {
-		if (first.getOrderInReport() > second.getOrderInReport()) {
-			return 1;
-		} else if (first.getOrderInReport() < second.getOrderInReport()) {
-			return -1;
-		}
-		return 0;
 	}
 
 }
