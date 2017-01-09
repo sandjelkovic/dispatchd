@@ -47,7 +47,7 @@ public interface ReportService {
 	Page<GeneratedReport> findGeneratedForUser(Pageable pageable, String username);
 
 	@PreAuthorize("authentication.name == #username")
-	Page<GeneratedReport> findGeneratedByTemplateForUser(Pageable pageable, Long templateId, String name);
+	Page<GeneratedReport> findGeneratedByTemplateForUser(Pageable pageable, Long templateId, String username);
 
 	ZonedDateTime getNewGenerationTimeForTemplate(ReportTemplate reportTemplate);
 }
