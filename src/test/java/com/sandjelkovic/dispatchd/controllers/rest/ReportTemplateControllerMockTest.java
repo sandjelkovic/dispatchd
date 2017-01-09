@@ -1,9 +1,10 @@
 package com.sandjelkovic.dispatchd.controllers.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
+import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
+import com.sandjelkovic.dispatchd.service.ReportService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,20 +36,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class ReportTemplateControllerMockTest extends MockIntegrationTest {
 	public static final String URL_USERS_USER_TEMPLATES = REST_ENDPOINT_API_PREFIX + "/templates";
+	public static final String URL_USERS_USER_TEMPLATE_TEMPLATED = REST_ENDPOINT_API_PREFIX + "/templates/{id}";
+	public static final String URL_USERS_USER_TEMPLATES_5555 = URL_USERS_USER_TEMPLATES + "/5555";
 	public static final String EMBEDDED = "_embedded";
 	public static final String ID_MATCHER = ".id";
+	public static final String NAME_MATCHER = ".name";
+	public static final String REPEAT_TYPE_MATCHER = ".repeatType";
+	public static final String REPEAT_DAY_OF_MONTH_MATCHER = ".repeatDayOfMonth";
+	public static final String REPEAT_DAY_OF_WEEK_MATCHER = ".repeatDayOfWeek";
+	public static final String TIME_OF_DAY_TO_DELIVER_MATCHER = ".timeOfDayToDeliver";
 	public static final String USER_NAME = "user";
 	public static final String USER_PASSWORD = "password";
+	public static final String USER_TWO_NAME = "userTwo";
+	public static final String USER_TWO_PASSWORD = "password";
 
 	@Autowired
 	@Qualifier(Constants.TEST_USERS_INIT_BEAN_NAME)
 	private CommandLineRunner usersInitRunner;
 
 	@Autowired
-	private MockMvc mvc;
+	private ReportService reportService;
 
 	@Autowired
-	private ObjectMapper objectMapper;
+	private MockMvc mvc;
 
 	@Before
 	public void setUp() throws Exception {
@@ -62,8 +72,84 @@ public class ReportTemplateControllerMockTest extends MockIntegrationTest {
 		mvc.perform(MockMvcRequestBuilders.post(URL_USERS_USER_TEMPLATES)
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.accept(MediaType.APPLICATION_JSON_UTF8)
-				.content(objectMapper.writeValueAsString(newTemplate)))
+				.content(toJson(newTemplate)))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$." + EMBEDDED + ID_MATCHER).exists());
 	}
+
+	@Test
+	public void templateCreationWithoutRequiredFields() throws Exception {
+		testInvalidTemplate(getTemplateDTOWithoutId().repeatDayOfMonth(null));
+		testInvalidTemplate(getTemplateDTOWithoutId().repeatDayOfWeek(null));
+		testInvalidTemplate(getTemplateDTOWithoutId().repeatType(null));
+		testInvalidTemplate(getTemplateDTOWithoutId().name(null));
+
+		mvc.perform(MockMvcRequestBuilders.post(URL_USERS_USER_TEMPLATES)
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON_UTF8)
+				.content(toJson(getTemplateDTOWithoutId().description(null))))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$." + EMBEDDED + ID_MATCHER).exists());
+	}
+
+	private void testInvalidTemplate(ReportTemplateDTO template) throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post(URL_USERS_USER_TEMPLATES)
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON_UTF8)
+				.content(toJson(template)))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void templateCreationRepeatDayOfMonthConstrains() throws Exception {
+		testInvalidDayOfMonth(0);
+		testInvalidDayOfMonth(-5); // move all different cases to service test (or repository) and only test for response (bad request)
+		testInvalidDayOfMonth(31);
+		testInvalidDayOfMonth(5000);
+		testInvalidDayOfMonth(29);
+		testValidRepeatDayOfMonth(28);
+		testValidRepeatDayOfMonth(5);
+	}
+
+	private void testInvalidDayOfMonth(int repeatDayOfMonth) throws Exception {
+		testInvalidTemplate(getTemplateDTOWithoutId().repeatDayOfMonth(repeatDayOfMonth));
+	}
+
+	private void testValidRepeatDayOfMonth(int repeatDayOfMonth) throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post(URL_USERS_USER_TEMPLATES)
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON_UTF8)
+				.content(toJson(getTemplateDTOWithoutId().repeatDayOfMonth(repeatDayOfMonth))))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$." + EMBEDDED + ID_MATCHER).exists());
+	}
+
+	@Test
+	public void getTemplates() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get(URL_USERS_USER_TEMPLATES)
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void getTemplate() throws Exception {
+		ReportTemplate createdTemplate = reportService.save(getTemplateWithIdForUser(null, USER_NAME).name("RNAME !"));
+
+		mvc.perform(MockMvcRequestBuilders.get(URL_USERS_USER_TEMPLATE_TEMPLATED, createdTemplate.getId())
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$." + EMBEDDED + ID_MATCHER).value(createdTemplate.getId()))
+				.andExpect(jsonPath("$." + EMBEDDED + NAME_MATCHER).value("RNAME !"));
+	}
+
+	@Test
+	public void getNotExistingTemplate() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get(URL_USERS_USER_TEMPLATES_5555)
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(status().isNotFound());
+	}
+
 }

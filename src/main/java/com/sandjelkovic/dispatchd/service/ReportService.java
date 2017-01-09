@@ -20,10 +20,10 @@ public interface ReportService {
 	@PreAuthorize("#reportTemplate.id == null or authentication.name == @defaultReportService.findTemplate(#reportTemplate.id).get().user.username")
 	ReportTemplate save(ReportTemplate reportTemplate);
 
-	@PreAuthorize("authentication.name == #generatedReport.reportTemplate.user.username")
+	@PostAuthorize("returnObject.present and returnObject.get().reportTemplate.user.username == authentication.name")
 	Optional<GeneratedReport> findGenerated(Long id);
 
-	@PostAuthorize("returnObject._embedded.username == authentication.name")
+	@PostAuthorize("returnObject.present and returnObject.get().user.username == authentication.name")
 	Optional<ReportTemplate> findTemplate(Long id);
 
 	void delete(GeneratedReport generatedReport);

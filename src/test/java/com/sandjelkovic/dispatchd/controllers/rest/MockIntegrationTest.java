@@ -1,5 +1,7 @@
 package com.sandjelkovic.dispatchd.controllers.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
@@ -35,6 +37,9 @@ public class MockIntegrationTest {
 	@Autowired
 	private TestDataGenerator dataGenerator;
 
+	@Autowired
+	private ObjectMapper objectMapper;
+
 	protected ReportTemplate getTemplateWithIdForUser(Long id, String username) {
 		return dataGenerator.getTemplateWithIdForUser(id, userRepository.findOneByUsername(username)
 				.orElseThrow(UserNotFoundException::new));
@@ -42,5 +47,9 @@ public class MockIntegrationTest {
 
 	protected ReportTemplateDTO getTemplateDTOWithoutId() {
 		return dataGenerator.getTemplateDTOWithoutId();
+	}
+
+	protected String toJson(Object object) throws JsonProcessingException {
+		return objectMapper.writeValueAsString(object);
 	}
 }
