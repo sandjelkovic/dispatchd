@@ -1,228 +1,94 @@
 package com.sandjelkovic.dispatchd.service.impl;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.configuration.ApplicationConfiguration;
-import com.sandjelkovic.dispatchd.data.entities.ReportRepeatType;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
-import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
+import com.sandjelkovic.dispatchd.data.entities.User;
 import com.sandjelkovic.dispatchd.service.ReportService;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.data.domain.Page;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
 
-import static org.hamcrest.Matchers.*;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-		classes = {DispatchdApplication.class, ApplicationConfiguration.class})
+@ActiveProfiles(profiles = {"testing"})
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportServiceTemplatesTest {
+public class ReportServiceTemplatesTest extends BaseReportServiceTest {
 
 	@Autowired
-	private ReportTemplateRepository reportTemplateRepository;
-
-	@Autowired
-	private ReportService reportService;
+	private ReportService target;
 
 	@Before
 	public void setUp() throws Exception {
 	}
 
-	private ReportTemplate createTemplateStub() {
-		return new ReportTemplate().
-				id(null).
-				active(true).
-				name("First template").
-				description("Description").
-				timeOfLastGeneratedReport(ZonedDateTime.now().minusWeeks(1)).
-				timeToGenerateReport(ZonedDateTime.now().minusHours(2)).
-				repeatDayOfMonth(1).
-				repeatDayOfWeek(DayOfWeek.FRIDAY).
-				repeatType(ReportRepeatType.WEEKLY).
-				repeatInterval(ChronoUnit.WEEKS).
-				timeOfDayToDeliver(LocalTime.NOON).
-				timeOfLastGeneratedReport(ZonedDateTime.now().minusWeeks(1)).
-				timeToGenerateReport(ZonedDateTime.now());
-	}
+	@Test
+	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
+	public void findNotExistingTemplate() {
+		Optional<ReportTemplate> template = target.findTemplate(5555L);
 
-	private ReportTemplate createTemplateAsNew() {
-		return new ReportTemplate()
-				.name("New template")
-				.description("new desription")
-				.active(true)
-				.repeatDayOfMonth(1)
-				.repeatDayOfWeek(DayOfWeek.FRIDAY)
-				.timeOfDayToDeliver(LocalTime.of(15, 15))
-				.repeatType(ReportRepeatType.MONTHLY)
-				.repeatInterval(ChronoUnit.MONTHS);
+		assertThat(template.isPresent(), not(true));
 	}
 
 	@Test
-	public void saveExistingFilledTemplateTest() throws Exception {
-		long countBefore = reportTemplateRepository.count();
-		ReportTemplate beforeSaveBean = createTemplateStub();
+	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
+	public void findExistingTemplate() throws Exception {
+		User user = getUser(USER_NAME);
+		ReportTemplate reportTemplate = generateTemplateWithGenerationInFutureWithoutShows().user(user);
+		reportTemplate = reportTemplateRepository.save(reportTemplate);
 
-		ReportTemplate savedBean = reportService.save(beforeSaveBean);
+		Optional<ReportTemplate> foundTemplate = target.findTemplate(reportTemplate.getId());
 
-		assertThat(savedBean, notNullValue());
-		long countAfter = reportTemplateRepository.count();
-		assertThat("Should be one more a after saving", countAfter, is(countBefore + 1));
-
-		long generatedId = savedBean.getId();
-		beforeSaveBean.setId(generatedId);
-		assertThat(savedBean, samePropertyValuesAs(beforeSaveBean));
-		assertThat(savedBean, samePropertyValuesAs(reportTemplateRepository.findOne(generatedId)));
+		assertThat(foundTemplate.isPresent(), is(true));
+		//noinspection OptionalGetWithoutIsPresent
+		assertThat(foundTemplate.get(), samePropertyValuesAs(reportTemplate));
 	}
 
 	@Test
-	public void saveNewTemplateTest() throws Exception {
-		long countBefore = reportTemplateRepository.count();
-		ReportTemplate beforeSaveBean = createTemplateAsNew();
+	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
+	public void findTemplatesForUser() throws Exception {
+		User user = getUser(USER_NAME);
+		int amountToRetrieve = 4;
+		long totalAmountToSave = 6;
+		List<ReportTemplate> generatedTemplates = generateTemplates(totalAmountToSave).stream()
+				.map(template -> template.user(user))
+				.map(reportTemplateRepository::save)
+				.collect(toList());
 
-		ReportTemplate savedBean = reportService.save(beforeSaveBean);
+		createTemplatesForUserTwo();
 
-		assertThat(savedBean, notNullValue());
+		Page<ReportTemplate> pageOfTemplates = target.findTemplatesForUser(generateSimplePageable(0, amountToRetrieve, null), USER_NAME);
 
-		long countAfter = reportTemplateRepository.count();
-		assertThat("Should be one more after saving", countAfter, is(countBefore + 1));
+		assertThat(pageOfTemplates.getTotalElements(), is(totalAmountToSave));
+		assertThat(pageOfTemplates.getNumberOfElements(), is(amountToRetrieve));
+		assertThat(pageOfTemplates.getTotalPages(), is(2));
+		assertThat(pageOfTemplates.getNumber(), is(0));
+		assertThat(pageOfTemplates.getContent(), Matchers.hasSize(amountToRetrieve));
 	}
 
-	@Test(expected = ConstraintViolationException.class)
-	public void saveNewFailOnMissingTimeOfDay() {
-		ReportTemplate template = createTemplateAsNew()
-				.timeOfDayToDeliver(null);
-
-		reportService.save(template);
-		fail();
+	private List<ReportTemplate> createTemplatesForUserTwo() {
+		User userTwo = getUser(USER_TWO_NAME);
+		return generateTemplates(3).stream()
+				.map(template -> template.user(userTwo))
+				.map(reportTemplateRepository::save)
+				.collect(toList());
 	}
 
-	@Test(expected = ConstraintViolationException.class)
-	public void saveNewFailOnNegativeDayOfMonth() {
-		ReportTemplate template = createTemplateAsNew()
-				.repeatDayOfMonth(-5);
-
-		reportService.save(template);
-		fail();
-	}
-
-	@Test
-	public void getTemplatesBetweenWeeklyTest() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
-				ZonedDateTime.now().minusMinutes(2),
-				ZonedDateTime.now().minusSeconds(5),
-				ZonedDateTime.now().plusMinutes(2)));
-
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(
-				ZonedDateTime.now().minusMinutes(1), ZonedDateTime.now().plusMinutes(5));
-
-		assertThat(retrievedTemplates, notNullValue());
-		assertThat(retrievedTemplates.size(), is(2));
-	}
-
-	@Test
-	public void getTemplatesBetweenNoResultTest() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
-				ZonedDateTime.now().minusMinutes(2),
-				ZonedDateTime.now().minusSeconds(5),
-				ZonedDateTime.now().plusMinutes(7),
-				ZonedDateTime.now().minusHours(2)));
-
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(
-				ZonedDateTime.now(), ZonedDateTime.now().plusMinutes(5));
-
-		assertThat(retrievedTemplates, notNullValue());
-		assertThat(retrievedTemplates.size(), is(0));
-	}
-
-	@Test
-	public void getTemplatesBetweenWithoutFromParamSuccessTest() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
-				ZonedDateTime.now().minusMinutes(2),
-				ZonedDateTime.now().minusSeconds(5),
-				ZonedDateTime.now().plusMinutes(7),
-				ZonedDateTime.now().minusHours(2)));
-
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(null, ZonedDateTime.now().plusMinutes(5));
-
-		assertThat(retrievedTemplates, notNullValue());
-		assertThat(retrievedTemplates.size(), is(3));
-	}
-
-	@Test
-	public void getTemplatesBetweenWithoutFromParamNoResultTest() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
-				ZonedDateTime.now().plusHours(2),
-				ZonedDateTime.now().plusMinutes(15),
-				ZonedDateTime.now().plusMinutes(7),
-				ZonedDateTime.now().plusMinutes(25)));
-
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(null, ZonedDateTime.now().plusMinutes(5));
-
-		assertThat(retrievedTemplates, notNullValue());
-		assertThat(retrievedTemplates.size(), is(0));
-	}
-
-	@Test
-	public void getTemplatesBetweenInverseDatesTest() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
-				ZonedDateTime.now().minusMinutes(2),
-				ZonedDateTime.now().minusSeconds(5),
-				ZonedDateTime.now().plusMinutes(7),
-				ZonedDateTime.now().plusMinutes(1)));
-
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(
-				ZonedDateTime.now().plusMinutes(5), ZonedDateTime.now().minusMinutes(5));
-
-		assertThat(retrievedTemplates, notNullValue());
-		assertThat(retrievedTemplates.size(), is(0));
-	}
-
-	@Test
-	public void getTemplatesBetweenAllNullsTest() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
-				ZonedDateTime.now().minusMinutes(2),
-				ZonedDateTime.now().minusSeconds(5),
-				ZonedDateTime.now().plusMinutes(7),
-				ZonedDateTime.now().plusMinutes(1)));
-
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(null, null);
-
-		assertThat(retrievedTemplates, notNullValue());
-		assertThat(retrievedTemplates.size(), is(2));
-	}
-
-	private ReportTemplate setRepeatMonthly(ReportTemplate template) {
-		return template.repeatType(ReportRepeatType.MONTHLY)
-				.repeatInterval(ChronoUnit.MONTHS)
-				.repeatDayOfMonth(ZonedDateTime.now().getDayOfMonth());
-	}
-
-	private ReportTemplate setRepeatWeekly(ReportTemplate template) {
-		return template.repeatType(ReportRepeatType.WEEKLY)
-				.repeatInterval(ChronoUnit.WEEKS)
-				.repeatDayOfWeek(ZonedDateTime.now().getDayOfWeek());
-	}
-
-	private List<ReportTemplate> generateTemplatesWithTimesToGenerate(ZonedDateTime... times) {
-		List<ReportTemplate> templates = new ArrayList<>();
-		Stream.of(times)
-				.forEach(zonedDateTime -> templates.add(createTemplateStub()
-						.timeToGenerateReport(zonedDateTime)));
-		return templates;
-	}
 }

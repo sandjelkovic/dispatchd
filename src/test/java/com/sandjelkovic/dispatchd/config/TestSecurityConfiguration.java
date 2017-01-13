@@ -64,6 +64,19 @@ public class TestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 						.collect(Collectors.toSet()));
 	}
 
+	@Bean("defaultUserTwo")
+	@Scope(scopeName = "prototype")
+	public User defaultUserTwo() {
+		return new User()
+				.username("userTwo")
+				.approved(true)
+				.enabled(true)
+				.passw("password")
+				.email("userTwo@example.com")
+				.authorities(Stream.of(Constants.DEFAULT_USER_ROLES)
+						.collect(Collectors.toSet()));
+	}
+
 	@Bean("adminUser")
 	@Scope(scopeName = "prototype")
 	public User adminUser() {

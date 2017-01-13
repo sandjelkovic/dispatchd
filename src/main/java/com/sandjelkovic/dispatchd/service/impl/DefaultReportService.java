@@ -101,10 +101,12 @@ public class DefaultReportService implements ReportService {
 		return Optional.ofNullable(generatedReportRepository.findOne(id));
 	}
 
+	@Override
 	public Optional<ReportTemplate> findTemplate(Long id) {
 		return Optional.ofNullable(reportTemplateRepository.findOne(id));
 	}
 
+	@Override
 	public void delete(GeneratedReport generatedReport) {
 		if (generatedReportRepository.findOne(generatedReport.getId()) == null) {
 			throw new ResourceNotFoundException();
@@ -112,6 +114,7 @@ public class DefaultReportService implements ReportService {
 		generatedReportRepository.delete(generatedReport);
 	}
 
+	@Override
 	public void delete(ReportTemplate reportTemplate) {
 		if (reportTemplateRepository.findOne(reportTemplate.getId()) == null) {
 			throw new ResourceNotFoundException();

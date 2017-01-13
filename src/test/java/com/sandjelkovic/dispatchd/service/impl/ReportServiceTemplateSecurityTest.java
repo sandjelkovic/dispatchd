@@ -1,0 +1,43 @@
+package com.sandjelkovic.dispatchd.service.impl;
+
+import com.sandjelkovic.dispatchd.DispatchdApplication;
+import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
+import com.sandjelkovic.dispatchd.data.entities.User;
+import com.sandjelkovic.dispatchd.service.ReportService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+/**
+ * @author ${sandjelkovic}
+ * @date 13.1.17.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles(profiles = {"testing"})
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
+@Transactional
+public class ReportServiceTemplateSecurityTest extends BaseReportServiceTest {
+
+	@Autowired
+	private ReportService target;
+
+	@Test(expected = AccessDeniedException.class)
+	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
+	public void findExistingTemplateOfDifferentUser() throws Exception {
+		User user = getUser(USER_TWO_NAME);
+		ReportTemplate reportTemplate = generateTemplateWithGenerationInFutureWithoutShows().user(user);
+		reportTemplate = reportTemplateRepository.save(reportTemplate);
+
+		Optional<ReportTemplate> foundTemplate = target.findTemplate(reportTemplate.getId());
+	}
+
+}
