@@ -4,6 +4,7 @@ import com.sandjelkovic.dispatchd.api.resources.ReportTemplateResource;
 import com.sandjelkovic.dispatchd.api.resources.UsersReportTemplatesListResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.converter.ReportTemplate2DTOConverter;
+import com.sandjelkovic.dispatchd.data.dto.ShowConnectionsDto;
 import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
 import com.sandjelkovic.dispatchd.data.entities.User;
@@ -20,7 +21,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.ExposesResourceFor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,9 +109,37 @@ public class ReportTemplateController {
 	}
 
 	@RequestMapping(value = "/{templateId}", method = DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(OK)
 	public void deleteTemplate(@PathVariable Long templateId) {
 		reportService.deleteTemplate(templateId);
+	}
+
+	@RequestMapping(value = "/{templateId}/shows", method = POST)
+	@ResponseStatus(OK)
+	public ReportTemplateResource connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+		// override all relations template <> shows (delete + update)
+		return null;
+	}
+
+	@RequestMapping(value = "/{templateId}/shows", method = PUT)
+	@ResponseStatus(OK)
+	public ReportTemplateResource addConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+		// update relations template <> shows. Update order if already present
+		return null;
+	}
+
+	@RequestMapping(value = "/{templateId}/shows", method = DELETE)
+	@ResponseStatus(OK)
+	public ReportTemplateResource deleteConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+		// delete relations template <> shows. Update order if present
+		return null;
+	}
+
+	@RequestMapping(value = "/{templateId}/shows", method = GET)
+	@ResponseStatus(OK)
+	public ReportTemplateResource getConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+		// retrieve all shows connected to this template
+		return null;
 	}
 
 	private void isTemplateIsOwnedByUser(Long templateId, Principal principal) {
