@@ -14,15 +14,19 @@ import java.util.Optional;
 public class PageLinksAssembler {
 
 	private final PageMetadataResource pageMetadata;
-	private final ControllerLinkBuilder baseLink;
 	private final Optional<Sort> sort;
+	private final UriComponentsBuilder baseUri;
 	private String pageSize;
 
-	public PageLinksAssembler(PageMetadataResource pageMetadata, ControllerLinkBuilder baseLink) {
+	public PageLinksAssembler(PageMetadataResource pageMetadata, ControllerLinkBuilder baseControllerLink) {
+		this(pageMetadata, baseControllerLink.toUriComponentsBuilder());
+	}
+
+	public PageLinksAssembler(PageMetadataResource pageMetadata, UriComponentsBuilder baseLink) {
 		Assert.notNull(pageMetadata);
 		Assert.notNull(baseLink);
+		this.baseUri = baseLink;
 		this.pageMetadata = pageMetadata;
-		this.baseLink = baseLink;
 		this.pageSize = String.valueOf(pageMetadata.getSize());
 		sort = Optional.ofNullable(pageMetadata.getSort());
 	}
@@ -86,7 +90,7 @@ public class PageLinksAssembler {
 	}
 
 	private UriComponentsBuilder getBaseTemplatedUriBuilder() {
-		UriComponentsBuilder uri = baseLink.toUriComponentsBuilder()
+		UriComponentsBuilder uri = baseUri
 				.query("page={page}")
 				.query("size={size}");
 		sort.ifPresent(s -> uri.query("sort={sort}"));
@@ -94,7 +98,7 @@ public class PageLinksAssembler {
 	}
 
 	private UriComponentsBuilder getFullyTemplatedUriBuilder() {
-		return baseLink.toUriComponentsBuilder()
+		return baseUri
 				.query("page={page}")
 				.query("size={size}")
 				.query("sort={sort}");
