@@ -50,11 +50,13 @@ public class ContentRefresher {
 
 		List<String> traktIds = getTraktIds(updatedShows);
 
+		List<String> idsForImport = filterForLocalIds(traktIds);
+
 		// possible optimisation for failure cases -> scan internal db and compare retrieved.updatedAt < internal.lastLocalUpdate
 		// in order to only update shows that failed in  the past. Since the update time is started from the last successful refresh.
 
 		// independent update of each show in order to continue the refresh evens if some fail. Otherwise, this could have been one stream. (hint!, hint!)
-		List<AsyncResult<TvShow>> importResults = traktIds.stream()
+		List<AsyncResult<TvShow>> importResults = idsForImport.stream()
 				.map(id -> traktImporterService.importShowAsync(id))
 				.collect(toList());
 
@@ -64,6 +66,12 @@ public class ContentRefresher {
 
 		saveJob();
 		return count;
+	}
+
+	private List<String> filterForLocalIds(List<String> traktIds) {
+		return traktIds.stream()
+				.filter(id -> !tvShowService.findByTraktId(id).isEmpty())
+				.collect(toList());
 	}
 
 	private Function<AsyncResult<TvShow>, TvShow> getAsyncResultMapper() {
