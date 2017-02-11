@@ -2,7 +2,18 @@ package com.sandjelkovic.dispatchd.data.entities;
 
 import com.sandjelkovic.dispatchd.data.EmptyCollections;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -44,8 +55,8 @@ public class TvShow extends BasicEntity implements Serializable {
 	@Column(length = 20)
 	private String tvdbId;
 
-	@Column(nullable = false)
-	private int year;
+	@Column(nullable = true)
+	private Integer year;
 
 	@Column(nullable = false)
 	private Timestamp lastLocalUpdate;
@@ -142,11 +153,11 @@ public class TvShow extends BasicEntity implements Serializable {
 		this.tvdbId = tvdbId;
 	}
 
-	public int getYear() {
+	public Integer getYear() {
 		return this.year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
 

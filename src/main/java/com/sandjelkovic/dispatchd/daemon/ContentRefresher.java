@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -94,6 +94,6 @@ public class ContentRefresher {
 	private ZonedDateTime getLastUpdateTime() {
 		return jobRepository.findFirstBySuccessOrderByFinishTimeDesc(true)
 				.map(UpdateJob::getFinishTime)
-				.orElseGet(() -> ZonedDateTime.ofInstant(Instant.MIN, ZoneId.systemDefault())); // no successful updates before, do it for all.
+				.orElseGet(() -> ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault())); // no successful updates before, do it for all.
 	}
 }

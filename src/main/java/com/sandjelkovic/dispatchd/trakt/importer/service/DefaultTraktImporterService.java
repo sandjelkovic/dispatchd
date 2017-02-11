@@ -17,7 +17,6 @@ import com.sandjelkovic.dispatchd.service.TvShowService;
 import com.sandjelkovic.dispatchd.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
-import com.sandjelkovic.dispatchd.trakt.importer.exception.ShowAlreadyExistsImporterException;
 import com.sandjelkovic.dispatchd.trakt.importer.exception.TraktServerException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -77,7 +76,6 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	@Override
 	public TvShow importShow(String showId) {
 		TvShowTrakt traktShow = getTvShowFromTrakt(showId);
-		checkForExistingShow(traktShow);
 		Future<List<SeasonTrakt>> seasonsFuture = getSeasonsFromTraktAsync(showId);
 		Future<List<EpisodeTrakt>> episodesFuture = getEpisodesFromTraktAsync(showId);
 
@@ -170,9 +168,5 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	}
 
 	private void checkForExistingShow(TvShowTrakt traktShow) {
-		List<TvShow> shows = tvShowService.findByTraktId(traktShow.getIds().get("trakt"));
-		if (!shows.isEmpty()) {
-			throw new ShowAlreadyExistsImporterException();
-		}
 	}
 }

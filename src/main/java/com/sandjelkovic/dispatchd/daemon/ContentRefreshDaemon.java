@@ -2,6 +2,7 @@ package com.sandjelkovic.dispatchd.daemon;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,19 +17,18 @@ public class ContentRefreshDaemon {
 
 	private volatile boolean inProgress = false;
 
-	@Async
-	@Scheduled(fixedDelayString = "#{${content.refresh.interval.minutes}*60*60}")
-	public void generateReports() {
-		if (!inProgress) {
-			inProgress = true;
-			try {
+	@Autowired
+	private ContentRefresher contentRefresher;
 
-			} catch (RuntimeException e) {
-				throw e;
-			} finally {
-				inProgress = false;
-			}
+	@Async
+	@Scheduled(fixedDelayString = "#{${content.refresh.interval.minutes}*1000*60}", initialDelay = 1000 * 5)
+	public void invokeContentRefresh() {
+		log.debug("content refresh started");
+		try {
+			contentRefresher.refreshExistingContent();
+		} catch (RuntimeException e) {
+			throw e;
 		}
 	}
-
 }
+
