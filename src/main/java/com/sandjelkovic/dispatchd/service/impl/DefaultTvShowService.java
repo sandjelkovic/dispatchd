@@ -4,6 +4,8 @@ import com.sandjelkovic.dispatchd.data.entities.TvShow;
 import com.sandjelkovic.dispatchd.data.repositories.TvShowRepository;
 import com.sandjelkovic.dispatchd.service.TvShowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -36,5 +38,15 @@ public class DefaultTvShowService implements TvShowService {
 	@Override
 	public List<TvShow> findByTitle(String title) {
 		return repository.findByTitle(title);
+	}
+
+	@Override
+	public Page<TvShow> findAll(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
+	@Override
+	public List<TvShow> findAll() {
+		return repository.findAll();
 	}
 }

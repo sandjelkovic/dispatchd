@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
@@ -97,6 +98,10 @@ public class DefaultTraktImporterService implements TraktImporterService {
 		return tvShowService.get(show.getId()).get();
 	}
 
+	@Override
+	public AsyncResult<TvShow> importShowAsync(String showId) {
+		return new AsyncResult<>(importShow(showId));
+	}
 	@Override
 	public ImportStatus createNewImportStatus(List<String> segments) {
 		ImportStatus status = new ImportStatus();

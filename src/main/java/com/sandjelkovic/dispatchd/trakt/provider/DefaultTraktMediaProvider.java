@@ -5,6 +5,7 @@ import com.sandjelkovic.dispatchd.configuration.TraktConstants;
 import com.sandjelkovic.dispatchd.provider.TraktMediaProvider;
 import com.sandjelkovic.dispatchd.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.SeasonTrakt;
+import com.sandjelkovic.dispatchd.trakt.dto.ShowUpdateTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -14,6 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -100,6 +103,16 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 		return season;
 	}
 
+	public List<ShowUpdateTrakt> getUpdates(LocalDate fromDate) {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(traktConfiguration.getBaseServiceUrl())
+				.pathSegment("shows")
+				.pathSegment("updates")
+				.pathSegment(fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+		final URI finalUri = builder.build().encode().toUri();
+		ShowUpdateTrakt[] response = restTemplate.getForObject(finalUri, ShowUpdateTrakt[].class);
+		return Arrays.asList(response);
+	}
+
 	@Override
 	public Future<TvShowTrakt> getTvShowAsync(String showId) {
 		return new AsyncResult<>(getTvShow(showId));
@@ -133,6 +146,11 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 	@Override
 	public Future<SeasonTrakt> getSeasonAsync(String showId, String seasonNumber) {
 		return new AsyncResult<>(getSeason(showId, seasonNumber));
+	}
+
+	@Override
+	public Future<List<ShowUpdateTrakt>> getUpdatesAsync(LocalDate fromDate) {
+		return new AsyncResult<>(getUpdates(fromDate));
 	}
 
 	private Object extractItemFromArray(Object[] array, Integer index) {

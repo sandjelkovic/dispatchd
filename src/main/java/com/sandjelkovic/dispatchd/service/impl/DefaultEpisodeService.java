@@ -5,6 +5,8 @@ import com.sandjelkovic.dispatchd.data.entities.TvShow;
 import com.sandjelkovic.dispatchd.data.repositories.EpisodeRepository;
 import com.sandjelkovic.dispatchd.service.EpisodeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,6 @@ public class DefaultEpisodeService implements EpisodeService {
 	@Autowired
 	private EpisodeRepository repository;
 
-
 	@Override
 	public List<Episode> save(Iterable<Episode> episodeList) {
 		return repository.save(episodeList);
@@ -27,8 +28,8 @@ public class DefaultEpisodeService implements EpisodeService {
 		return repository.save(episode);
 	}
 
-	public List<Episode> findByTvShow(TvShow show) {
-		return repository.findByTvShow(show);
+	public Page<Episode> findByTvShow(TvShow show, Pageable pageable) {
+		return repository.findByTvShow(show, pageable);
 	}
 
 	public Optional<Episode> findOne(Long id) {
