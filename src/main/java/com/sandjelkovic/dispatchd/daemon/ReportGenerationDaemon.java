@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.daemon;
 
+import com.sandjelkovic.dispatchd.service.ReportGeneratorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class ReportGenerationDaemon {
 	private volatile boolean inProgress = false;
 
 	@Autowired
-	private ReportGenerator reportGenerator;
+	private ReportGeneratorService reportGeneratorService;
 
 	@Async
 	@Scheduled(fixedRate = 10 * 1000, initialDelay = 10 * 100)
@@ -23,7 +24,7 @@ public class ReportGenerationDaemon {
 			inProgress = true;
 			log.debug("Starting report generation...");
 			try {
-				reportGenerator.generateReports();
+				reportGeneratorService.generateReports();
 			} catch (RuntimeException e) {
 				throw e;
 			} finally {

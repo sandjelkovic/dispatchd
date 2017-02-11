@@ -6,6 +6,7 @@ import com.sandjelkovic.dispatchd.data.entities.ReportRepeatType;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
 import com.sandjelkovic.dispatchd.data.repositories.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
+import com.sandjelkovic.dispatchd.service.ReportGeneratorService;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles(profiles = {SPRING_PROFILE_TESTING})
 @SpringBootTest(classes = {DispatchdApplication.class})
 @Transactional
-public class ReportGeneratorIntegrationTest {
+public class ReportGeneratorServiceIntegrationTest {
 
 	@Autowired
 	private ReportTemplateRepository reportTemplateRepository;
@@ -43,7 +44,7 @@ public class ReportGeneratorIntegrationTest {
 	@Autowired
 	private ReportService reportService;
 	@Autowired
-	private ReportGenerator target;
+	private ReportGeneratorService target;
 
 	@Before
 	public void setUp() throws Exception {

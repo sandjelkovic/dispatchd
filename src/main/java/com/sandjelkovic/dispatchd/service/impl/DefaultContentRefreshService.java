@@ -1,9 +1,10 @@
-package com.sandjelkovic.dispatchd.daemon;
+package com.sandjelkovic.dispatchd.service.impl;
 
 import com.sandjelkovic.dispatchd.data.entities.TvShow;
 import com.sandjelkovic.dispatchd.data.entities.UpdateJob;
 import com.sandjelkovic.dispatchd.data.repositories.UpdateJobRepository;
 import com.sandjelkovic.dispatchd.provider.TraktMediaProvider;
+import com.sandjelkovic.dispatchd.service.ContentRefreshService;
 import com.sandjelkovic.dispatchd.service.EpisodeService;
 import com.sandjelkovic.dispatchd.service.TvShowService;
 import com.sandjelkovic.dispatchd.trakt.dto.ShowUpdateTrakt;
@@ -11,7 +12,7 @@ import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
 import com.sandjelkovic.dispatchd.trakt.importer.service.TraktImporterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,8 +28,8 @@ import static java.util.stream.Collectors.toList;
  * @author ${sandjelkovic}
  * @date 28.1.17.
  */
-@Component
-public class ContentRefresher {
+@Service
+public class DefaultContentRefreshService implements ContentRefreshService {
 	@Autowired
 	private EpisodeService episodeService;
 
@@ -44,6 +45,7 @@ public class ContentRefresher {
 	@Autowired
 	private TraktImporterService traktImporterService;
 
+	@Override
 	public long refreshExistingContent() {
 		ZonedDateTime fromTime = getLastUpdateTime();
 		List<ShowUpdateTrakt> updatedShows = provider.getUpdates(fromTime.toLocalDate());

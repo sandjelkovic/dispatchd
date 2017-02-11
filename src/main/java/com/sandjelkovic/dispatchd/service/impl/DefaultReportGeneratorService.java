@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.daemon;
+package com.sandjelkovic.dispatchd.service.impl;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.configuration.ValuesConfiguration;
@@ -9,6 +9,7 @@ import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.data.entities.TvShow;
 import com.sandjelkovic.dispatchd.event.GeneratedReportEvent;
+import com.sandjelkovic.dispatchd.service.ReportGeneratorService;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
@@ -27,10 +28,10 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Component
-public class ReportGenerator {
+@Service
+public class DefaultReportGeneratorService implements ReportGeneratorService {
 
-	private static final Logger log = LoggerFactory.getLogger(ReportGenerator.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultReportGeneratorService.class);
 
 	@Autowired
 	private ValuesConfiguration valuesConfiguration;
@@ -45,6 +46,7 @@ public class ReportGenerator {
 	@Qualifier(Constants.CONVERSION_SERVICE_BEAN_NAME)
 	private ConversionService conversionService;
 
+	@Override
 	@Transactional
 	public void generateReports() {
 		ZonedDateTime time = ZonedDateTime.now().plusSeconds(valuesConfiguration.getGenerationInterval());
@@ -56,6 +58,7 @@ public class ReportGenerator {
 				.forEach(this::publishEvent);
 	}
 
+	@Override
 	public GeneratedReport generateReportFromTemplate(ReportTemplate reportTemplate) {
 		List<ReportTemplate2TvShow> sortedRelations = getSortedRelationsWithTvShow(reportTemplate);
 		List<Episode> episodes = getEpisodesValidForReport(reportTemplate, sortedRelations);

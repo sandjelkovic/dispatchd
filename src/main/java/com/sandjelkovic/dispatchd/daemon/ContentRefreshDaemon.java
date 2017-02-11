@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.daemon;
 
+import com.sandjelkovic.dispatchd.service.ContentRefreshService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,14 @@ public class ContentRefreshDaemon {
 	private volatile boolean inProgress = false;
 
 	@Autowired
-	private ContentRefresher contentRefresher;
+	private ContentRefreshService contentRefreshService;
 
 	@Async
 	@Scheduled(fixedDelayString = "#{${content.refresh.interval.minutes}*1000*60}", initialDelay = 1000 * 5)
 	public void invokeContentRefresh() {
 		log.debug("content refresh started");
 		try {
-			contentRefresher.refreshExistingContent();
+			contentRefreshService.refreshExistingContent();
 		} catch (RuntimeException e) {
 			throw e;
 		}
