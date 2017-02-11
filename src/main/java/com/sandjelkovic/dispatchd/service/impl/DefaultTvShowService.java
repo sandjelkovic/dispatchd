@@ -26,7 +26,7 @@ public class DefaultTvShowService implements TvShowService {
 	}
 
 	@Override
-	public Optional<TvShow> get(Long id) {
+	public Optional<TvShow> findOne(Long id) {
 		return Optional.ofNullable(repository.findOne(id));
 	}
 

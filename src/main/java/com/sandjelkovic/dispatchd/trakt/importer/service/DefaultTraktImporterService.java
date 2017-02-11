@@ -93,7 +93,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 			episode.setSeason(seasonsMap.getOrDefault(episode.getSeasonNumber(), new Season()));
 		});
 		episodeService.save(episodeList);
-		return tvShowService.get(show.getId()).get();
+		return tvShowService.findOne(show.getId()).get();
 	}
 
 	@Override

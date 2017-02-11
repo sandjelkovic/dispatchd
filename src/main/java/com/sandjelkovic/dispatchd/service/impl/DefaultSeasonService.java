@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DefaultSeasonService implements SeasonService {
@@ -23,5 +24,10 @@ public class DefaultSeasonService implements SeasonService {
 	@Override
 	public Season save(Season season) {
 		return repository.save(season);
+	}
+
+	@Override
+	public Optional<Season> findOne(Long id) {
+		return Optional.ofNullable(repository.findOne(id));
 	}
 }
