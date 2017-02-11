@@ -4,7 +4,11 @@ import com.sandjelkovic.dispatchd.converter.EpisodeEntityConverter;
 import com.sandjelkovic.dispatchd.converter.SeasonEntityConverter;
 import com.sandjelkovic.dispatchd.converter.TvShowEntityConverter;
 import com.sandjelkovic.dispatchd.data.EmptyCollections;
-import com.sandjelkovic.dispatchd.data.entities.*;
+import com.sandjelkovic.dispatchd.data.entities.Episode;
+import com.sandjelkovic.dispatchd.data.entities.ImportProgressStatus;
+import com.sandjelkovic.dispatchd.data.entities.ImportStatus;
+import com.sandjelkovic.dispatchd.data.entities.Season;
+import com.sandjelkovic.dispatchd.data.entities.TvShow;
 import com.sandjelkovic.dispatchd.data.repositories.ImportStatusRepository;
 import com.sandjelkovic.dispatchd.provider.TraktMediaProvider;
 import com.sandjelkovic.dispatchd.service.EpisodeService;
@@ -66,6 +70,11 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	public TvShow importShow(List<String> segments) {
 		log.debug("DefaultTraktImporterService.importShow");
 		String showId = segments.get(1);
+		return importShow(showId);
+	}
+
+	@Override
+	public TvShow importShow(String showId) {
 		TvShowTrakt traktShow = getTvShowFromTrakt(showId);
 		checkForExistingShow(traktShow);
 		Future<List<SeasonTrakt>> seasonsFuture = getSeasonsFromTraktAsync(showId);

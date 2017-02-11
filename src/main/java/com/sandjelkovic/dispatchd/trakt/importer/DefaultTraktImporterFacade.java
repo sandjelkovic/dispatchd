@@ -71,10 +71,7 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 		}
 	}
 
-	// Why doesn't it work here?
-	//@Async
 	public void publishImportTvShow(List<String> segments, ImportStatus status) {
-		log.debug("publishImportTvShow");
 		eventPublisher.publishEvent(new ImportTvShowEvent(segments, status));
 	}
 

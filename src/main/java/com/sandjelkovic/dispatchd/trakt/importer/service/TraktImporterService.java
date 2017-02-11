@@ -9,6 +9,8 @@ public interface TraktImporterService {
 
 	TvShow importShow(List<String> segments);
 
+	TvShow importShow(String showId);
+
 	ImportStatus createNewImportStatus(List<String> segments);
 
 	ImportStatus save(ImportStatus status);
