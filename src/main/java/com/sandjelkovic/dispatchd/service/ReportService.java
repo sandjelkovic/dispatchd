@@ -14,7 +14,8 @@ import java.util.Optional;
 public interface ReportService {
 	List<ReportTemplate> getReportTemplatesToBeGeneratedBetween(ZonedDateTime from, ZonedDateTime until);
 
-	@PreAuthorize("#generatedReport.id == null or authentication.name == @defaultReportService.findGenerated(#generatedReport.id).get().reportTemplate.user.username")
+	// should not be ever possible for a user to update the generatedReport.
+	// Maybe in the future if a need arises, but for now, security is not needed
 	GeneratedReport save(GeneratedReport generatedReport);
 
 	@PreAuthorize("#reportTemplate.id == null or authentication.name == @defaultReportService.findTemplate(#reportTemplate.id).get().user.username")
