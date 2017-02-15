@@ -90,7 +90,7 @@ public class PageLinksAssembler {
 	}
 
 	private UriComponentsBuilder getBaseTemplatedUriBuilder() {
-		UriComponentsBuilder uri = baseUri
+		UriComponentsBuilder uri = baseUri.cloneBuilder()
 				.query("page={page}")
 				.query("size={size}");
 		sort.ifPresent(s -> uri.query("sort={sort}"));
@@ -98,7 +98,7 @@ public class PageLinksAssembler {
 	}
 
 	private UriComponentsBuilder getFullyTemplatedUriBuilder() {
-		return baseUri
+		return baseUri.cloneBuilder()
 				.query("page={page}")
 				.query("size={size}")
 				.query("sort={sort}");
