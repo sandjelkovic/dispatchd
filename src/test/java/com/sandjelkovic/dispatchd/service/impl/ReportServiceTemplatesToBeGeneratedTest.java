@@ -1,9 +1,7 @@
 package com.sandjelkovic.dispatchd.service.impl;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.configuration.ApplicationConfiguration;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
-import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.service.ReportService;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +24,11 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles("testing")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-		classes = {DispatchdApplication.class, ApplicationConfiguration.class})
+		classes = {DispatchdApplication.class})
 @Transactional
 public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTest {
-
-	@Autowired
-	private ReportTemplateRepository reportTemplateRepository;
 
 	@Autowired
 	private ReportService reportService;

@@ -70,6 +70,11 @@ public class DefaultReportService implements ReportService {
 	}
 
 	@Override
+	public ReportTemplate saveNoUserContext(ReportTemplate reportTemplate) {
+		return this.save(reportTemplate);
+	}
+
+	@Override
 	public Page<ReportTemplate> findAll(Pageable pageable) {
 		return reportTemplateRepository.findAll(pageable);
 	}

@@ -6,10 +6,12 @@ import com.sandjelkovic.dispatchd.data.entities.User;
 import com.sandjelkovic.dispatchd.data.repositories.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
+import com.sandjelkovic.dispatchd.helpers.TestDataGenerator;
 import com.sandjelkovic.dispatchd.testutils.exceptions.DataNotSetupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -40,8 +42,26 @@ public class BaseReportServiceTest {
 	@Autowired
 	protected GeneratedReportRepository generatedReportRepository;
 
+	@Autowired
+	private TestDataGenerator testDataGenerator;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	protected void setUpData() {
+		setUpUsers();
 		setUpDefaultTemplates();
+	}
+
+	protected void setUpUsers() {
+		Stream.of(testDataGenerator.createUser(USER_NAME, USER_PASSWORD),
+				testDataGenerator.createUser(USER_TWO_NAME, USER_TWO_PASSWORD))
+				.forEach(user -> {
+					userRepository.findOneByUsername(user.getUsername())
+							.ifPresent(u -> user.setId(u.getId()));
+					user.setPassw(passwordEncoder.encode(user.getPassw()));
+					userRepository.saveAndFlush(user);
+				});
 	}
 
 	protected void setUpDefaultTemplates() {

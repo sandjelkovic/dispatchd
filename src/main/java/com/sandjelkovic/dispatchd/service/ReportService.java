@@ -21,6 +21,9 @@ public interface ReportService {
 	@PreAuthorize("#reportTemplate.id == null or authentication.name == @defaultReportService.findTemplate(#reportTemplate.id).get().user.username")
 	ReportTemplate save(ReportTemplate reportTemplate);
 
+	// no user Context for updating while generating new reports.
+	ReportTemplate saveNoUserContext(ReportTemplate reportTemplate);
+
 	@PostAuthorize("!returnObject.present or (returnObject.present and returnObject.get().reportTemplate.user.username == authentication.name)")
 	Optional<GeneratedReport> findGenerated(Long id);
 

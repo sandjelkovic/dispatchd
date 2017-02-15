@@ -36,9 +36,9 @@ public class ReportServiceTemplatesTest extends BaseReportServiceTest {
 	private ReportService target;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
+		setUpData();
 	}
-
 	@Test
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
 	public void findNotExistingTemplate() {

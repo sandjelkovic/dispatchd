@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.helpers;
 
+import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.data.entities.ReportRepeatType;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
@@ -7,6 +8,8 @@ import com.sandjelkovic.dispatchd.data.entities.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author ${sandjelkovic}
@@ -36,5 +39,16 @@ public class TestDataGenerator {
 				.repeatDayOfMonth(2)
 				.repeatDayOfWeek(DayOfWeek.FRIDAY)
 				.timeOfDayToDeliver(LocalTime.NOON);
+	}
+
+	public User createUser(String username, String password) {
+		return new User()
+				.username(username)
+				.approved(true)
+				.enabled(true)
+				.passw(password)
+				.email(username + "@example.com")
+				.authorities(Stream.of(Constants.DEFAULT_USER_ROLES)
+						.collect(Collectors.toSet()));
 	}
 }

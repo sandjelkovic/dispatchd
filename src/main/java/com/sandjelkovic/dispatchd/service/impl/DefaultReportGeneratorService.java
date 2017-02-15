@@ -83,7 +83,7 @@ public class DefaultReportGeneratorService implements ReportGeneratorService {
 		reportTemplate.setTimeOfLastGeneratedReport(reportTemplate.getTimeToGenerateReport());
 		reportTemplate.setTimeToGenerateReport(getNewGenerationTime(reportTemplate));
 
-		reportService.save(reportTemplate);
+		reportService.saveNoUserContext(reportTemplate);
 	}
 
 	private List<Episode> getEpisodesValidForReport(ReportTemplate reportTemplate, List<ReportTemplate2TvShow> sortedRelations) {

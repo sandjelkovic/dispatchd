@@ -4,6 +4,7 @@ import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
 import com.sandjelkovic.dispatchd.data.entities.User;
 import com.sandjelkovic.dispatchd.service.ReportService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,16 @@ public class ReportServiceTemplateSecurityTest extends BaseReportServiceTest {
 	@Autowired
 	private ReportService target;
 
+	@Before
+	public void setUp() {
+		setUpData();
+	}
+
 	@Test(expected = AccessDeniedException.class)
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
 	public void findExistingTemplateOfDifferentUser() throws Exception {
-		User user = getUser(USER_TWO_NAME);
-		ReportTemplate reportTemplate = generateTemplateWithGenerationInFutureWithoutShows().user(user);
+		User userTwo = getUser(USER_TWO_NAME);
+		ReportTemplate reportTemplate = generateTemplateWithGenerationInFutureWithoutShows().user(userTwo);
 		reportTemplate = reportTemplateRepository.save(reportTemplate);
 
 		Optional<ReportTemplate> foundTemplate = target.findTemplate(reportTemplate.getId());
