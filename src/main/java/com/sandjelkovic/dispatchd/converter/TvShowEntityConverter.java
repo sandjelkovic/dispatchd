@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.converter;
 
-import com.sandjelkovic.dispatchd.data.entities.TvShow;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
 import org.springframework.stereotype.Component;
 

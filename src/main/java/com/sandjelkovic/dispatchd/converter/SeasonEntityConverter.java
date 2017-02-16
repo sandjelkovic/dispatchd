@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.converter;
 
-import com.sandjelkovic.dispatchd.data.entities.Season;
+import com.sandjelkovic.dispatchd.domain.data.entity.Season;
 import com.sandjelkovic.dispatchd.helper.ChronoHelper;
 import com.sandjelkovic.dispatchd.trakt.dto.SeasonTrakt;
 import org.springframework.stereotype.Component;

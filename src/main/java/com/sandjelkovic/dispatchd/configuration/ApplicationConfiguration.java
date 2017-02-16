@@ -1,13 +1,15 @@
 package com.sandjelkovic.dispatchd.configuration;
 
-import com.sandjelkovic.dispatchd.data.TimeGenerator;
-import com.sandjelkovic.dispatchd.interceptor.HeaderRequestInterceptor;
+import com.sandjelkovic.dispatchd.configuration.interceptor.HeaderRequestInterceptor;
+import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
+import com.sandjelkovic.dispatchd.helper.DefaultEventDispatcher;
 import com.sandjelkovic.dispatchd.orika.converter.LocalDateConverter;
 import com.sandjelkovic.dispatchd.orika.converter.ZonedDateTimeConverter;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -48,5 +50,10 @@ public class ApplicationConfiguration {
 	@Bean
 	public MapperFacade mapperFacade(MapperFactory mapperFactory) {
 		return mapperFactory.getMapperFacade();
+	}
+
+	@Bean
+	public DefaultEventDispatcher defaultEventDispatcher(ApplicationEventPublisher publisher) {
+		return new DefaultEventDispatcher(publisher);
 	}
 }

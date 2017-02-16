@@ -1,16 +1,16 @@
 package com.sandjelkovic.dispatchd.trakt.importer;
 
-import com.sandjelkovic.dispatchd.data.dto.ImportStatusDto;
-import com.sandjelkovic.dispatchd.data.entities.ImportProgressStatus;
-import com.sandjelkovic.dispatchd.data.entities.ImportStatus;
-import com.sandjelkovic.dispatchd.data.entities.TvShow;
+import com.sandjelkovic.dispatchd.api.dto.ImportStatusDto;
+import com.sandjelkovic.dispatchd.domain.data.entity.ImportProgressStatus;
+import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
+import com.sandjelkovic.dispatchd.domain.facade.ImporterFacade;
 import com.sandjelkovic.dispatchd.event.ImportMovieEvent;
 import com.sandjelkovic.dispatchd.event.ImportTvShowEvent;
 import com.sandjelkovic.dispatchd.event.TvShowImportedEvent;
 import com.sandjelkovic.dispatchd.event.listener.ImportEventListener;
 import com.sandjelkovic.dispatchd.exception.InvalidMediaImportUrlException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
-import com.sandjelkovic.dispatchd.facade.ImporterFacade;
 import com.sandjelkovic.dispatchd.trakt.importer.exception.ShowAlreadyExistsImporterException;
 import com.sandjelkovic.dispatchd.trakt.importer.exception.TraktServerException;
 import com.sandjelkovic.dispatchd.trakt.importer.service.TraktImporterService;
@@ -71,10 +71,7 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 		}
 	}
 
-	// Why doesn't it work here?
-	//@Async
 	public void publishImportTvShow(List<String> segments, ImportStatus status) {
-		log.debug("publishImportTvShow");
 		eventPublisher.publishEvent(new ImportTvShowEvent(segments, status));
 	}
 

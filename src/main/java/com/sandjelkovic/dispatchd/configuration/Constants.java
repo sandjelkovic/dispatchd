@@ -14,6 +14,7 @@ public final class Constants {
 	public static final String TEST_USERS_INIT_BEAN_NAME = "testUsersInit";
 	public static final String REST_ENDPOINT_API_PREFIX = "/api";
 
+	public static final int DEFAULT_PAGE_SIZE = 5;
 	private Constants() {
 	}
 }

@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.config;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
-import com.sandjelkovic.dispatchd.data.entities.User;
-import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
+import com.sandjelkovic.dispatchd.domain.data.entity.User;
+import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -60,6 +60,19 @@ public class TestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.enabled(true)
 				.passw("password")
 				.email("user@example.com")
+				.authorities(Stream.of(Constants.DEFAULT_USER_ROLES)
+						.collect(Collectors.toSet()));
+	}
+
+	@Bean("defaultUserTwo")
+	@Scope(scopeName = "prototype")
+	public User defaultUserTwo() {
+		return new User()
+				.username("userTwo")
+				.approved(true)
+				.enabled(true)
+				.passw("password")
+				.email("userTwo@example.com")
 				.authorities(Stream.of(Constants.DEFAULT_USER_ROLES)
 						.collect(Collectors.toSet()));
 	}

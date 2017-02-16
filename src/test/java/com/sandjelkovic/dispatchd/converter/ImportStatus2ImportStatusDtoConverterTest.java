@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.converter;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.data.dto.ImportStatusDto;
-import com.sandjelkovic.dispatchd.data.entities.ImportProgressStatus;
-import com.sandjelkovic.dispatchd.data.entities.ImportStatus;
+import com.sandjelkovic.dispatchd.api.dto.ImportStatusDto;
+import com.sandjelkovic.dispatchd.domain.data.entity.ImportProgressStatus;
+import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

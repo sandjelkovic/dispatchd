@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.event;
 
-import com.sandjelkovic.dispatchd.data.entities.ImportStatus;
+import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
 
 import java.util.List;
 

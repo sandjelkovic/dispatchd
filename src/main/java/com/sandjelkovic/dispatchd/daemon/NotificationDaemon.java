@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.daemon;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
-import com.sandjelkovic.dispatchd.data.entities.UserEpisodeNotificationEvent;
-import com.sandjelkovic.dispatchd.data.repositories.UserEpisodeNotificationEventRepository;
+import com.sandjelkovic.dispatchd.domain.data.entity.UserEpisodeNotificationEvent;
+import com.sandjelkovic.dispatchd.domain.data.repository.UserEpisodeNotificationEventRepository;
 import com.sandjelkovic.dispatchd.event.DispatchNotificationEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

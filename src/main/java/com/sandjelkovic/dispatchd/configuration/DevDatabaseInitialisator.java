@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.configuration;
 
 
-import com.sandjelkovic.dispatchd.data.entities.User;
-import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
+import com.sandjelkovic.dispatchd.domain.data.entity.User;
+import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class DevDatabaseInitialisator {
 
 	@Bean
 	@Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
-	public CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder,
+	public CommandLineRunner devUsersRefresher(PasswordEncoder passwordEncoder,
 	                                           List<User> users) {
 		return args -> {
 			users.forEach(user -> {

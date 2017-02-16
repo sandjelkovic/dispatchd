@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.configuration;
 
-import com.sandjelkovic.dispatchd.service.UserLoginService;
+import com.sandjelkovic.dispatchd.domain.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

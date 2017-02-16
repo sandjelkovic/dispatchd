@@ -1,4 +1,0 @@
-trakt.baseServiceUrl=https://api-v2launch.trakt.tv
-trakt.appId=superSecretAppIdFromTrakt
-trakt.appSecret=superSecretAppSecretFromTrakt
-trakt.apiVersion=2

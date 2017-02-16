@@ -56,6 +56,3 @@ log/
 target/
 
 #AppSpecific
-src/main/resources/config/application-traktremote.properties
-*application-traktremote.properties
-*application-mailcredentials.properties
