@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.daemon;
 
-import com.sandjelkovic.dispatchd.data.dto.EpisodeNotificationDTO;
-import com.sandjelkovic.dispatchd.facade.EpisodeNotificationFacade;
-import com.sandjelkovic.dispatchd.facade.ImporterFacade;
-import com.sandjelkovic.dispatchd.provider.TraktMediaProvider;
+import com.sandjelkovic.dispatchd.api.dto.EpisodeNotificationDTO;
+import com.sandjelkovic.dispatchd.domain.facade.EpisodeNotificationFacade;
+import com.sandjelkovic.dispatchd.domain.facade.ImporterFacade;
+import com.sandjelkovic.dispatchd.trakt.provider.TraktMediaProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

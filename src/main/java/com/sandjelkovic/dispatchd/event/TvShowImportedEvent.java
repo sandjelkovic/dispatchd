@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.event;
 
-import com.sandjelkovic.dispatchd.data.entities.TvShow;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 
 public class TvShowImportedEvent {
 	public final TvShow eventInfo;

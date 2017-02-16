@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.converter;
 
 import com.sandjelkovic.dispatchd.configuration.EmailConfiguration;
-import com.sandjelkovic.dispatchd.data.entities.UserEpisodeNotificationEvent;
+import com.sandjelkovic.dispatchd.domain.data.entity.UserEpisodeNotificationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.mail.SimpleMailMessage;

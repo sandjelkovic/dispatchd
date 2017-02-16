@@ -1,11 +1,11 @@
 package com.sandjelkovic.dispatchd.converter.resource;
 
-import com.sandjelkovic.dispatchd.api.resources.ReportResource;
+import com.sandjelkovic.dispatchd.api.dto.ReportDTO;
+import com.sandjelkovic.dispatchd.api.resource.ReportResource;
 import com.sandjelkovic.dispatchd.converter.Episode2DTOConverter;
 import com.sandjelkovic.dispatchd.converter.GeneratedReport2DTOConverter;
-import com.sandjelkovic.dispatchd.data.dto.ReportDTO;
-import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
-import com.sandjelkovic.dispatchd.data.entities.GeneratedReportContent;
+import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
+import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReportContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

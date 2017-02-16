@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.daemon;
 
-import com.sandjelkovic.dispatchd.service.ContentRefreshService;
+import com.sandjelkovic.dispatchd.domain.service.ContentRefreshService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

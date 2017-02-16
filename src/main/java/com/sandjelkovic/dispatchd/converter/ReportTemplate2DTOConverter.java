@@ -1,10 +1,10 @@
 package com.sandjelkovic.dispatchd.converter;
 
 
-import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
-import com.sandjelkovic.dispatchd.data.dto.TvShowDto;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate2TvShow;
+import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
+import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.ConversionService;

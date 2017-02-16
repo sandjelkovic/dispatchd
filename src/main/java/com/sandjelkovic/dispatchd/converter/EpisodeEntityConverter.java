@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.converter;
 
-import com.sandjelkovic.dispatchd.data.entities.Episode;
+import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
 import com.sandjelkovic.dispatchd.trakt.dto.EpisodeTrakt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

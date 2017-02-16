@@ -1,10 +1,10 @@
 package com.sandjelkovic.dispatchd.helpers;
 
+import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.configuration.Constants;
-import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
-import com.sandjelkovic.dispatchd.data.entities.ReportRepeatType;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
-import com.sandjelkovic.dispatchd.data.entities.User;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;

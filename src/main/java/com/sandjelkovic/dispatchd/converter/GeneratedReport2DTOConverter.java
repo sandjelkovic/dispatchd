@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.converter;
 
 
-import com.sandjelkovic.dispatchd.data.EmptyCollections;
-import com.sandjelkovic.dispatchd.data.dto.ReportDTO;
-import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
+import com.sandjelkovic.dispatchd.api.dto.ReportDTO;
+import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
+import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

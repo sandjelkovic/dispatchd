@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.config;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
-import com.sandjelkovic.dispatchd.data.entities.User;
-import com.sandjelkovic.dispatchd.data.repositories.UserRepository;
+import com.sandjelkovic.dispatchd.domain.data.entity.User;
+import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

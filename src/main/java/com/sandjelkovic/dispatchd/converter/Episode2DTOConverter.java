@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.converter;
 
 
-import com.sandjelkovic.dispatchd.data.dto.EpisodeDTO;
-import com.sandjelkovic.dispatchd.data.entities.Episode;
+import com.sandjelkovic.dispatchd.api.dto.EpisodeDTO;
+import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;

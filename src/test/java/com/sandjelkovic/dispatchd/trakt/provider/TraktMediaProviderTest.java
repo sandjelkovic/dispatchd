@@ -1,7 +1,6 @@
 package com.sandjelkovic.dispatchd.trakt.provider;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.provider.TraktMediaProvider;
 import com.sandjelkovic.dispatchd.trakt.dto.ShowUpdateTrakt;
 import org.junit.Test;
 import org.junit.runner.RunWith;

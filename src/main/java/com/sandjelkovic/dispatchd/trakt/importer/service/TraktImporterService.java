@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.trakt.importer.service;
 
-import com.sandjelkovic.dispatchd.data.entities.ImportStatus;
-import com.sandjelkovic.dispatchd.data.entities.TvShow;
+import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 

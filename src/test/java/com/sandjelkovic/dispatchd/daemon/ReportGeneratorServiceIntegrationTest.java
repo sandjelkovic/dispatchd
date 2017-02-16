@@ -1,13 +1,13 @@
 package com.sandjelkovic.dispatchd.daemon;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.data.entities.GeneratedReport;
-import com.sandjelkovic.dispatchd.data.entities.ReportRepeatType;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
-import com.sandjelkovic.dispatchd.data.repositories.GeneratedReportRepository;
-import com.sandjelkovic.dispatchd.data.repositories.ReportTemplateRepository;
-import com.sandjelkovic.dispatchd.service.ReportGeneratorService;
-import com.sandjelkovic.dispatchd.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
+import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
+import com.sandjelkovic.dispatchd.domain.service.ReportGeneratorService;
+import com.sandjelkovic.dispatchd.domain.service.ReportService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

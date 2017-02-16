@@ -1,15 +1,15 @@
 package com.sandjelkovic.dispatchd.converter;
 
 
-import com.sandjelkovic.dispatchd.data.EmptyCollections;
-import com.sandjelkovic.dispatchd.data.dto.ReportTemplateDTO;
-import com.sandjelkovic.dispatchd.data.dto.TvShowDto;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate2TvShow;
-import com.sandjelkovic.dispatchd.data.entities.ReportTemplate2TvShowPK;
-import com.sandjelkovic.dispatchd.data.entities.TvShow;
-import com.sandjelkovic.dispatchd.service.ReportService;
-import com.sandjelkovic.dispatchd.service.TvShowService;
+import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
+import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShowPK;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
+import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.service.TvShowService;
+import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

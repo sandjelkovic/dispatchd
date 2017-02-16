@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.api.processor;
 
-import com.sandjelkovic.dispatchd.api.PageLinksAssembler;
+import com.sandjelkovic.dispatchd.api.link.PageLinksAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 

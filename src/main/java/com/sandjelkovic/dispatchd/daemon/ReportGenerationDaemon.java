@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.daemon;
 
-import com.sandjelkovic.dispatchd.service.ReportGeneratorService;
+import com.sandjelkovic.dispatchd.domain.service.ReportGeneratorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
