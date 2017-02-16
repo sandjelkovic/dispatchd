@@ -3,6 +3,7 @@ package com.sandjelkovic.dispatchd.domain.service.impl;
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.exception.ConstraintException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,7 +80,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 		fail();
 	}
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test(expected = ConstraintException.class)
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
 	public void saveNewFailOnNegativeDayOfMonth() {
 		ReportTemplate template = generateTemplateAsNewTemplate()

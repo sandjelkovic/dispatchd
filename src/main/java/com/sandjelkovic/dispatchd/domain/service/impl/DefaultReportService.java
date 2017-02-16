@@ -9,6 +9,7 @@ import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportReposito
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.exception.ConstraintException;
 import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -155,7 +155,7 @@ public class DefaultReportService implements ReportService {
 	private void checkAndSaveDefaultsIfNeeded(ReportTemplate template) {
 		// @Min and @Max not working for some reason. Do it manually.
 		if (template.getRepeatDayOfMonth() == null || template.getRepeatDayOfMonth() < 1 || template.getRepeatDayOfMonth() > 28) {
-			throw new ConstraintViolationException(null);
+			throw new ConstraintException();
 		}
 		if (template.getTimeOfLastGeneratedReport() == null) {
 			template.setTimeOfLastGeneratedReport(ZonedDateTime.now());
