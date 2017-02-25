@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -35,7 +37,7 @@ public class ImportRestController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public ImportStatusResource doImport(@RequestBody MediaUrlDto mediaUrlDto) {
+	public ImportStatusResource doImport(@RequestBody @Valid MediaUrlDto mediaUrlDto) {
 		UriComponents uriComponents = getUriComponentsFromMediaUrl(mediaUrlDto.getMediaUrl());
 		ImportStatusDto status = getImportFacadeFromUri(uriComponents).importFromUriComponents(uriComponents);
 		return new ImportStatusResource(status);
