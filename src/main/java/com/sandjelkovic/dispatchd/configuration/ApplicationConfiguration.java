@@ -5,6 +5,8 @@ import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
 import com.sandjelkovic.dispatchd.helper.DefaultEventDispatcher;
 import com.sandjelkovic.dispatchd.orika.converter.LocalDateConverter;
 import com.sandjelkovic.dispatchd.orika.converter.ZonedDateTimeConverter;
+import com.sandjelkovic.dispatchd.trakt.provider.TraktMediaProvider;
+import com.sandjelkovic.dispatchd.trakt.provider.impl.DefaultTraktMediaProvider;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -45,6 +47,11 @@ public class ApplicationConfiguration {
 		mapperFactory.getConverterFactory().registerConverter(new ZonedDateTimeConverter());
 		mapperFactory.getConverterFactory().registerConverter(new LocalDateConverter());
 		return mapperFactory;
+	}
+
+	@Bean
+	public TraktMediaProvider traktMediaProvider(TraktConfiguration traktConfiguration) {
+		return new DefaultTraktMediaProvider(getTraktRestTemplate(), traktConfiguration);
 	}
 
 	@Bean
