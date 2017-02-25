@@ -1,27 +1,19 @@
 package com.sandjelkovic.dispatchd.api.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Created by stefan on 21.1.17..
  */
+
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class RelationDto {
 	private Long id;
 	private Integer order;
-
-	public Integer getOrder() {
-		return order;
-	}
-
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public RelationDto id(final Long id) {
 		this.id = id;

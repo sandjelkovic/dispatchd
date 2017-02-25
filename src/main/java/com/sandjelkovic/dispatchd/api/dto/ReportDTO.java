@@ -1,53 +1,19 @@
 package com.sandjelkovic.dispatchd.api.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class ReportDTO {
 	private Long id;
 	private String text;
 	private List<EpisodeDTO> content;
 	private Long templateId;
-
-	public ReportDTO() {
-	}
-
-	public ReportDTO(Long id, String text, List<EpisodeDTO> content) {
-		this.id = id;
-		this.text = text;
-		this.content = content;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public List<EpisodeDTO> getContent() {
-		return content;
-	}
-
-	public void setContent(List<EpisodeDTO> content) {
-		this.content = content;
-	}
-
-	public Long getTemplateId() {
-		return templateId;
-	}
-
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
-	}
 
 	public ReportDTO id(final Long id) {
 		this.id = id;
