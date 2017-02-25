@@ -1,16 +1,19 @@
 package com.sandjelkovic.dispatchd.api.dto;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportProgressStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 
-public class ImportStatusDto implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
+public class ImportStatusDto {
 	private Long id;
 
 	@URL
@@ -22,50 +25,6 @@ public class ImportStatusDto implements Serializable {
 
 	private ZonedDateTime finishTime;
 
-	@Length(max = 50)
 	private ImportProgressStatus status;
-
-	public ImportStatusDto() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getMediaUrl() {
-		return mediaUrl;
-	}
-
-	public void setMediaUrl(String mediaUrl) {
-		this.mediaUrl = mediaUrl;
-	}
-
-	public ZonedDateTime getInitiationTime() {
-		return initiationTime;
-	}
-
-	public void setInitiationTime(ZonedDateTime initiationTime) {
-		this.initiationTime = initiationTime;
-	}
-
-	public ZonedDateTime getFinishTime() {
-		return finishTime;
-	}
-
-	public void setFinishTime(ZonedDateTime finishTime) {
-		this.finishTime = finishTime;
-	}
-
-	public ImportProgressStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(ImportProgressStatus status) {
-		this.status = status;
-	}
 
 }

@@ -2,6 +2,9 @@ package com.sandjelkovic.dispatchd.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -12,6 +15,9 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
+@Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class ReportTemplateDTO {
 	private Long id;
 
@@ -43,89 +49,6 @@ public class ReportTemplateDTO {
 	private String username;
 
 	private List<TvShowDto> tvShows;
-
-	public ReportTemplateDTO() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public DayOfWeek getRepeatDayOfWeek() {
-		return repeatDayOfWeek;
-	}
-
-	public void setRepeatDayOfWeek(DayOfWeek repeatDayOfWeek) {
-		this.repeatDayOfWeek = repeatDayOfWeek;
-	}
-
-	public Integer getRepeatDayOfMonth() {
-		return repeatDayOfMonth;
-	}
-
-	public void setRepeatDayOfMonth(Integer repeatDayOfMonth) {
-		this.repeatDayOfMonth = repeatDayOfMonth;
-	}
-
-	public ReportRepeatType getRepeatType() {
-		return repeatType;
-	}
-
-	public void setRepeatType(ReportRepeatType repeatType) {
-		this.repeatType = repeatType;
-	}
-
-	public LocalTime getTimeOfDayToDeliver() {
-		return timeOfDayToDeliver;
-	}
-
-	public void setTimeOfDayToDeliver(LocalTime timeOfDayToDeliver) {
-		this.timeOfDayToDeliver = timeOfDayToDeliver;
-	}
-
-	public List<TvShowDto> getTvShows() {
-		return tvShows;
-	}
-
-	public void setTvShows(List<TvShowDto> tvShows) {
-		this.tvShows = tvShows;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public ReportTemplateDTO id(final Long id) {
 		this.id = id;
