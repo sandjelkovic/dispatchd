@@ -19,9 +19,8 @@ import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
 import com.sandjelkovic.dispatchd.trakt.importer.exception.TraktServerException;
 import com.sandjelkovic.dispatchd.trakt.importer.service.TraktImporterService;
 import com.sandjelkovic.dispatchd.trakt.provider.TraktMediaProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -38,9 +37,8 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @Service
+@Slf4j
 public class DefaultTraktImporterService implements TraktImporterService {
-
-	private static final Logger log = LoggerFactory.getLogger(DefaultTraktImporterService.class);
 
 	@Autowired
 	private TraktMediaProvider provider;
