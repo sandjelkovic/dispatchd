@@ -116,7 +116,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 		final URI finalUri = builder.build().encode().toUri();
 		ShowUpdateTrakt[] response = restTemplate.getForObject(finalUri, ShowUpdateTrakt[].class);
 		List<ShowUpdateTrakt> responseList = Arrays.asList(response);
-		log.debug("Retrieved Season: " + response);
+		log.debug("Retrieved Updates: " + response);
 		return responseList;
 	}
 
