@@ -12,4 +12,5 @@ public class RelNamesConstants {
 	public static final String SHOW = "show";
 	public static final String REPORT = "report";
 	public static final String REPORTS_OF_TEMPLATE = "connectedReports";
+	public static final String IMPORT_STATUS = "importStatus";
 }
