@@ -7,13 +7,11 @@ import com.sandjelkovic.dispatchd.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.ShowUpdateTrakt;
 import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
 import com.sandjelkovic.dispatchd.trakt.provider.TraktMediaProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.Resource;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,13 +21,11 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-@Component
+@AllArgsConstructor
 public class DefaultTraktMediaProvider implements TraktMediaProvider {
 
-	@Resource(name = "traktRestTemplate")
 	private RestTemplate restTemplate;
 
-	@Autowired
 	private TraktConfiguration traktConfiguration;
 
 	@Override
