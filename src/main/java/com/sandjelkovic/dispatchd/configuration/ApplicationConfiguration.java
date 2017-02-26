@@ -14,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.mvc.ResourceProcessorInvoker;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collection;
 
 @Configuration
 @EnableAsync
@@ -62,5 +66,10 @@ public class ApplicationConfiguration {
 	@Bean
 	public DefaultEventDispatcher defaultEventDispatcher(ApplicationEventPublisher publisher) {
 		return new DefaultEventDispatcher(publisher);
+	}
+
+	@Bean
+	public ResourceProcessorInvoker resourceProcessorInvoker(Collection<ResourceProcessor<?>> processors) {
+		return new ResourceProcessorInvoker(processors);
 	}
 }

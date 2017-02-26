@@ -6,8 +6,7 @@ import com.sandjelkovic.dispatchd.api.resource.ImportStatusResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.facade.ImporterFacade;
 import com.sandjelkovic.dispatchd.exception.InvalidMediaImportUrlException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,9 +27,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = Constants.REST_ENDPOINT_API_PREFIX + "/import",
 		produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
 		consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-public class ImportRestController {
-
-	private static final Logger log = LoggerFactory.getLogger(ImportRestController.class);
+@Slf4j
+public class ImportController extends BaseController {
 
 	@Autowired
 	private ImporterFacade importerFacade;
@@ -40,17 +38,19 @@ public class ImportRestController {
 	public ImportStatusResource doImport(@RequestBody @Valid MediaUrlDto mediaUrlDto) {
 		UriComponents uriComponents = getUriComponentsFromMediaUrl(mediaUrlDto.getMediaUrl());
 		ImportStatusDto status = getImportFacadeFromUri(uriComponents).importFromUriComponents(uriComponents);
-		return new ImportStatusResource(status);
+		ImportStatusResource importStatusResource = new ImportStatusResource(status);
+		return resourceProcessorInvoker.invokeProcessorsFor(importStatusResource);
 	}
 
 	@RequestMapping(value = "/{id}", method = GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ImportStatusResource getImportStatus(@PathVariable Long id) {
-		return new ImportStatusResource(importerFacade.getImportStatus(id));
+		ImportStatusResource importStatusResource = new ImportStatusResource(importerFacade.getImportStatus(id));
+		return resourceProcessorInvoker.invokeProcessorsFor(importStatusResource);
 	}
 
 	private UriComponents getUriComponentsFromMediaUrl(String mediaUrlToImport) {
-		UriComponents uriComponents = null;
+		UriComponents uriComponents;
 		try {
 			uriComponents = UriComponentsBuilder.fromHttpUrl(mediaUrlToImport).build().encode();
 		} catch (IllegalArgumentException e) {
