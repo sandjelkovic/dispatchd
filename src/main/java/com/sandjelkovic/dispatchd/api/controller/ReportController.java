@@ -10,8 +10,7 @@ import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReportContent;
 import com.sandjelkovic.dispatchd.domain.service.ReportService;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -34,8 +33,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RequestMapping(value = Constants.REST_ENDPOINT_API_PREFIX + "/reports",
 		produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
 		consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-public class ReportController {
-	private static final Logger log = LoggerFactory.getLogger(ReportController.class);
+@Slf4j
+public class ReportController extends BaseController {
 
 	@Autowired
 	private ConversionService conversionService;
@@ -54,7 +53,8 @@ public class ReportController {
 	public ReportResource getReport(@PathVariable Long reportId) {
 		GeneratedReport generatedReport = reportService.findGenerated(reportId)
 				.orElseThrow(ResourceNotFoundException::new);
-		return conversionService.convert(generatedReport, ReportResource.class);
+		ReportResource reportResource = conversionService.convert(generatedReport, ReportResource.class);
+		return resourceProcessorInvoker.invokeProcessorsFor(reportResource);
 	}
 
 	@RequestMapping(value = "/{reportId}/content", method = GET)
