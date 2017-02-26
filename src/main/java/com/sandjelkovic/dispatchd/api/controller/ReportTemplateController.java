@@ -13,14 +13,12 @@ import com.sandjelkovic.dispatchd.domain.service.UserService;
 import com.sandjelkovic.dispatchd.exception.EditTemplateAccessDeniedException;
 import com.sandjelkovic.dispatchd.exception.ReportTemplateNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,9 +41,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 @RequestMapping(value = Constants.REST_ENDPOINT_API_PREFIX + "/templates",
 		produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
 		consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-@ExposesResourceFor(ReportTemplateDTO.class)
-public class ReportTemplateController {
-	private static final Logger log = LoggerFactory.getLogger(ReportTemplateController.class);
+@Slf4j
+public class ReportTemplateController extends BaseController {
 
 	@Autowired
 	private ConversionService conversionService;
@@ -73,7 +70,8 @@ public class ReportTemplateController {
 			throw new ReportTemplateNotFoundException("Report template with id:[" + templateId + "] doesn't exist for this user");
 		}
 		ReportTemplateDTO returnTemplate = conversionService.convert(template.get(), ReportTemplateDTO.class);
-		return new ReportTemplateResource(returnTemplate);
+		ReportTemplateResource reportTemplateResource = new ReportTemplateResource(returnTemplate);
+		return resourceProcessorInvoker.invokeProcessorsFor(reportTemplateResource);
 	}
 
 	@RequestMapping(method = POST)
@@ -86,7 +84,8 @@ public class ReportTemplateController {
 
 		ReportTemplateDTO returnTemplate = conversionService.convert(resultTemplate, ReportTemplateDTO.class);
 
-		return new ReportTemplateResource(returnTemplate);
+		ReportTemplateResource reportTemplateResource = new ReportTemplateResource(returnTemplate);
+		return resourceProcessorInvoker.invokeProcessorsFor(reportTemplateResource);
 	}
 
 	@RequestMapping(value = "/{templateId}", method = PUT)
@@ -105,7 +104,8 @@ public class ReportTemplateController {
 
 		ReportTemplateDTO returnTemplate = conversionService.convert(resultTemplate, ReportTemplateDTO.class);
 
-		return new ReportTemplateResource(returnTemplate);
+		ReportTemplateResource reportTemplateResource = new ReportTemplateResource(returnTemplate);
+		return resourceProcessorInvoker.invokeProcessorsFor(reportTemplateResource);
 	}
 
 	@RequestMapping(value = "/{templateId}", method = DELETE)

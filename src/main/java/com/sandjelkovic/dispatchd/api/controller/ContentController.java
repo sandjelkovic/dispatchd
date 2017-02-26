@@ -11,7 +11,6 @@ import com.sandjelkovic.dispatchd.api.resource.PageMetadataResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
 import com.sandjelkovic.dispatchd.domain.service.ContentService;
-import com.sandjelkovic.dispatchd.domain.service.EpisodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -31,13 +30,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @RequestMapping(value = Constants.REST_ENDPOINT_API_PREFIX + "/content",
 		produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
 		consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-public class ContentController {
+public class ContentController extends BaseController {
 
 	@Autowired
 	private ConversionService conversionService;
-
-	@Autowired
-	private EpisodeService episodeService;
 
 	@Autowired
 	private ContentService contentService;
@@ -46,7 +42,8 @@ public class ContentController {
 	public EpisodeResource getEpisode(@PathVariable Long episodeId) {
 		Episode episode = contentService.findEpisodeById(episodeId);
 		EpisodeDTO dto = conversionService.convert(episode, EpisodeDTO.class);
-		return new EpisodeResource(dto);
+		EpisodeResource episodeResource = new EpisodeResource(dto);
+		return resourceProcessorInvoker.invokeProcessorsFor(episodeResource);
 	}
 
 	@RequestMapping(path = "/shows/{showId}/episodes")
