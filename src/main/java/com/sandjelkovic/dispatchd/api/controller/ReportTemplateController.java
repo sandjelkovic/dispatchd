@@ -60,7 +60,8 @@ public class ReportTemplateController extends BaseController {
 	public UserReportTemplateListResource getTemplates(Pageable pageable, Principal user) {
 		Page<ReportTemplateDTO> convertedPage = reportService.findTemplatesForUser(pageable, user.getName())
 				.map(template2DTOConverter);
-		return new UserReportTemplateListResource(convertedPage);
+		UserReportTemplateListResource userReportTemplateListResource = new UserReportTemplateListResource(convertedPage);
+		return resourceProcessorInvoker.invokeProcessorsFor(userReportTemplateListResource);
 	}
 
 	@RequestMapping(value = "/{templateId}", method = GET)

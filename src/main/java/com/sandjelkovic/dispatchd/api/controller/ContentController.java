@@ -3,11 +3,8 @@ package com.sandjelkovic.dispatchd.api.controller;
 import com.sandjelkovic.dispatchd.api.dto.EpisodeDTO;
 import com.sandjelkovic.dispatchd.api.dto.SeasonDTO;
 import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
-import com.sandjelkovic.dispatchd.api.link.PageLinksAssembler;
-import com.sandjelkovic.dispatchd.api.processor.PageableResourceLinksProcessor;
 import com.sandjelkovic.dispatchd.api.resource.EpisodeListResource;
 import com.sandjelkovic.dispatchd.api.resource.EpisodeResource;
-import com.sandjelkovic.dispatchd.api.resource.PageMetadataResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
 import com.sandjelkovic.dispatchd.domain.service.ContentService;
@@ -57,10 +54,8 @@ public class ContentController extends BaseController {
 				.pathSegment("shows")
 				.pathSegment("{showId}")
 				.pathSegment("episodes");
-		PageLinksAssembler pageLinksAssembler = new PageLinksAssembler(new PageMetadataResource(result), uri);
-		PageableResourceLinksProcessor.process(episodeListResource, pageLinksAssembler);
 
-		return episodeListResource;
+		return resourceProcessorInvoker.invokeProcessorsFor(episodeListResource);
 	}
 
 	@RequestMapping(path = "/seasons/{seasonId}/episodes")
@@ -73,10 +68,8 @@ public class ContentController extends BaseController {
 				.pathSegment("seasons")
 				.pathSegment("{seasonsId}")
 				.pathSegment("episodes");
-		PageLinksAssembler pageLinksAssembler = new PageLinksAssembler(new PageMetadataResource(result), uri);
-		PageableResourceLinksProcessor.process(episodeListResource, pageLinksAssembler);
 
-		return episodeListResource;
+		return resourceProcessorInvoker.invokeProcessorsFor(episodeListResource);
 	}
 
 	@RequestMapping(path = "/shows/{showId}")
