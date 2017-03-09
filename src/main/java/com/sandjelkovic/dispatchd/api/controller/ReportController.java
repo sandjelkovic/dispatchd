@@ -46,7 +46,9 @@ public class ReportController extends BaseController {
 	public UserReportListResource getReportsForCurrentUser(@RequestParam(required = false) Long templateId,
 	                                                       Principal principal, Pageable pageable) {
 		Page<GeneratedReport> reportPage = reportService.findGeneratedByTemplateForUser(pageable, templateId, principal.getName());
-		return new UserReportListResource(reportPage.map(source -> conversionService.convert(source, ReportDTO.class)));
+		Page<ReportDTO> reportDTOPage = reportPage.map(source -> conversionService.convert(source, ReportDTO.class));
+		UserReportListResource userReportListResource = new UserReportListResource(reportDTOPage);
+		return resourceProcessorInvoker.invokeProcessorsFor(userReportListResource);
 	}
 
 	@RequestMapping(value = "/{reportId}", method = GET)
@@ -70,7 +72,8 @@ public class ReportController extends BaseController {
 		//// TODO: 18.12.16. Implement proper paging logic, not just return everything
 		PageImpl<EpisodeDTO> page = new PageImpl<>(episodeDTOs);
 		ReportDTO reportDto = conversionService.convert(report, ReportDTO.class);
-		return new UserReportContentResource(page, reportDto);
+		UserReportContentResource userReportContentResource = new UserReportContentResource(page, reportDto);
+		return resourceProcessorInvoker.invokeProcessorsFor(userReportContentResource);
 	}
 
 }
