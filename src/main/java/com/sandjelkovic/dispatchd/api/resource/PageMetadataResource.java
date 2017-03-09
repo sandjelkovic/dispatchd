@@ -1,11 +1,13 @@
 package com.sandjelkovic.dispatchd.api.resource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.ResourceSupport;
 
 public class PageMetadataResource extends ResourceSupport {
+	@JsonIgnore
 	private Page page;
 
 	public PageMetadataResource(Page page) {

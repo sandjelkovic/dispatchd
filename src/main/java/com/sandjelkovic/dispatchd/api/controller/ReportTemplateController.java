@@ -3,7 +3,7 @@ package com.sandjelkovic.dispatchd.api.controller;
 import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.api.dto.ShowConnectionsDto;
 import com.sandjelkovic.dispatchd.api.resource.ReportTemplateResource;
-import com.sandjelkovic.dispatchd.api.resource.UsersReportTemplatesListResource;
+import com.sandjelkovic.dispatchd.api.resource.UserReportTemplateListResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.converter.ReportTemplate2DTOConverter;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
@@ -57,10 +57,10 @@ public class ReportTemplateController extends BaseController {
 	private UserService userService;
 
 	@RequestMapping(method = GET)
-	public UsersReportTemplatesListResource getTemplates(Pageable pageable, Principal user) {
+	public UserReportTemplateListResource getTemplates(Pageable pageable, Principal user) {
 		Page<ReportTemplateDTO> convertedPage = reportService.findTemplatesForUser(pageable, user.getName())
 				.map(template2DTOConverter);
-		return new UsersReportTemplatesListResource(convertedPage);
+		return new UserReportTemplateListResource(convertedPage);
 	}
 
 	@RequestMapping(value = "/{templateId}", method = GET)

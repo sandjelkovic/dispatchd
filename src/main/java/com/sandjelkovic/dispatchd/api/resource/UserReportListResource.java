@@ -2,11 +2,9 @@ package com.sandjelkovic.dispatchd.api.resource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sandjelkovic.dispatchd.api.controller.ReportController;
-import com.sandjelkovic.dispatchd.api.controller.ReportTemplateController;
 import com.sandjelkovic.dispatchd.api.dto.ReportDTO;
-import com.sandjelkovic.dispatchd.api.link.LinkAssembler;
 import com.sandjelkovic.dispatchd.api.link.PageLinksAssembler;
-import com.sandjelkovic.dispatchd.api.link.RelNamesConstants;
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,6 +12,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
+@Getter
 public class UserReportListResource extends PageableListResource {
 	@JsonProperty("_embedded")
 	private List<ReportResource> data;
@@ -26,17 +25,5 @@ public class UserReportListResource extends PageableListResource {
 				.map(ReportResource::new)
 				.collect(toList());
 		this.pageMetadataResource = new PageMetadataResource(page);
-
-		this.add(LinkAssembler.getPageableTemplatedBaseLink(linkTo(ReportController.class)).withSelfRel());
-		this.add(LinkAssembler.getPageableTemplatedBaseLink(linkTo(ReportController.class)).withRel(RelNamesConstants.USER_REPORTS));
-		this.add(linkTo(ReportTemplateController.class).withRel(RelNamesConstants.USER_REPORT_TEMPLATES));
-	}
-
-	public List<ReportResource> getData() {
-		return data;
-	}
-
-	public PageMetadataResource getPageMetadataResource() {
-		return pageMetadataResource;
 	}
 }
