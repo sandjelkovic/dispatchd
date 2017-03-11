@@ -2,22 +2,24 @@ package com.sandjelkovic.dispatchd.api.resource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sandjelkovic.dispatchd.api.dto.EpisodeDTO;
+import com.sandjelkovic.dispatchd.api.link.PageLinksAssembler;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
 @Getter
-public class EpisodeListResource extends ResourceSupport {
+public class EpisodeListResource extends PageableListResource {
 	@JsonProperty("_embedded")
 	private List<EpisodeResource> data;
 	@JsonProperty("page")
 	private PageMetadataResource pageMetadataResource;
 
-	public EpisodeListResource(Page<EpisodeDTO> page) {
+	public EpisodeListResource(Page<EpisodeDTO> page, UriComponentsBuilder selfUrl) {
+		super(new PageLinksAssembler(new PageMetadataResource(page), selfUrl));
 		this.data = page.getContent().stream()
 				.map(EpisodeResource::new)
 				.collect(toList());
