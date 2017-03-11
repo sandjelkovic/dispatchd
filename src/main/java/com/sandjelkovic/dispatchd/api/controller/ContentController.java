@@ -48,13 +48,12 @@ public class ContentController extends BaseController {
 		Page<EpisodeDTO> result = contentService.findEpisodeListByShow(showId, pageable)
 				.map(source -> conversionService.convert(source, EpisodeDTO.class));
 
-		EpisodeListResource episodeListResource = new EpisodeListResource(result);
-
 		UriComponentsBuilder uri = linkTo(ContentController.class).toUriComponentsBuilder()
 				.pathSegment("shows")
 				.pathSegment("{showId}")
 				.pathSegment("episodes");
 
+		EpisodeListResource episodeListResource = new EpisodeListResource(result, uri);
 		return resourceProcessorInvoker.invokeProcessorsFor(episodeListResource);
 	}
 
@@ -62,13 +61,13 @@ public class ContentController extends BaseController {
 	public EpisodeListResource getEpisodesOfSeason(@PathVariable Long seasonId, Pageable pageable) {
 		Page<EpisodeDTO> result = contentService.findEpisodeListBySeason(seasonId, pageable)
 				.map(source -> conversionService.convert(source, EpisodeDTO.class));
-		EpisodeListResource episodeListResource = new EpisodeListResource(result);
 
 		UriComponentsBuilder uri = linkTo(ContentController.class).toUriComponentsBuilder()
 				.pathSegment("seasons")
 				.pathSegment("{seasonsId}")
 				.pathSegment("episodes");
 
+		EpisodeListResource episodeListResource = new EpisodeListResource(result, uri);
 		return resourceProcessorInvoker.invokeProcessorsFor(episodeListResource);
 	}
 
