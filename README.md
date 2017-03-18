@@ -3,14 +3,14 @@ Application to notify when episodes go live or aggregate those notifications in 
 
 Currently in heavy development mode.
 
-####Purpose
+#### Purpose
 Goal of this application is to provide updates for episodes airdates in the form of customisable reports.
 
-####Media content provider services
+#### Media content provider services
 * Currently, only https://trakt.tv/ is being used to retrieve information about Shows, Seasons and Episodes, including airdates.
 * Importing of shows to local db is also supported only from trakt.
 
-####Development setup 
+#### Development setup 
 * Checkout.
 * Import maven project.
 * Update credentials in property files or set up run configuration to override those properties (recommended).
@@ -25,5 +25,5 @@ Goal of this application is to provide updates for episodes airdates in the form
 * trakt.appId
 * trakt.appSecret
 
-####Importing shows
+#### Importing shows
 At this moment, only trakt is supported for imports. URL that needs to be provided to the importer endpoint is in form of https://trakt.tv/shows/star-trek-the-next-generation
