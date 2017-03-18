@@ -8,8 +8,8 @@ import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReportContent;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.ReportGeneratorService;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
 import com.sandjelkovic.dispatchd.event.GeneratedReportEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class DefaultReportGeneratorService implements ReportGeneratorService {
 	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 
 	@Autowired
 	@Qualifier(Constants.CONVERSION_SERVICE_BEAN_NAME)
@@ -51,7 +51,7 @@ public class DefaultReportGeneratorService implements ReportGeneratorService {
 	public void generateReports() {
 		ZonedDateTime time = ZonedDateTime.now().plusSeconds(valuesConfiguration.getGenerationInterval());
 		log.debug("Generating reports until time [" + time + "]");
-		List<ReportTemplate> templates = reportService.getReportTemplatesToBeGeneratedBetween(null, time);
+		List<ReportTemplate> templates = reportFacade.getReportTemplatesToBeGeneratedBetween(null, time);
 		templates.stream()
 				.map(this::generateReportFromTemplate)
 				.collect(toList()) // make sure that all reports are generated since this whole method is transactional
@@ -66,7 +66,7 @@ public class DefaultReportGeneratorService implements ReportGeneratorService {
 		GeneratedReport generatedReport = new GeneratedReport();
 		generatedReport.setReportTemplate(reportTemplate);
 		generatedReport.setText(generateReportText(reportTemplate, generatedReport));
-		generatedReport = reportService.save(generatedReport);
+		generatedReport = reportFacade.save(generatedReport);
 
 		addEpisodesToReportAsContents(generatedReport, episodes);
 		updateGenerationTimes(reportTemplate);
@@ -83,7 +83,7 @@ public class DefaultReportGeneratorService implements ReportGeneratorService {
 		reportTemplate.setTimeOfLastGeneratedReport(reportTemplate.getTimeToGenerateReport());
 		reportTemplate.setTimeToGenerateReport(getNewGenerationTime(reportTemplate));
 
-		reportService.saveNoUserContext(reportTemplate);
+		reportFacade.saveNoUserContext(reportTemplate);
 	}
 
 	private List<Episode> getEpisodesValidForReport(ReportTemplate reportTemplate, List<ReportTemplate2TvShow> sortedRelations) {
@@ -102,7 +102,7 @@ public class DefaultReportGeneratorService implements ReportGeneratorService {
 	}
 
 	private ZonedDateTime getNewGenerationTime(ReportTemplate reportTemplate) {
-		return reportService.getNewGenerationTimeForTemplate(reportTemplate);
+		return reportFacade.getNewGenerationTimeForTemplate(reportTemplate);
 	}
 
 	private String generateReportText(ReportTemplate reportTemplate, GeneratedReport generatedReport) {

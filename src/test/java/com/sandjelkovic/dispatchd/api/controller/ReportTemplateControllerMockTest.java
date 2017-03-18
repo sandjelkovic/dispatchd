@@ -5,7 +5,7 @@ import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.api.link.RelNamesConstants;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +51,7 @@ public class ReportTemplateControllerMockTest extends MockIntegrationTest {
 	private CommandLineRunner usersInitRunner;
 
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 
 	@Autowired
 	private MockMvc mvc;
@@ -138,7 +138,7 @@ public class ReportTemplateControllerMockTest extends MockIntegrationTest {
 
 	@Test
 	public void getTemplate() throws Exception {
-		ReportTemplate createdTemplate = reportService.save(getTemplateWithIdForUser(null, USER_NAME).name("RNAME !"));
+		ReportTemplate createdTemplate = reportFacade.save(getTemplateWithIdForUser(null, USER_NAME).name("RNAME !"));
 
 		mvc.perform(MockMvcRequestBuilders.get(URL_USERS_USER_TEMPLATE_TEMPLATED, createdTemplate.getId())
 				.contentType(MediaType.APPLICATION_JSON_UTF8)

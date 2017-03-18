@@ -2,7 +2,7 @@ package com.sandjelkovic.dispatchd.domain.service.impl;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.exception.ConstraintException;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,10 +29,10 @@ import static org.junit.Assert.fail;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
 		classes = {DispatchdApplication.class})
 @Transactional
-public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTest {
+public class ReportFacadeTemplatesToBeGeneratedTest extends BaseReportServiceTest {
 
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 
 	@Before
 	public void setUp() throws Exception {
@@ -44,7 +44,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 		long countBefore = reportTemplateRepository.count();
 		ReportTemplate beforeSaveBean = generateTemplateWithGenerationInPastWithoutShows();
 
-		ReportTemplate savedBean = reportService.save(beforeSaveBean);
+		ReportTemplate savedBean = reportFacade.save(beforeSaveBean);
 
 		assertThat(savedBean, notNullValue());
 		long countAfter = reportTemplateRepository.count();
@@ -62,7 +62,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 		long countBefore = reportTemplateRepository.count();
 		ReportTemplate beforeSaveBean = generateTemplateAsNewTemplate();
 
-		ReportTemplate savedBean = reportService.save(beforeSaveBean);
+		ReportTemplate savedBean = reportFacade.save(beforeSaveBean);
 
 		assertThat(savedBean, notNullValue());
 
@@ -76,7 +76,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 		ReportTemplate template = generateTemplateAsNewTemplate()
 				.timeOfDayToDeliver(null);
 
-		reportService.save(template);
+		reportFacade.save(template);
 		fail();
 	}
 
@@ -86,7 +86,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 		ReportTemplate template = generateTemplateAsNewTemplate()
 				.repeatDayOfMonth(-5);
 
-		reportService.save(template);
+		reportFacade.save(template);
 		fail();
 	}
 
@@ -97,7 +97,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 				ZonedDateTime.now().minusSeconds(5),
 				ZonedDateTime.now().plusMinutes(2)));
 
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(
+		List<ReportTemplate> retrievedTemplates = reportFacade.getReportTemplatesToBeGeneratedBetween(
 				ZonedDateTime.now().minusMinutes(1), ZonedDateTime.now().plusMinutes(5));
 
 		assertThat(retrievedTemplates, notNullValue());
@@ -112,7 +112,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 				ZonedDateTime.now().plusMinutes(7),
 				ZonedDateTime.now().minusHours(2)));
 
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(
+		List<ReportTemplate> retrievedTemplates = reportFacade.getReportTemplatesToBeGeneratedBetween(
 				ZonedDateTime.now(), ZonedDateTime.now().plusMinutes(5));
 
 		assertThat(retrievedTemplates, notNullValue());
@@ -127,7 +127,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 				ZonedDateTime.now().plusMinutes(7),
 				ZonedDateTime.now().minusHours(2)));
 
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(null, ZonedDateTime.now().plusMinutes(5));
+		List<ReportTemplate> retrievedTemplates = reportFacade.getReportTemplatesToBeGeneratedBetween(null, ZonedDateTime.now().plusMinutes(5));
 
 		assertThat(retrievedTemplates, notNullValue());
 		assertThat(retrievedTemplates.size(), is(3));
@@ -141,7 +141,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 				ZonedDateTime.now().plusMinutes(7),
 				ZonedDateTime.now().plusMinutes(25)));
 
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(null, ZonedDateTime.now().plusMinutes(5));
+		List<ReportTemplate> retrievedTemplates = reportFacade.getReportTemplatesToBeGeneratedBetween(null, ZonedDateTime.now().plusMinutes(5));
 
 		assertThat(retrievedTemplates, notNullValue());
 		assertThat(retrievedTemplates.size(), is(0));
@@ -155,7 +155,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 				ZonedDateTime.now().plusMinutes(7),
 				ZonedDateTime.now().plusMinutes(1)));
 
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(
+		List<ReportTemplate> retrievedTemplates = reportFacade.getReportTemplatesToBeGeneratedBetween(
 				ZonedDateTime.now().plusMinutes(5), ZonedDateTime.now().minusMinutes(5));
 
 		assertThat(retrievedTemplates, notNullValue());
@@ -170,7 +170,7 @@ public class ReportServiceTemplatesToBeGeneratedTest extends BaseReportServiceTe
 				ZonedDateTime.now().plusMinutes(7),
 				ZonedDateTime.now().plusMinutes(1)));
 
-		List<ReportTemplate> retrievedTemplates = reportService.getReportTemplatesToBeGeneratedBetween(null, null);
+		List<ReportTemplate> retrievedTemplates = reportFacade.getReportTemplatesToBeGeneratedBetween(null, null);
 
 		assertThat(retrievedTemplates, notNullValue());
 		assertThat(retrievedTemplates.size(), is(2));

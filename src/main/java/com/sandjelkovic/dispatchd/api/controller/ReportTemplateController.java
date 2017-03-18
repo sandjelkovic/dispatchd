@@ -8,7 +8,7 @@ import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.converter.ReportTemplate2DTOConverter;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
 import com.sandjelkovic.dispatchd.exception.EditTemplateAccessDeniedException;
 import com.sandjelkovic.dispatchd.exception.ReportTemplateNotFoundException;
@@ -51,14 +51,14 @@ public class ReportTemplateController extends BaseController {
 	private ReportTemplate2DTOConverter template2DTOConverter;
 
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 
 	@Autowired
 	private UserService userService;
 
 	@RequestMapping(method = GET)
 	public UserReportTemplateListResource getTemplates(Pageable pageable, Principal user) {
-		Page<ReportTemplateDTO> convertedPage = reportService.findTemplatesForUser(pageable, user.getName())
+		Page<ReportTemplateDTO> convertedPage = reportFacade.findTemplatesForUser(pageable, user.getName())
 				.map(template2DTOConverter);
 		UserReportTemplateListResource userReportTemplateListResource = new UserReportTemplateListResource(convertedPage);
 		return resourceProcessorInvoker.invokeProcessorsFor(userReportTemplateListResource);
@@ -66,7 +66,7 @@ public class ReportTemplateController extends BaseController {
 
 	@RequestMapping(value = "/{templateId}", method = GET)
 	public ReportTemplateResource getTemplate(@PathVariable Long templateId) {
-		Optional<ReportTemplate> template = reportService.findTemplate(templateId);
+		Optional<ReportTemplate> template = reportFacade.findTemplate(templateId);
 		if (!template.isPresent()) {
 			throw new ReportTemplateNotFoundException("Report template with id:[" + templateId + "] doesn't exist for this user");
 		}
@@ -81,7 +81,7 @@ public class ReportTemplateController extends BaseController {
 		ReportTemplate template = conversionService.convert(templateDTO, ReportTemplate.class);
 		template.setUser(userService.findByUsername(user.getName())
 				.orElseThrow(UserNotFoundException::new));
-		ReportTemplate resultTemplate = reportService.save(template);
+		ReportTemplate resultTemplate = reportFacade.save(template);
 
 		ReportTemplateDTO returnTemplate = conversionService.convert(resultTemplate, ReportTemplateDTO.class);
 
@@ -101,7 +101,7 @@ public class ReportTemplateController extends BaseController {
 
 		template.setUser(userService.findByUsername(principal.getName())
 				.orElseThrow(UserNotFoundException::new));
-		ReportTemplate resultTemplate = reportService.save(template);
+		ReportTemplate resultTemplate = reportFacade.save(template);
 
 		ReportTemplateDTO returnTemplate = conversionService.convert(resultTemplate, ReportTemplateDTO.class);
 
@@ -112,7 +112,7 @@ public class ReportTemplateController extends BaseController {
 	@RequestMapping(value = "/{templateId}", method = DELETE)
 	@ResponseStatus(OK)
 	public void deleteTemplate(@PathVariable Long templateId) {
-		reportService.deleteTemplate(templateId);
+		reportFacade.deleteTemplate(templateId);
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = POST)
@@ -144,7 +144,7 @@ public class ReportTemplateController extends BaseController {
 	}
 
 	private void isTemplateIsOwnedByUser(Long templateId, Principal principal) {
-		reportService.findTemplate(templateId)
+		reportFacade.findTemplate(templateId)
 				.map(ReportTemplate::getUser)
 				.map(User::getUsername)
 				.filter(e -> StringUtils.equals(e, principal.getName()))

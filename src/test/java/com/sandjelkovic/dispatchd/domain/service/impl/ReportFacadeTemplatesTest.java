@@ -3,7 +3,7 @@ package com.sandjelkovic.dispatchd.domain.service.impl;
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +30,10 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportServiceTemplatesTest extends BaseReportServiceTest {
+public class ReportFacadeTemplatesTest extends BaseReportServiceTest {
 
 	@Autowired
-	private ReportService target;
+	private ReportFacade target;
 
 	@Before
 	public void setUp() {
