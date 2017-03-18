@@ -34,10 +34,10 @@ public interface ReportTemplateRepository extends PagingAndSortingRepository<Rep
 	boolean exists(Long id);
 
 	@Override
-	@PreAuthorize("authentication.name == @defaultReportService.findGenerated(#id).get().reportTemplate.user.username")
+	@PreAuthorize("authentication.name == @defaultReportFacade.findGenerated(#id).get().reportTemplate.user.username")
 	void delete(Long id);
 
 	@Override
-	@PreAuthorize("authentication.name == @defaultReportService.findGenerated(#entity.id).get().reportTemplate.user.username")
+	@PreAuthorize("authentication.name == @defaultReportFacade.findGenerated(#entity.id).get().reportTemplate.user.username")
 	void delete(ReportTemplate entity);
 }

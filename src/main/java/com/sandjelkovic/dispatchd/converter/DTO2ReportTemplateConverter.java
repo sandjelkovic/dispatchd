@@ -7,7 +7,7 @@ import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShowPK;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class DTO2ReportTemplateConverter implements Converter<ReportTemplateDTO,
 	private TvShowService tvShowService;
 
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 
 	@Override
 	public ReportTemplate convert(ReportTemplateDTO source) {

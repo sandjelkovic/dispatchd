@@ -3,7 +3,7 @@ package com.sandjelkovic.dispatchd.domain.service.impl;
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,10 +26,10 @@ import java.util.Optional;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportServiceTemplateSecurityTest extends BaseReportServiceTest {
+public class ReportFacadeTemplateSecurityTest extends BaseReportServiceTest {
 
 	@Autowired
-	private ReportService target;
+	private ReportFacade target;
 
 	@Before
 	public void setUp() {

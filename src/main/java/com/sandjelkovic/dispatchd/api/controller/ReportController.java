@@ -8,7 +8,7 @@ import com.sandjelkovic.dispatchd.api.resource.UserReportListResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReportContent;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +40,12 @@ public class ReportController extends BaseController {
 	private ConversionService conversionService;
 
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 
 	@RequestMapping(method = GET)
 	public UserReportListResource getReportsForCurrentUser(@RequestParam(required = false) Long templateId,
 	                                                       Principal principal, Pageable pageable) {
-		Page<GeneratedReport> reportPage = reportService.findGeneratedByTemplateForUser(pageable, templateId, principal.getName());
+		Page<GeneratedReport> reportPage = reportFacade.findGeneratedByTemplateForUser(pageable, templateId, principal.getName());
 		Page<ReportDTO> reportDTOPage = reportPage.map(source -> conversionService.convert(source, ReportDTO.class));
 		UserReportListResource userReportListResource = new UserReportListResource(reportDTOPage);
 		return resourceProcessorInvoker.invokeProcessorsFor(userReportListResource);
@@ -53,7 +53,7 @@ public class ReportController extends BaseController {
 
 	@RequestMapping(value = "/{reportId}", method = GET)
 	public ReportResource getReport(@PathVariable Long reportId) {
-		GeneratedReport generatedReport = reportService.findGenerated(reportId)
+		GeneratedReport generatedReport = reportFacade.findGenerated(reportId)
 				.orElseThrow(ResourceNotFoundException::new);
 		ReportResource reportResource = conversionService.convert(generatedReport, ReportResource.class);
 		return resourceProcessorInvoker.invokeProcessorsFor(reportResource);
@@ -61,7 +61,7 @@ public class ReportController extends BaseController {
 
 	@RequestMapping(value = "/{reportId}/content", method = GET)
 	public UserReportContentResource getReportContents(@PathVariable Long reportId, Pageable pageable) {
-		GeneratedReport report = reportService.findGenerated(reportId)
+		GeneratedReport report = reportFacade.findGenerated(reportId)
 				.orElseThrow(ResourceNotFoundException::new);
 		List<EpisodeDTO> episodeDTOs = report.getGeneratedReportContents().stream()
 				.sorted(Comparator.comparingInt(GeneratedReportContent::getOrderInReport))

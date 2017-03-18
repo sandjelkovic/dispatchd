@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.domain.service;
+package com.sandjelkovic.dispatchd.domain.facade;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
@@ -11,14 +11,14 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReportService {
+public interface ReportFacade {
 	List<ReportTemplate> getReportTemplatesToBeGeneratedBetween(ZonedDateTime from, ZonedDateTime until);
 
 	// should not be ever possible for a user to update the generatedReport.
 	// Maybe in the future if a need arises, but for now, security is not needed
 	GeneratedReport save(GeneratedReport generatedReport);
 
-	@PreAuthorize("#reportTemplate.id == null or authentication.name == @defaultReportService.findTemplate(#reportTemplate.id).get().user.username")
+	@PreAuthorize("#reportTemplate.id == null or authentication.name == @defaultReportFacade.findTemplate(#reportTemplate.id).get().user.username")
 	ReportTemplate save(ReportTemplate reportTemplate);
 
 	// no user Context for updating while generating new reports.

@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.domain.service.impl;
+package com.sandjelkovic.dispatchd.domain.facade.impl;
 
 import com.sandjelkovic.dispatchd.configuration.ValuesConfiguration;
 import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
@@ -8,7 +8,7 @@ import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.exception.ConstraintException;
 import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class DefaultReportService implements ReportService {
+public class DefaultReportFacade implements ReportFacade {
 
 	@Autowired
 	private ValuesConfiguration valuesConfiguration;
