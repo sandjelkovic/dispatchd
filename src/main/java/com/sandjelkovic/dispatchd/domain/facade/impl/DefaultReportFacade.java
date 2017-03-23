@@ -5,9 +5,11 @@ import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShowPK;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
+import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplate2TvShowRelationRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
@@ -15,6 +17,7 @@ import com.sandjelkovic.dispatchd.exception.ConstraintException;
 import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
+import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +45,9 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Autowired
 	private ReportTemplateRepository reportTemplateRepository;
+
+	@Autowired
+	private ReportTemplate2TvShowRelationRepository relationRepository;
 
 	@Autowired
 	private TimeGenerator timeGenerator;
@@ -165,6 +171,31 @@ public class DefaultReportFacade implements ReportFacade {
 				.sorted(Comparator.comparing(ReportTemplate2TvShow::getOrderInReport))
 				.map(ReportTemplate2TvShow::getTvShow)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void disconnectAllShows(Long templateId) {
+		ReportTemplate template = reportTemplateRepository.findOne(templateId);
+		if (template == null) {
+			throw new ResourceNotFoundException();
+		}
+		relationRepository.delete(template.getReportTemplate2TvShows()); //todo TEST
+	}
+
+	@Override
+	public void disconnectShow(Long templateId, String showId) { //todo TEST
+		ReportTemplate template = reportTemplateRepository.findOne(templateId);
+		if (template == null) {
+			throw new ResourceNotFoundException();
+		}
+
+		final Long parsedShowId = Long.parseLong(showId);
+		ReportTemplate2TvShowPK relation = EmptyCollections.emptyIfNull(template.getReportTemplate2TvShows()).stream()
+				.map(ReportTemplate2TvShow::getId)
+				.filter(rel -> rel.getShowId().equals(parsedShowId))
+				.findFirst()
+				.orElseThrow(ResourceNotFoundException::new);
+		relationRepository.delete(relation);
 	}
 
 	private void checkAndSaveDefaultsIfNeeded(ReportTemplate template) {

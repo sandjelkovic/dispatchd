@@ -21,6 +21,11 @@ public class ReportTemplate2TvShowPK implements Serializable {
 	public ReportTemplate2TvShowPK() {
 	}
 
+	public ReportTemplate2TvShowPK(Long showId, Long reporttemplateId) {
+		this.showId = showId;
+		this.reporttemplateId = reporttemplateId;
+	}
+
 	public Long getShowId() {
 		return this.showId;
 	}
