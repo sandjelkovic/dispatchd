@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class MediaUrlDto {
+public class MediaUrlDTO {
 	@URL
 	@NotNull
 	private String mediaUrl;

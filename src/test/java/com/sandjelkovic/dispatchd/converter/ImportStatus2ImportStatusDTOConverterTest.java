@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.converter;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.api.dto.ImportStatusDto;
+import com.sandjelkovic.dispatchd.api.dto.ImportStatusDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportProgressStatus;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
 import org.junit.Assert;
@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ImportStatus2ImportStatusDtoConverterTest {
+public class ImportStatus2ImportStatusDTOConverterTest {
 
 	@Autowired
 	private ImportStatus2ImportStatusDtoConverter importStatus2ImportStatusDtoConverter;
@@ -38,7 +38,7 @@ public class ImportStatus2ImportStatusDtoConverterTest {
 				.initiationTime(initiationTime)
 				.mediaUrl("https://www.mediaurl.com/")
 				.status(ImportProgressStatus.SUCCESS);
-		ImportStatusDto convertedDto = importStatus2ImportStatusDtoConverter.convert(status);
+		ImportStatusDTO convertedDto = importStatus2ImportStatusDtoConverter.convert(status);
 		Assert.assertThat(convertedDto, notNullValue());
 		Assert.assertThat(convertedDto.getId(), is(status.getId()));
 		Assert.assertThat(convertedDto.getMediaUrl(), is(status.getMediaUrl()));

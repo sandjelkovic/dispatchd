@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ImportStatusDto {
+public class ImportStatusDTO {
 	private Long id;
 
 	@URL

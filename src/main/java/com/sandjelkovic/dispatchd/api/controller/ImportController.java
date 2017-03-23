@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.api.controller;
 
-import com.sandjelkovic.dispatchd.api.dto.ImportStatusDto;
-import com.sandjelkovic.dispatchd.api.dto.MediaUrlDto;
+import com.sandjelkovic.dispatchd.api.dto.ImportStatusDTO;
+import com.sandjelkovic.dispatchd.api.dto.MediaUrlDTO;
 import com.sandjelkovic.dispatchd.api.resource.ImportStatusResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.facade.ImporterFacade;
@@ -35,9 +35,9 @@ public class ImportController extends BaseController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public ImportStatusResource doImport(@RequestBody @Valid MediaUrlDto mediaUrlDto) {
-		UriComponents uriComponents = getUriComponentsFromMediaUrl(mediaUrlDto.getMediaUrl());
-		ImportStatusDto status = getImportFacadeFromUri(uriComponents).importFromUriComponents(uriComponents);
+	public ImportStatusResource doImport(@RequestBody @Valid MediaUrlDTO mediaUrlDTO) {
+		UriComponents uriComponents = getUriComponentsFromMediaUrl(mediaUrlDTO.getMediaUrl());
+		ImportStatusDTO status = getImportFacadeFromUri(uriComponents).importFromUriComponents(uriComponents);
 		ImportStatusResource importStatusResource = new ImportStatusResource(status);
 		return resourceProcessorInvoker.invokeProcessorsFor(importStatusResource);
 	}

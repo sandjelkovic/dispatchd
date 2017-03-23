@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.trakt.importer;
 
-import com.sandjelkovic.dispatchd.api.dto.ImportStatusDto;
+import com.sandjelkovic.dispatchd.api.dto.ImportStatusDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportProgressStatus;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
@@ -44,14 +44,14 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 	private ConversionService conversionService;
 
 	@Override
-	public ImportStatusDto getImportStatus(Long id) {
+	public ImportStatusDTO getImportStatus(Long id) {
 		ImportStatus status = Optional.ofNullable(traktImporterService.findOneImportStatus(id))
 				.orElseThrow(ResourceNotFoundException::new);
-		return conversionService.convert(status, ImportStatusDto.class);
+		return conversionService.convert(status, ImportStatusDTO.class);
 	}
 
 	@Override
-	public ImportStatusDto importFromUriComponents(UriComponents uriComponents) {
+	public ImportStatusDTO importFromUriComponents(UriComponents uriComponents) {
 		log.debug("importFromUri");
 		List<String> segments = uriComponents.getPathSegments();
 		// /shows/{id}
@@ -60,7 +60,7 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 		}
 		ImportStatus status = traktImporterService.createNewImportStatus(segments);
 		pickAndDoImport(segments, segments.get(0), status);
-		return conversionService.convert(traktImporterService.findOneImportStatus(status.getId()), ImportStatusDto.class);
+		return conversionService.convert(traktImporterService.findOneImportStatus(status.getId()), ImportStatusDTO.class);
 	}
 
 	private void pickAndDoImport(List<String> segments, String type, ImportStatus status) {

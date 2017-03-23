@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ShowConnectionsDto {
-	private List<RelationDto> connections = new ArrayList<>();
+public class ShowConnectionsDTO {
+	private List<RelationDTO> connections = new ArrayList<>();
 
-	public ShowConnectionsDto connections(final List<RelationDto> connections) {
+	public ShowConnectionsDTO connections(final List<RelationDTO> connections) {
 		this.connections = connections;
 		return this;
 	}

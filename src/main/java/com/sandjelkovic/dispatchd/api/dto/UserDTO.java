@@ -11,7 +11,7 @@ import java.util.Set;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDTO {
 
 	private Long id;
 

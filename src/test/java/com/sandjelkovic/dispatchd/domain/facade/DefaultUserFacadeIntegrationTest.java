@@ -2,7 +2,7 @@ package com.sandjelkovic.dispatchd.domain.facade;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
-import com.sandjelkovic.dispatchd.api.dto.UserDto;
+import com.sandjelkovic.dispatchd.api.dto.UserDTO;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.Season;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
@@ -76,7 +76,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 
 	private User testUser;
 	private TvShow starTrekTNG;
-	private UserDto userDto;
+	private UserDTO userDTO;
 	private TvShowDTO tvShowDTO;
 
 	@Before
@@ -91,7 +91,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 		testUser = userRepository.save(testUser);
 
 		setupTestShows();
-		userDto = getUserDtoFromTestUser();
+		userDTO = getUserDtoFromTestUser();
 		tvShowDTO = getTvShowDtoFromTestTvShow();
 	}
 
@@ -192,7 +192,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 	@Test
 	public void testFollowTvShow() throws Exception {
 
-		facade.followTvShow(userDto, tvShowDTO);
+		facade.followTvShow(userDTO, tvShowDTO);
 
 		UserFollowingTvShow followingRetrieved = followingRepository.findOneByUserAndTvShow(testUser, starTrekTNG);
 		assertNotNull(followingRetrieved);
@@ -204,10 +204,10 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 	public void testUnfollowTvShow() throws Exception {
 		UserFollowingTvShow following = new UserFollowingTvShow(testUser, starTrekTNG);
 		followingRepository.save(following);
-		UserDto userDto = getUserDtoFromTestUser();
+		UserDTO userDTO = getUserDtoFromTestUser();
 		TvShowDTO tvShowDTO = getTvShowDtoFromTestTvShow();
 
-		facade.unfollowTvShow(userDto, tvShowDTO);
+		facade.unfollowTvShow(userDTO, tvShowDTO);
 
 		UserFollowingTvShow followingRetrieved = followingRepository.findOneByUserAndTvShow(testUser, starTrekTNG);
 		assertNull(followingRetrieved);
@@ -218,7 +218,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 		Duration delay = Duration.ofHours(16);
 		followingRepository.saveAndFlush(new UserFollowingTvShow(testUser, starTrekTNG));
 
-		facade.followTvShow(userDto, tvShowDTO, delay);
+		facade.followTvShow(userDTO, tvShowDTO, delay);
 
 		UserFollowingTvShow following = followingRepository.findOneByUserAndTvShow(testUser, starTrekTNG);
 		followingRepository.delete(following);
@@ -232,7 +232,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 	public void testFollowTvShowWithNotificationDelayNotExisting() {
 		Duration delay = Duration.ofHours(16);
 
-		facade.followTvShow(userDto, tvShowDTO, delay);
+		facade.followTvShow(userDTO, tvShowDTO, delay);
 
 		UserFollowingTvShow following = followingRepository.findOneByUserAndTvShow(testUser, starTrekTNG);
 		followingRepository.delete(following);
@@ -251,7 +251,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 
 		followingRepository.save(following);
 
-		facade.enableNotificationsFor(userDto, tvShowDTO, convertTimeToDuration(delay));
+		facade.enableNotificationsFor(userDTO, tvShowDTO, convertTimeToDuration(delay));
 
 		UserFollowingTvShow retrievedFollowing = followingRepository.findOneByUserAndTvShow(testUser, starTrekTNG);
 		followingRepository.delete(following);
@@ -265,7 +265,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 	public void testEnableNotificationsWithoutFollowing() {
 		BigInteger delay = BigInteger.valueOf(40000);
 
-		facade.enableNotificationsFor(userDto, tvShowDTO, convertTimeToDuration(delay));
+		facade.enableNotificationsFor(userDTO, tvShowDTO, convertTimeToDuration(delay));
 	}
 
 	@Test
@@ -277,7 +277,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 
 		followingRepository.save(following);
 
-		facade.disableNotificationsFor(userDto, tvShowDTO);
+		facade.disableNotificationsFor(userDTO, tvShowDTO);
 
 		UserFollowingTvShow retrievedFollowing = followingRepository.findOneByUserAndTvShow(testUser, starTrekTNG);
 		followingRepository.delete(following);
@@ -290,7 +290,7 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 	@Test(expected = UserDoesntFollowTvShowException.class)
 	public void testDisableNotificationsWithoutFollowing() {
 
-		facade.disableNotificationsFor(userDto, tvShowDTO);
+		facade.disableNotificationsFor(userDTO, tvShowDTO);
 
 		assertTrue(false);
 	}
@@ -308,10 +308,10 @@ public class DefaultUserFacadeIntegrationTest extends BaseIntegrationTest {
 		return tvShowDTO;
 	}
 
-	private UserDto getUserDtoFromTestUser() {
-		UserDto userDto = new UserDto();
-		userDto.setUsername(testUser.getUsername());
-		userDto.setId(testUser.getId());
-		return userDto;
+	private UserDTO getUserDtoFromTestUser() {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUsername(testUser.getUsername());
+		userDTO.setId(testUser.getId());
+		return userDTO;
 	}
 }
