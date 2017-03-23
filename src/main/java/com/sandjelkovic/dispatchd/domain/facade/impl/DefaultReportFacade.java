@@ -4,6 +4,8 @@ import com.sandjelkovic.dispatchd.configuration.ValuesConfiguration;
 import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
@@ -21,8 +23,10 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class DefaultReportFacade implements ReportFacade {
@@ -150,6 +154,17 @@ public class DefaultReportFacade implements ReportFacade {
 	@Override
 	public ZonedDateTime getNewGenerationTimeForTemplate(ReportTemplate reportTemplate) {
 		return timeGenerator.generateNewGenerationTimeForTemplate(reportTemplate);
+	}
+
+	@Override
+	public List<TvShow> findTemplateShows(Long templateId) {
+		List<ReportTemplate2TvShow> reportTemplate2TvShows = findTemplate(templateId)
+				.map(ReportTemplate::getReportTemplate2TvShows)
+				.orElseThrow(ResourceNotFoundException::new);
+		return reportTemplate2TvShows.stream()
+				.sorted(Comparator.comparing(ReportTemplate2TvShow::getOrderInReport))
+				.map(ReportTemplate2TvShow::getTvShow)
+				.collect(Collectors.toList());
 	}
 
 	private void checkAndSaveDefaultsIfNeeded(ReportTemplate template) {

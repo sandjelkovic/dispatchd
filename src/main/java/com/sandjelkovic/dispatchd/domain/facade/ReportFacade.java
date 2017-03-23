@@ -2,6 +2,7 @@ package com.sandjelkovic.dispatchd.domain.facade;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -54,4 +55,7 @@ public interface ReportFacade {
 	Page<GeneratedReport> findGeneratedByTemplateForUser(Pageable pageable, Long templateId, String username);
 
 	ZonedDateTime getNewGenerationTimeForTemplate(ReportTemplate reportTemplate);
+
+	@PreAuthorize("authentication.name == @defaultReportFacade.findTemplate(#templateId).get().user.username")
+	List<TvShow> findTemplateShows(Long templateId);
 }

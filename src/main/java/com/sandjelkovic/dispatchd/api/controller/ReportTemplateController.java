@@ -1,12 +1,16 @@
 package com.sandjelkovic.dispatchd.api.controller;
 
+import com.sandjelkovic.dispatchd.api.dto.RelationDto;
 import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.api.dto.ShowConnectionsDto;
+import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.api.resource.ReportTemplateResource;
+import com.sandjelkovic.dispatchd.api.resource.TvShowListResource;
 import com.sandjelkovic.dispatchd.api.resource.UserReportTemplateListResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.converter.ReportTemplate2DTOConverter;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
@@ -28,7 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -117,29 +123,43 @@ public class ReportTemplateController extends BaseController {
 
 	@RequestMapping(value = "/{templateId}/shows", method = POST)
 	@ResponseStatus(OK)
-	public ReportTemplateResource connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
-		// override all relations template <> shows (delete + update)
-		return null;
+	public void connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+		// create new relations (update if existing or throw error?)
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = PUT)
 	@ResponseStatus(OK)
-	public ReportTemplateResource addConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
-		// update relations template <> shows. Update order if already present
-		return null;
+	public void updateConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+		// update  or create relations template <> shows. Update order if already present
+	}
+
+	@RequestMapping(value = "/{templateId}/shows/{showId}", method = PUT)
+	@ResponseStatus(OK)
+	public void updateConnectionToShow(@PathVariable Long templateId, @RequestBody RelationDto relationDto) {
+		// update relation template <> show. Update order in collection
+	}
+
+	@RequestMapping(value = "/{templateId}/shows/{showId}", method = DELETE)
+	@ResponseStatus(OK)
+	public void deleteConnectionToShow(@PathVariable Long templateId, @PathVariable String showId) {
+		// delete relations template <> shows. Update order if present
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = DELETE)
 	@ResponseStatus(OK)
-	public ReportTemplateResource deleteConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+	public void deleteConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
 		// delete relations template <> shows. Update order if present
-		return null;
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = GET)
 	@ResponseStatus(OK)
-	public ReportTemplateResource getConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+	public TvShowListResource getConnectionsToShow(@PathVariable Long templateId) {
 		// retrieve all shows connected to this template
+		List<TvShow> shows = reportFacade.findTemplateShows(templateId);
+		List<TvShowDTO> showDtos = shows.stream()
+				.map(show -> conversionService.convert(show, TvShowDTO.class))
+				.collect(Collectors.toList());
+
 		return null;
 	}
 

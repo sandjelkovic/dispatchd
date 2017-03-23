@@ -14,7 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TvShowDto {
+public class TvShowDTO {
 
 	private Long id;
 

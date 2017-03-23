@@ -48,7 +48,7 @@ public class ReportTemplateDTO {
 	@JsonIgnore
 	private String username;
 
-	private List<TvShowDto> tvShows;
+	private List<TvShowDTO> tvShows;
 
 	public ReportTemplateDTO id(final Long id) {
 		this.id = id;
@@ -90,7 +90,7 @@ public class ReportTemplateDTO {
 		return this;
 	}
 
-	public ReportTemplateDTO tvShows(final List<TvShowDto> tvShows) {
+	public ReportTemplateDTO tvShows(final List<TvShowDTO> tvShows) {
 		this.tvShows = tvShows;
 		return this;
 	}
