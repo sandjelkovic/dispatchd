@@ -73,13 +73,15 @@ public class ReportTemplateRelationsController {
 	@RequestMapping(value = "/{templateId}/shows/{showId}", method = DELETE)
 	@ResponseStatus(OK)
 	public void deleteConnectionToShow(@PathVariable Long templateId, @PathVariable String showId) {
-		// delete relations template <> shows. Update order if present
+		// delete relations template <> shows.
+		reportFacade.disconnectShow(templateId, showId);
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = DELETE)
 	@ResponseStatus(OK)
-	public void deleteConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDTO showConnectionsDTO) {
-		// delete relations template <> shows. Update order if present
+	public void deleteConnectionsToShow(@PathVariable Long templateId) {
+		// delete relations template <> shows.
+		reportFacade.disconnectAllShows(templateId);
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = GET)
