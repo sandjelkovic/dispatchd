@@ -2,7 +2,7 @@ package com.sandjelkovic.dispatchd.api.controller;
 
 import com.sandjelkovic.dispatchd.api.dto.EpisodeDTO;
 import com.sandjelkovic.dispatchd.api.dto.SeasonDTO;
-import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
+import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.api.resource.EpisodeListResource;
 import com.sandjelkovic.dispatchd.api.resource.EpisodeResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
@@ -72,7 +72,7 @@ public class ContentController extends BaseController {
 	}
 
 	@RequestMapping(path = "/shows/{showId}")
-	public List<TvShowDto> getShow(@PathVariable Long showId) {
+	public List<TvShowDTO> getShow(@PathVariable Long showId) {
 		return new ArrayList<>();
 	}
 

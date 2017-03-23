@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.domain.facade;
 
-import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
+import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.api.dto.UserDto;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
@@ -48,25 +48,25 @@ public class DefaultUserFacade implements UserFacade {
 	}
 
 	@Override
-	public void followTvShow(UserDto userDto, TvShowDto tvShowDto) {
+	public void followTvShow(UserDto userDto, TvShowDTO tvShowDTO) {
 		User user = conversionService.convert(userDto, User.class);
-		TvShow tvShow = conversionService.convert(tvShowDto, TvShow.class);
+		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 		userService.followTvShowForUser(user, tvShow);
 	}
 
 	@Override
-	public void unfollowTvShow(UserDto userDto, TvShowDto tvShowDto) {
+	public void unfollowTvShow(UserDto userDto, TvShowDTO tvShowDTO) {
 		User user = conversionService.convert(userDto, User.class);
-		TvShow tvShow = conversionService.convert(tvShowDto, TvShow.class);
+		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 		userService.unfollowTvShowForUser(user, tvShow);
 	}
 
 	@Override
-	public void enableNotificationsFor(UserDto userDto, TvShowDto tvShowDto, Duration delay) {
+	public void enableNotificationsFor(UserDto userDto, TvShowDTO tvShowDTO, Duration delay) {
 		User user = conversionService.convert(userDto, User.class);
-		TvShow tvShow = conversionService.convert(tvShowDto, TvShow.class);
+		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 
 		userService.enableNotificationsFor(user, tvShow, delay);
@@ -74,18 +74,18 @@ public class DefaultUserFacade implements UserFacade {
 	}
 
 	@Override
-	public void disableNotificationsFor(UserDto userDto, TvShowDto tvShowDto) {
+	public void disableNotificationsFor(UserDto userDto, TvShowDTO tvShowDTO) {
 		User user = conversionService.convert(userDto, User.class);
-		TvShow tvShow = conversionService.convert(tvShowDto, TvShow.class);
+		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 
 		userService.disableNotificationsFor(user, tvShow);
 	}
 
 	@Override
-	public void followTvShow(UserDto userDto, TvShowDto tvShowDto, Duration delay) {
+	public void followTvShow(UserDto userDto, TvShowDTO tvShowDTO, Duration delay) {
 		User user = conversionService.convert(userDto, User.class);
-		TvShow tvShow = conversionService.convert(tvShowDto, TvShow.class);
+		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 		userService.followTvShowForUser(user, tvShow, delay);
 		userService.generateNotifications(user, tvShow);

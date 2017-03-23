@@ -2,7 +2,7 @@ package com.sandjelkovic.dispatchd.converter;
 
 
 import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
-import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
+import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShowPK;
@@ -46,7 +46,7 @@ public class DTO2ReportTemplateConverter implements Converter<ReportTemplateDTO,
 	private List<ReportTemplate2TvShow> getConvertedTvShows(ReportTemplateDTO source) {
 		List<TvShow> collected = Optional.ofNullable(source.getTvShows())
 				.orElseGet(EmptyCollections::list).stream()
-				.map(TvShowDto::getId)
+				.map(TvShowDTO::getId)
 				.map(tvShowService::findOne)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
