@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.api.controller;
 
-import com.sandjelkovic.dispatchd.api.dto.RelationDto;
+import com.sandjelkovic.dispatchd.api.dto.RelationDTO;
 import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
-import com.sandjelkovic.dispatchd.api.dto.ShowConnectionsDto;
+import com.sandjelkovic.dispatchd.api.dto.ShowConnectionsDTO;
 import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.api.resource.ReportTemplateResource;
 import com.sandjelkovic.dispatchd.api.resource.TvShowListResource;
@@ -123,19 +123,19 @@ public class ReportTemplateController extends BaseController {
 
 	@RequestMapping(value = "/{templateId}/shows", method = POST)
 	@ResponseStatus(OK)
-	public void connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+	public void connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDTO showConnectionsDTO) {
 		// create new relations (update if existing or throw error?)
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = PUT)
 	@ResponseStatus(OK)
-	public void updateConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+	public void updateConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDTO showConnectionsDTO) {
 		// update  or create relations template <> shows. Update order if already present
 	}
 
 	@RequestMapping(value = "/{templateId}/shows/{showId}", method = PUT)
 	@ResponseStatus(OK)
-	public void updateConnectionToShow(@PathVariable Long templateId, @RequestBody RelationDto relationDto) {
+	public void updateConnectionToShow(@PathVariable Long templateId, @RequestBody RelationDTO relationDTO) {
 		// update relation template <> show. Update order in collection
 	}
 
@@ -147,7 +147,7 @@ public class ReportTemplateController extends BaseController {
 
 	@RequestMapping(value = "/{templateId}/shows", method = DELETE)
 	@ResponseStatus(OK)
-	public void deleteConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDto showConnectionsDto) {
+	public void deleteConnectionsToShow(@PathVariable Long templateId, @RequestBody ShowConnectionsDTO showConnectionsDTO) {
 		// delete relations template <> shows. Update order if present
 	}
 

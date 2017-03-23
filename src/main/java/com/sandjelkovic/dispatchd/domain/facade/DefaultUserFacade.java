@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.domain.facade;
 
 import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
-import com.sandjelkovic.dispatchd.api.dto.UserDto;
+import com.sandjelkovic.dispatchd.api.dto.UserDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
@@ -33,7 +33,7 @@ public class DefaultUserFacade implements UserFacade {
 	}
 
 	@Override
-	public void disableUser(UserDto user) {
+	public void disableUser(UserDTO user) {
 		this.disableUser(user.getUsername());
 	}
 
@@ -43,29 +43,29 @@ public class DefaultUserFacade implements UserFacade {
 	}
 
 	@Override
-	public void enableUser(UserDto user) {
+	public void enableUser(UserDTO user) {
 		this.enableUser(user.getUsername());
 	}
 
 	@Override
-	public void followTvShow(UserDto userDto, TvShowDTO tvShowDTO) {
-		User user = conversionService.convert(userDto, User.class);
+	public void followTvShow(UserDTO userDTO, TvShowDTO tvShowDTO) {
+		User user = conversionService.convert(userDTO, User.class);
 		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 		userService.followTvShowForUser(user, tvShow);
 	}
 
 	@Override
-	public void unfollowTvShow(UserDto userDto, TvShowDTO tvShowDTO) {
-		User user = conversionService.convert(userDto, User.class);
+	public void unfollowTvShow(UserDTO userDTO, TvShowDTO tvShowDTO) {
+		User user = conversionService.convert(userDTO, User.class);
 		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 		userService.unfollowTvShowForUser(user, tvShow);
 	}
 
 	@Override
-	public void enableNotificationsFor(UserDto userDto, TvShowDTO tvShowDTO, Duration delay) {
-		User user = conversionService.convert(userDto, User.class);
+	public void enableNotificationsFor(UserDTO userDTO, TvShowDTO tvShowDTO, Duration delay) {
+		User user = conversionService.convert(userDTO, User.class);
 		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 
@@ -74,8 +74,8 @@ public class DefaultUserFacade implements UserFacade {
 	}
 
 	@Override
-	public void disableNotificationsFor(UserDto userDto, TvShowDTO tvShowDTO) {
-		User user = conversionService.convert(userDto, User.class);
+	public void disableNotificationsFor(UserDTO userDTO, TvShowDTO tvShowDTO) {
+		User user = conversionService.convert(userDTO, User.class);
 		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 
@@ -83,8 +83,8 @@ public class DefaultUserFacade implements UserFacade {
 	}
 
 	@Override
-	public void followTvShow(UserDto userDto, TvShowDTO tvShowDTO, Duration delay) {
-		User user = conversionService.convert(userDto, User.class);
+	public void followTvShow(UserDTO userDTO, TvShowDTO tvShowDTO, Duration delay) {
+		User user = conversionService.convert(userDTO, User.class);
 		TvShow tvShow = conversionService.convert(tvShowDTO, TvShow.class);
 		checkForExistingIds(user, tvShow);
 		userService.followTvShowForUser(user, tvShow, delay);

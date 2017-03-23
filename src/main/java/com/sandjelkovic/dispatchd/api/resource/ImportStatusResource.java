@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.api.resource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sandjelkovic.dispatchd.api.dto.ImportStatusDto;
+import com.sandjelkovic.dispatchd.api.dto.ImportStatusDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.ResourceSupport;
@@ -11,6 +11,6 @@ import org.springframework.hateoas.ResourceSupport;
 public class ImportStatusResource extends ResourceSupport {
 
 	@JsonProperty("_embedded")
-	private final ImportStatusDto data;
+	private final ImportStatusDTO data;
 
 }
