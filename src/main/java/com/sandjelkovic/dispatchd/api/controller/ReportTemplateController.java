@@ -31,6 +31,7 @@ import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -105,6 +106,12 @@ public class ReportTemplateController extends BaseController {
 
 		ReportTemplateResource reportTemplateResource = new ReportTemplateResource(returnTemplate);
 		return resourceProcessorInvoker.invokeProcessorsFor(reportTemplateResource);
+	}
+
+	@RequestMapping(value = "/{templateId}", method = DELETE)
+	@ResponseStatus(OK)
+	public void deleteTemplate(@PathVariable Long templateId) {
+		reportFacade.deleteTemplate(templateId);
 	}
 
 	private void isTemplateIsOwnedByUser(Long templateId, Principal principal) {

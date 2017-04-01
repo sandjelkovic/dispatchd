@@ -46,12 +46,6 @@ public class ReportTemplateRelationsController {
 	@Autowired
 	private ReportFacade reportFacade;
 
-	@RequestMapping(value = "/{templateId}", method = DELETE)
-	@ResponseStatus(OK)
-	public void deleteTemplate(@PathVariable Long templateId) {
-		reportFacade.deleteTemplate(templateId);
-	}
-
 	@RequestMapping(value = "/{templateId}/shows", method = POST)
 	@ResponseStatus(OK)
 	public void connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDTO showConnectionsDTO) {
