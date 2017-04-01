@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sandjelkovic.dispatchd.api.controller.ReportController;
 import com.sandjelkovic.dispatchd.api.dto.ReportDTO;
 import com.sandjelkovic.dispatchd.api.link.PageLinksAssembler;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
@@ -13,6 +14,7 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class UserReportListResource extends PageableListResource {
 	@JsonProperty("_embedded")
 	private List<ReportResource> data;
