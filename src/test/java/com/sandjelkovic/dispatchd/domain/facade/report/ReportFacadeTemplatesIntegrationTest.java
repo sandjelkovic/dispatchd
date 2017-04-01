@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.domain.service.impl;
+package com.sandjelkovic.dispatchd.domain.facade.report;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
@@ -30,7 +30,7 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportFacadeTemplatesTest extends BaseReportServiceTest {
+public class ReportFacadeTemplatesIntegrationTest extends BaseReportFacadeTest {
 
 	@Autowired
 	private ReportFacade target;
@@ -39,6 +39,7 @@ public class ReportFacadeTemplatesTest extends BaseReportServiceTest {
 	public void setUp() {
 		setUpData();
 	}
+
 	@Test
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
 	public void findNotExistingTemplate() {

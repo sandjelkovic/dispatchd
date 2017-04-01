@@ -48,8 +48,9 @@ public class ReportTemplateRelationsController {
 
 	@RequestMapping(value = "/{templateId}/shows", method = POST)
 	@ResponseStatus(OK)
-	public void connectWithShows(@PathVariable Long templateId, @RequestBody ShowConnectionsDTO showConnectionsDTO) {
-		// create new relations (update if existing or throw error?)
+	public void connectWithShows(@PathVariable Long templateId, @RequestBody RelationDTO relationDTO) {
+		Long showId = Long.parseLong(relationDTO.getTargetId());
+		reportFacade.connectShow(templateId, showId, relationDTO.getOrder());
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = PUT)

@@ -12,11 +12,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class RelationDTO {
-	private Long targetId;
-	private Long sourceId;
+	private String targetId;
+	private String sourceId;
+	// force default => int instead of Integer
 	private int order;
 
-	public RelationDTO id(final Long id) {
+	public RelationDTO id(final String id) {
 		this.targetId = id;
 		return this;
 	}
@@ -26,7 +27,7 @@ public class RelationDTO {
 		return this;
 	}
 
-	public RelationDTO sourceId(final Long sourceId) {
+	public RelationDTO sourceId(final String sourceId) {
 		this.sourceId = sourceId;
 		return this;
 	}
