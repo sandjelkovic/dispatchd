@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.domain.service.impl;
+package com.sandjelkovic.dispatchd.domain.facade.report;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
@@ -29,7 +29,7 @@ import static org.junit.Assert.fail;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
 		classes = {DispatchdApplication.class})
 @Transactional
-public class ReportFacadeTemplatesToBeGeneratedTest extends BaseReportServiceTest {
+public class ReportFacadeTemplatesToBeGeneratedTest extends BaseReportFacadeTest {
 
 	@Autowired
 	private ReportFacade reportFacade;

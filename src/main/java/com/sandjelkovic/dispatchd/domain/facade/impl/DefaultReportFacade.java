@@ -184,10 +184,7 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Override
 	public void disconnectShow(Long templateId, String showId) { //todo TEST
-		ReportTemplate template = reportTemplateRepository.findOne(templateId);
-		if (template == null) {
-			throw new ResourceNotFoundException();
-		}
+		ReportTemplate template = findTemplate(templateId).orElseThrow(ResourceNotFoundException::new);
 
 		final Long parsedShowId = Long.parseLong(showId);
 		ReportTemplate2TvShowPK relation = EmptyCollections.emptyIfNull(template.getReportTemplate2TvShows()).stream()
@@ -196,6 +193,12 @@ public class DefaultReportFacade implements ReportFacade {
 				.findFirst()
 				.orElseThrow(ResourceNotFoundException::new);
 		relationRepository.delete(relation);
+	}
+
+	@Override
+	public void connectShow(Long templateId, Long showId, int order) {
+		ReportTemplate template = findTemplate(templateId).orElseThrow(ResourceNotFoundException::new);
+
 	}
 
 	private void checkAndSaveDefaultsIfNeeded(ReportTemplate template) {

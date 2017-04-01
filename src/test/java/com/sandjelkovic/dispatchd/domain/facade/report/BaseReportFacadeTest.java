@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.domain.service.impl;
+package com.sandjelkovic.dispatchd.domain.facade.report;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  * @author ${sandjelkovic}
  * @date 13.1.17.
  */
-public class BaseReportServiceTest {
+public class BaseReportFacadeTest {
 
 	public static final String USER_NAME = "user";
 	public static final String USER_PASSWORD = "password";
