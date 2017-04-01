@@ -6,6 +6,7 @@ import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
+import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.helpers.TestDataGenerator;
 import com.sandjelkovic.dispatchd.testutils.exceptions.DataNotSetupException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -43,10 +45,13 @@ public class BaseReportFacadeTest {
 	protected GeneratedReportRepository generatedReportRepository;
 
 	@Autowired
-	private TestDataGenerator testDataGenerator;
-
+	protected TestDataGenerator testDataGenerator;
+	@Autowired
+	protected TvShowService showService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private EntityManager entityManager;
 
 	protected void setUpData() {
 		setUpUsers();
@@ -183,5 +188,11 @@ public class BaseReportFacadeTest {
 
 	protected User getUser(String userName) {
 		return userRepository.findOneByUsername(userName).orElseThrow(DataNotSetupException::new);
+	}
+
+	public void refreshJPAContext() {
+		// Thanks Hibernate and JPA... Great cache you have there, if there would only be a way to turn it off for testing!
+		entityManager.flush();
+		entityManager.clear();
 	}
 }

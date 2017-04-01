@@ -13,9 +13,13 @@ import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplate2TvShowRe
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
+import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.exception.ConstraintException;
+import com.sandjelkovic.dispatchd.exception.ExistingRelationException;
+import com.sandjelkovic.dispatchd.exception.ReportTemplateNotFoundException;
 import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
+import com.sandjelkovic.dispatchd.exception.ShowNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
 import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,12 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Autowired
 	private ReportTemplate2TvShowRelationRepository relationRepository;
+
+	@Autowired
+	private TvShowService tvShowService;
+
+	@Autowired
+	private ReportTemplate2TvShowRelationRepository template2TvShowRelationRepository;
 
 	@Autowired
 	private TimeGenerator timeGenerator;
@@ -184,7 +194,7 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Override
 	public void disconnectShow(Long templateId, String showId) { //todo TEST
-		ReportTemplate template = findTemplate(templateId).orElseThrow(ResourceNotFoundException::new);
+		ReportTemplate template = findTemplate(templateId).orElseThrow(ReportTemplateNotFoundException::new);
 
 		final Long parsedShowId = Long.parseLong(showId);
 		ReportTemplate2TvShowPK relation = EmptyCollections.emptyIfNull(template.getReportTemplate2TvShows()).stream()
@@ -197,8 +207,31 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Override
 	public void connectShow(Long templateId, Long showId, int order) {
-		ReportTemplate template = findTemplate(templateId).orElseThrow(ResourceNotFoundException::new);
+		ReportTemplate template = findTemplate(templateId).orElseThrow(ReportTemplateNotFoundException::new);
+		TvShow show = tvShowService.findOne(showId).orElseThrow(ShowNotFoundException::new);
 
+		if (isAlreadyConnected(template, showId)) {
+			throw new ExistingRelationException();
+		}
+
+		relationRepository.save(createRelation(order, template, show));
+	}
+
+	public ReportTemplate2TvShow createRelation(int order, ReportTemplate template, TvShow show) {
+		ReportTemplate2TvShowPK relationPK = new ReportTemplate2TvShowPK()
+				.showId(show.getId())
+				.reporttemplateId(template.getId());
+		return new ReportTemplate2TvShow()
+				.id(relationPK)
+				.reportTemplate(template)
+				.tvShow(show)
+				.orderInReport(order);
+	}
+
+	// serviceCandidate
+	public boolean isAlreadyConnected(ReportTemplate template, Long showId) {
+		return template.getReportTemplate2TvShows().stream()
+				.anyMatch(relation -> showId.equals(relation.getTvShow().getId()));
 	}
 
 	private void checkAndSaveDefaultsIfNeeded(ReportTemplate template) {

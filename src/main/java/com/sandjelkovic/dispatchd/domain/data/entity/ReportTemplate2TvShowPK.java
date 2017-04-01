@@ -12,10 +12,10 @@ public class ReportTemplate2TvShowPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "TvShowId", insertable = false, updatable = false, unique = true, nullable = false)
+	@Column(name = "TvShowId", insertable = false, updatable = false, unique = false, nullable = false)
 	private Long showId;
 
-	@Column(name = "ReporttemplateId", insertable = false, updatable = false, unique = true, nullable = false)
+	@Column(name = "ReporttemplateId", insertable = false, updatable = false, unique = false, nullable = false)
 	private Long reporttemplateId;
 
 	public ReportTemplate2TvShowPK() {
@@ -62,5 +62,15 @@ public class ReportTemplate2TvShowPK implements Serializable {
 		hash = hash * prime + this.reporttemplateId.hashCode();
 
 		return hash;
+	}
+
+	public ReportTemplate2TvShowPK showId(final Long showId) {
+		this.showId = showId;
+		return this;
+	}
+
+	public ReportTemplate2TvShowPK reporttemplateId(final Long reporttemplateId) {
+		this.reporttemplateId = reporttemplateId;
+		return this;
 	}
 }
