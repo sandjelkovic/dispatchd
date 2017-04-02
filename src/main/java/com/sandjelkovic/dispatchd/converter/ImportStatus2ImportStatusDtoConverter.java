@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.converter;
 
-import com.sandjelkovic.dispatchd.api.dto.ImportStatusDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
+import com.sandjelkovic.dispatchd.gateway.api.dto.ImportStatusDTO;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;

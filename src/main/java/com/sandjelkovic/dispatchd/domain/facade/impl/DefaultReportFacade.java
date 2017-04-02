@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.domain.facade.impl;
 
+import com.sandjelkovic.dispatchd.common.helper.EmptyCollections;
 import com.sandjelkovic.dispatchd.configuration.ValuesConfiguration;
 import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
 import com.sandjelkovic.dispatchd.domain.data.entity.GeneratedReport;
@@ -21,7 +22,6 @@ import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedExcepti
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import com.sandjelkovic.dispatchd.exception.ShowNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
-import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

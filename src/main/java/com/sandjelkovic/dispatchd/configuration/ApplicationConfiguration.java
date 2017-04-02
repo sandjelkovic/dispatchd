@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.configuration;
 
+import com.sandjelkovic.dispatchd.common.helper.DefaultEventDispatcher;
+import com.sandjelkovic.dispatchd.common.orika.converter.LocalDateConverter;
+import com.sandjelkovic.dispatchd.common.orika.converter.ZonedDateTimeConverter;
 import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
-import com.sandjelkovic.dispatchd.helper.DefaultEventDispatcher;
-import com.sandjelkovic.dispatchd.orika.converter.LocalDateConverter;
-import com.sandjelkovic.dispatchd.orika.converter.ZonedDateTimeConverter;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;

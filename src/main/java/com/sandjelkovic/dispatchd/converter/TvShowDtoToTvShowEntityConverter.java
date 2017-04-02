@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.converter;
 
 
-import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
+import com.sandjelkovic.dispatchd.common.helper.ChronoHelper;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
-import com.sandjelkovic.dispatchd.helper.ChronoHelper;
+import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

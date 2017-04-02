@@ -1,6 +1,5 @@
 package com.sandjelkovic.dispatchd.content.trakt.importer;
 
-import com.sandjelkovic.dispatchd.api.dto.ImportStatusDTO;
 import com.sandjelkovic.dispatchd.content.trakt.importer.exception.ShowAlreadyExistsImporterException;
 import com.sandjelkovic.dispatchd.content.trakt.importer.exception.TraktServerException;
 import com.sandjelkovic.dispatchd.content.trakt.importer.service.TraktImporterService;
@@ -14,6 +13,7 @@ import com.sandjelkovic.dispatchd.event.TvShowImportedEvent;
 import com.sandjelkovic.dispatchd.event.listener.ImportEventListener;
 import com.sandjelkovic.dispatchd.exception.InvalidMediaImportUrlException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
+import com.sandjelkovic.dispatchd.gateway.api.dto.ImportStatusDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
