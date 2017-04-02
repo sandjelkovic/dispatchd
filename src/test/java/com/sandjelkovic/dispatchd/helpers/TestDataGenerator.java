@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.helpers;
 
-import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
+import com.sandjelkovic.dispatchd.common.helper.ChronoHelper;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
@@ -8,7 +8,7 @@ import com.sandjelkovic.dispatchd.domain.data.entity.Season;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow.Status;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
-import com.sandjelkovic.dispatchd.helper.ChronoHelper;
+import com.sandjelkovic.dispatchd.gateway.api.dto.ReportTemplateDTO;
 
 import java.sql.Timestamp;
 import java.time.DayOfWeek;

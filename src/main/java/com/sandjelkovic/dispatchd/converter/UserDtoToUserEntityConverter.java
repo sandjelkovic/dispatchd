@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.converter;
 
-import com.sandjelkovic.dispatchd.api.dto.UserDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
+import com.sandjelkovic.dispatchd.gateway.api.dto.UserDTO;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

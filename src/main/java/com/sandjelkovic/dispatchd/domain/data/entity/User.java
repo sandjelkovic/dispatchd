@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.domain.data.entity;
 
-import com.sandjelkovic.dispatchd.helper.EmptyCollections;
+import com.sandjelkovic.dispatchd.common.helper.EmptyCollections;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.Column;

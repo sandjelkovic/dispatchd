@@ -1,8 +1,8 @@
 package com.sandjelkovic.dispatchd.domain.facade;
 
-import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
-import com.sandjelkovic.dispatchd.api.dto.UserDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
+import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
+import com.sandjelkovic.dispatchd.gateway.api.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

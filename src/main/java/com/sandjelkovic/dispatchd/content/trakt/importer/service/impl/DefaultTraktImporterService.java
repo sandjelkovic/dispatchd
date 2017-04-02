@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.content.trakt.importer.service.impl;
 
+import com.sandjelkovic.dispatchd.common.helper.EmptyCollections;
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
@@ -15,7 +16,6 @@ import com.sandjelkovic.dispatchd.domain.data.repository.ImportStatusRepository;
 import com.sandjelkovic.dispatchd.domain.service.EpisodeService;
 import com.sandjelkovic.dispatchd.domain.service.SeasonService;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
-import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

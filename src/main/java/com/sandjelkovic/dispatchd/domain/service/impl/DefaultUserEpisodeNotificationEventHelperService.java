@@ -1,5 +1,7 @@
 package com.sandjelkovic.dispatchd.domain.service.impl;
 
+import com.sandjelkovic.dispatchd.common.helper.ChronoHelper;
+import com.sandjelkovic.dispatchd.common.helper.DomainChronoHelper;
 import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.UserEpisodeNotificationEvent;
@@ -8,8 +10,6 @@ import com.sandjelkovic.dispatchd.domain.data.repository.EpisodeRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserEpisodeNotificationEventRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.service.UserEpisodeNotificationEventHelperService;
-import com.sandjelkovic.dispatchd.helper.ChronoHelper;
-import com.sandjelkovic.dispatchd.helper.DomainChronoHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.domain.data.entity;
 
-import com.sandjelkovic.dispatchd.helper.EmptyCollections;
+import com.sandjelkovic.dispatchd.common.helper.EmptyCollections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

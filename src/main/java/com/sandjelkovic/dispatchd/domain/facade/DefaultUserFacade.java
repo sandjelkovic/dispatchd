@@ -1,11 +1,11 @@
 package com.sandjelkovic.dispatchd.domain.facade;
 
-import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
-import com.sandjelkovic.dispatchd.api.dto.UserDTO;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
 import com.sandjelkovic.dispatchd.exception.IncompleteObjectForOperationException;
+import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
+import com.sandjelkovic.dispatchd.gateway.api.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;

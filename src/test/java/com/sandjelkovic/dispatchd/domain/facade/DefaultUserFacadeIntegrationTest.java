@@ -1,8 +1,7 @@
 package com.sandjelkovic.dispatchd.domain.facade;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
-import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
-import com.sandjelkovic.dispatchd.api.dto.UserDTO;
+import com.sandjelkovic.dispatchd.common.helper.ChronoHelper;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.content.trakt.importer.exception.ShowAlreadyExistsImporterException;
 import com.sandjelkovic.dispatchd.domain.data.entity.Season;
@@ -17,7 +16,8 @@ import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
 import com.sandjelkovic.dispatchd.exception.UserDoesntFollowTvShowException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
-import com.sandjelkovic.dispatchd.helper.ChronoHelper;
+import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
+import com.sandjelkovic.dispatchd.gateway.api.dto.UserDTO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
