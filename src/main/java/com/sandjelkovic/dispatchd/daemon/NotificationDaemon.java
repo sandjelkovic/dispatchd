@@ -86,8 +86,7 @@ public class NotificationDaemon {
 	}
 
 	private void dispatchEventDriven(Set<UserEpisodeNotificationEvent> events) throws InterruptedException {
-		events.stream()
-				.forEach(this::publishEvent);
+		events.forEach(this::publishEvent);
 	}
 
 	private void publishEvent(UserEpisodeNotificationEvent event) {
@@ -95,7 +94,7 @@ public class NotificationDaemon {
 	}
 
 	private void updateStatus(Set<UserEpisodeNotificationEvent> events) {
-		events.stream().forEach(event -> event.setNotified(true));
+		events.forEach(event -> event.setNotified(true));
 		notificationEventRepository.save(events);
 	}
 
