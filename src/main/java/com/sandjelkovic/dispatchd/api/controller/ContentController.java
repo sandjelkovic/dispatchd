@@ -5,8 +5,10 @@ import com.sandjelkovic.dispatchd.api.dto.SeasonDTO;
 import com.sandjelkovic.dispatchd.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.api.resource.EpisodeListResource;
 import com.sandjelkovic.dispatchd.api.resource.EpisodeResource;
+import com.sandjelkovic.dispatchd.api.resource.TvShowResource;
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -72,8 +74,10 @@ public class ContentController extends BaseController {
 	}
 
 	@RequestMapping(path = "/shows/{showId}")
-	public List<TvShowDTO> getShow(@PathVariable Long showId) {
-		return new ArrayList<>();
+	public TvShowResource getShow(@PathVariable Long showId) {
+		TvShow show = contentService.findShow(showId);
+		TvShowResource tvShowResource = new TvShowResource(conversionService.convert(show, TvShowDTO.class));
+		return resourceProcessorInvoker.invokeProcessorsFor(tvShowResource);
 	}
 
 	@RequestMapping(path = "/seasons/{seasonId}")

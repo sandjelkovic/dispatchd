@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.domain.service;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,4 +11,6 @@ public interface ContentService {
 	Page<Episode> findEpisodeListByShow(Long showId, Pageable pageable);
 
 	Page<Episode> findEpisodeListBySeason(Long seasonId, Pageable pageable);
+
+	TvShow findShow(Long showId);
 }
