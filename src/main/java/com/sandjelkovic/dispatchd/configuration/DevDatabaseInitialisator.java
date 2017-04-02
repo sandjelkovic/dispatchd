@@ -44,7 +44,7 @@ public class DevDatabaseInitialisator {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("example@gmail.com");
 		message.setSubject("Dev instance is starting up");
-		message.setTo("nighterrr@gmail.com");
+		message.setTo("example2@gmail.com");
 		message.setText("Dispatchd dev instance is starting up. This is just an email test. Please go to <a href=\"localhost:8080\">here</a> to test it out.");
 		System.err.println("Sending " + message);
 
