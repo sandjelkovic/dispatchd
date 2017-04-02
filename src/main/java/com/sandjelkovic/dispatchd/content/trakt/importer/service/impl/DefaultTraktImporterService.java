@@ -1,8 +1,5 @@
 package com.sandjelkovic.dispatchd.content.trakt.importer.service.impl;
 
-import com.sandjelkovic.dispatchd.content.trakt.converter.EpisodeEntityConverter;
-import com.sandjelkovic.dispatchd.content.trakt.converter.SeasonEntityConverter;
-import com.sandjelkovic.dispatchd.content.trakt.converter.TvShowEntityConverter;
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
@@ -22,6 +19,7 @@ import com.sandjelkovic.dispatchd.helper.EmptyCollections;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,13 +42,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	private TraktMediaProvider provider;
 
 	@Autowired
-	private TvShowEntityConverter tvShowConverter;
-
-	@Autowired
-	private SeasonEntityConverter seasonConverter;
-
-	@Autowired
-	private EpisodeEntityConverter episodeConverter;
+	private ConversionService conversionService;
 
 	@Autowired
 	private TvShowService tvShowService;
@@ -78,7 +70,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 		Future<List<SeasonTrakt>> seasonsFuture = getSeasonsFromTraktAsync(showId);
 		Future<List<EpisodeTrakt>> episodesFuture = getEpisodesFromTraktAsync(showId);
 
-		TvShow show = tvShowService.save(tvShowConverter.convertFrom(traktShow));
+		TvShow show = tvShowService.save(conversionService.convert(traktShow, TvShow.class));
 
 		List<Season> seasonsList = retrieveAndConvertSeasons(seasonsFuture);
 		seasonsList.forEach(season -> season.setTvShow(show));
@@ -129,7 +121,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 
 	private List<Season> retrieveAndConvertSeasons(Future<List<SeasonTrakt>> seasonsFuture) {
 		return retrieveSeasonsFromFuture(seasonsFuture).stream()
-				.map(seasonConverter::convertFrom)
+				.map(seasonTrakt -> conversionService.convert(seasonTrakt, Season.class))
 				.collect(toList());
 	}
 
@@ -145,7 +137,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 
 	private List<Episode> retrieveAndConvertEpisodes(Future<List<EpisodeTrakt>> episodesFuture) {
 		return retrieveEpisodesFromFuture(episodesFuture).stream()
-				.map(episodeConverter::convertFrom)
+				.map(episodeTrakt -> conversionService.convert(episodeTrakt, Episode.class))
 				.collect(toList());
 	}
 
@@ -166,6 +158,4 @@ public class DefaultTraktImporterService implements TraktImporterService {
 		return provider.getShowEpisodesAsync(showId);
 	}
 
-	private void checkForExistingShow(TvShowTrakt traktShow) {
-	}
 }
