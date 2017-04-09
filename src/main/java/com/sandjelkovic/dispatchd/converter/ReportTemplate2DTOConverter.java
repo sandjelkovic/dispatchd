@@ -1,10 +1,10 @@
 package com.sandjelkovic.dispatchd.converter;
 
 
-import com.sandjelkovic.dispatchd.api.dto.ReportTemplateDTO;
-import com.sandjelkovic.dispatchd.api.dto.TvShowDto;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
+import com.sandjelkovic.dispatchd.gateway.api.dto.ReportTemplateDTO;
+import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.ConversionService;
@@ -34,7 +34,7 @@ public class ReportTemplate2DTOConverter implements Converter<ReportTemplate, Re
 				.tvShows(source.getReportTemplate2TvShows().stream()
 						.sorted((o1, o2) -> o1.getOrderInReport().compareTo(o2.getOrderInReport()))
 						.map(ReportTemplate2TvShow::getTvShow)
-						.map(tvShow -> conversionService.convert(tvShow, TvShowDto.class))
+						.map(tvShow -> conversionService.convert(tvShow, TvShowDTO.class))
 						.collect(toList()))
 				.username(source.getUser().getUsername());
 		return dto;

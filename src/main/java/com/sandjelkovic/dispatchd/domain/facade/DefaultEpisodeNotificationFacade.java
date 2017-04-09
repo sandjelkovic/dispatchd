@@ -1,6 +1,6 @@
 package com.sandjelkovic.dispatchd.domain.facade;
 
-import com.sandjelkovic.dispatchd.api.dto.EpisodeNotificationDTO;
+import com.sandjelkovic.dispatchd.gateway.api.dto.EpisodeNotificationDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;

@@ -1,15 +1,15 @@
 package com.sandjelkovic.dispatchd.domain.service.impl;
 
+import com.sandjelkovic.dispatchd.content.trakt.dto.ShowUpdateTrakt;
+import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
+import com.sandjelkovic.dispatchd.content.trakt.importer.service.TraktImporterService;
+import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.UpdateJob;
 import com.sandjelkovic.dispatchd.domain.data.repository.UpdateJobRepository;
 import com.sandjelkovic.dispatchd.domain.service.ContentRefreshService;
 import com.sandjelkovic.dispatchd.domain.service.EpisodeService;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
-import com.sandjelkovic.dispatchd.trakt.dto.ShowUpdateTrakt;
-import com.sandjelkovic.dispatchd.trakt.dto.TvShowTrakt;
-import com.sandjelkovic.dispatchd.trakt.importer.service.TraktImporterService;
-import com.sandjelkovic.dispatchd.trakt.provider.TraktMediaProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;

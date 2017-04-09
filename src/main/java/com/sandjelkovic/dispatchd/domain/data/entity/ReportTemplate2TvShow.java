@@ -73,6 +73,26 @@ public class ReportTemplate2TvShow extends BasicEntity implements Serializable {
 		this.reportTemplate = reportTemplate;
 	}
 
+	public ReportTemplate2TvShow id(final ReportTemplate2TvShowPK id) {
+		this.id = id;
+		return this;
+	}
+
+	public ReportTemplate2TvShow orderInReport(final Integer orderInReport) {
+		this.orderInReport = orderInReport;
+		return this;
+	}
+
+	public ReportTemplate2TvShow tvShow(final TvShow tvShow) {
+		this.tvShow = tvShow;
+		return this;
+	}
+
+	public ReportTemplate2TvShow reportTemplate(final ReportTemplate reportTemplate) {
+		this.reportTemplate = reportTemplate;
+		return this;
+	}
+
 	@Override
 	protected Object getInternalId() {
 		return getId();

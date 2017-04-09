@@ -8,6 +8,7 @@ import com.sandjelkovic.dispatchd.domain.service.EpisodeService;
 import com.sandjelkovic.dispatchd.domain.service.SeasonService;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
+import com.sandjelkovic.dispatchd.exception.ShowNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ public class DefaultContentService implements ContentService {
 	@Override
 	public Page<Episode> findEpisodeListByShow(Long showId, Pageable pageable) {
 		TvShow show = tvShowService.findOne(showId)
-				.orElseThrow(ResourceNotFoundException::new);
+				.orElseThrow(ShowNotFoundException::new);
 		return episodeService.findByTvShow(show, pageable);
 	}
 
@@ -45,5 +46,11 @@ public class DefaultContentService implements ContentService {
 		Season season = seasonService.findOne(seasonId)
 				.orElseThrow(ResourceNotFoundException::new);
 		return episodeService.findBySeason(season, pageable);
+	}
+
+	@Override
+	public TvShow findShow(Long showId) {
+		return tvShowService.findOne(showId)
+				.orElseThrow(ShowNotFoundException::new);
 	}
 }

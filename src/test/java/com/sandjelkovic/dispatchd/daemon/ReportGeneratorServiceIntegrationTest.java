@@ -6,8 +6,8 @@ import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
+import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.ReportGeneratorService;
-import com.sandjelkovic.dispatchd.domain.service.ReportService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class ReportGeneratorServiceIntegrationTest {
 	@Autowired
 	private GeneratedReportRepository generatedReportRepository;
 	@Autowired
-	private ReportService reportService;
+	private ReportFacade reportFacade;
 	@Autowired
 	private ReportGeneratorService target;
 
@@ -64,7 +64,7 @@ public class ReportGeneratorServiceIntegrationTest {
 	public void generateReportFromTemplate() throws Exception {
 		ReportTemplate reportTemplate = generateOneTemplateWithTimeToGenerate(ZonedDateTime.now());
 		reportTemplate = reportTemplateRepository.save(reportTemplate);
-		ZonedDateTime newGenerationTimeForTemplate = reportService.getNewGenerationTimeForTemplate(reportTemplate);
+		ZonedDateTime newGenerationTimeForTemplate = reportFacade.getNewGenerationTimeForTemplate(reportTemplate);
 
 		GeneratedReport generatedReport = target.generateReportFromTemplate(reportTemplate);
 
