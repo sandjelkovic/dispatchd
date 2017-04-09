@@ -1,0 +1,21 @@
+server:
+  port: 8001
+management:
+  security:
+    enabled: false
+  context-path: /mgmt
+spring:
+  boot:
+    admin:
+      username: mgmtuser
+      password: password
+      client:
+        management-url: /actuator
+  application:
+    name: Dispatchd Monitor app
+zuul:
+  sensitive-headers:
+security:
+  user:
+    name: defaultuser
+    password: password

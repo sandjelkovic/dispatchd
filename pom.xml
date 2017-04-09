@@ -19,6 +19,7 @@
 	</parent>
 	<modules>
 		<module>core-service</module>
+		<module>monitor-service</module>
 	</modules>
 
 	<properties>
