@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sandjelkovic.dispatchd</groupId>
-	<artifactId>dispatchd</artifactId>
+	<artifactId>core-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
-	<name>dispatchd</name>
-	<description>Dispatchd project</description>
+	<name>core-service</name>
+	<description>Dispatchd Core service</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -17,9 +17,6 @@
 		<version>1.5.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<modules>
-		<module>core-service</module>
-	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
