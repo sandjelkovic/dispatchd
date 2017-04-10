@@ -1,9 +1,9 @@
 server:
-  port: 8001
+  port: 8010
 management:
   security:
     enabled: false
-  context-path: /mgmt
+  context-path: /actuator
 spring:
   boot:
     admin:
@@ -12,7 +12,7 @@ spring:
       client:
         management-url: /actuator
   application:
-    name: Dispatchd Monitor app
+    name: Dispatchd Monitor service
 zuul:
   sensitive-headers:
 security:
