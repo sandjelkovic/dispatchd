@@ -27,3 +27,10 @@ Goal of this application is to provide updates for episodes airdates in the form
 
 #### Importing shows
 At this moment, only trakt is supported for imports. URL that needs to be provided to the importer endpoint is in form of https://trakt.tv/shows/star-trek-the-next-generation
+
+### Default ports
+| Service 	| Port
+|----------	|-----:	|
+| Configuration service 	| 8001 	|
+| Core service 	| 8080 	|
+| Monitor service 	| 8010 	|

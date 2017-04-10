@@ -6,6 +6,9 @@ spring:
     password:
     url: jdbc:h2:~/workspace/dispatchd/dispatchddb
     username: sa
+  boot:
+    admin:
+      url: http://localhost:8010
 logging:
   level:
     com.sandjelkovic: DEBUG
