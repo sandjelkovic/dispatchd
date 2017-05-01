@@ -31,6 +31,6 @@ At this moment, only trakt is supported for imports. URL that needs to be provid
 ### Default ports
 | Service 	| Port
 |----------	|-----:	|
-| Configuration service 	| 8001 	|
+| Configuration service 	| 8888 	|
 | Core service 	| 8080 	|
 | Monitor service 	| 8010 	|
