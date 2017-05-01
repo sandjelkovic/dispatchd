@@ -1,5 +1,6 @@
-package com.sandjelkovic.dispatchd.domain.facade;
+package com.sandjelkovic.dispatchd.domain.facade.impl;
 
+import com.sandjelkovic.dispatchd.domain.facade.EpisodeNotificationFacade;
 import com.sandjelkovic.dispatchd.gateway.api.dto.EpisodeNotificationDTO;
 import org.springframework.stereotype.Component;
 

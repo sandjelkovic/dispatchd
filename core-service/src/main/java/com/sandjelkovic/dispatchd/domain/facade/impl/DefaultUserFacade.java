@@ -1,7 +1,8 @@
-package com.sandjelkovic.dispatchd.domain.facade;
+package com.sandjelkovic.dispatchd.domain.facade.impl;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
+import com.sandjelkovic.dispatchd.domain.facade.UserFacade;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
 import com.sandjelkovic.dispatchd.exception.IncompleteObjectForOperationException;
 import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
