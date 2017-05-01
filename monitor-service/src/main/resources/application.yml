@@ -3,16 +3,16 @@ server:
 management:
   security:
     enabled: false
-  context-path: /actuator
+  context-path: /admin
 spring:
   boot:
     admin:
       username: mgmtuser
       password: password
       client:
-        management-url: /actuator
+        management-url: /admin
   application:
-    name: Dispatchd Monitor service
+    name: monitorService
 zuul:
   sensitive-headers:
 security:

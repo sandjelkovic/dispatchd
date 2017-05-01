@@ -1,0 +1,18 @@
+content:
+    refresh:
+        interval:
+            minutes: 1
+management:
+    context-path: /admin
+report:
+    generation:
+        interval:
+            seconds: 60
+spring:
+    application:
+        name: coreService
+    jackson:
+        serialization:
+            WRITE_DATES_AS_TIMESTAMPS: false
+    messages:
+        basename: messages/Messages
