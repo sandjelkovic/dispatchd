@@ -12,11 +12,11 @@ public interface TvShowService {
 
 	Optional<TvShow> findOne(Long id);
 
-	List<TvShow> findByTraktId(String traktId);
+	Optional<TvShow> findByTraktId(String traktId);
 
 	List<TvShow> findByTitle(String title);
 
 	Page<TvShow> findAll(Pageable pageable);
 
-	List<TvShow> findAll();
+	Page<TvShow> findByTitleContaining(String title, Pageable pageable);
 }

@@ -10,6 +10,7 @@ import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.gateway.api.resource.EpisodeListResource;
 import com.sandjelkovic.dispatchd.gateway.api.resource.EpisodeResource;
 import com.sandjelkovic.dispatchd.gateway.api.resource.TvShowResource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -17,11 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -29,6 +28,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @RequestMapping(value = Constants.REST_ENDPOINT_API_PREFIX + "/content",
 		produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
 		consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+@Slf4j
 public class ContentController extends BaseController {
 
 	@Autowired
@@ -81,9 +81,21 @@ public class ContentController extends BaseController {
 	}
 
 	@RequestMapping(path = "/seasons/{seasonId}")
-	public List<SeasonDTO> getSeason(@PathVariable Long seasonId) {
-		return new ArrayList<>();
+	public SeasonDTO getSeason(@PathVariable Long seasonId) {
+		// todo
+		return null;
 	}
 
+	@RequestMapping(path = "/shows")
+	public void findShowsByName(@RequestParam(required = false) String title,
+	                            Pageable pageable) {
+		Page<TvShow> shows;
+		if (title == null) {
+			shows = contentService.findShows(pageable);
+		} else {
+			shows = contentService.findShowByTitleContaining(title, pageable);
+		}
+		//todo .toResources
+	}
 	// intentionally no /seasons or /episodes endpoint. Bind it to something.
 }

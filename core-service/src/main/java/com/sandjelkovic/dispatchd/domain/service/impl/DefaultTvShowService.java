@@ -31,7 +31,7 @@ public class DefaultTvShowService implements TvShowService {
 	}
 
 	@Override
-	public List<TvShow> findByTraktId(String traktId) {
+	public Optional<TvShow> findByTraktId(String traktId) {
 		return repository.findByTraktId(traktId);
 	}
 
@@ -46,7 +46,7 @@ public class DefaultTvShowService implements TvShowService {
 	}
 
 	@Override
-	public List<TvShow> findAll() {
-		return repository.findAll();
+	public Page<TvShow> findByTitleContaining(String title, Pageable pageable) {
+		return repository.findByTitleContaining(title, pageable);
 	}
 }
