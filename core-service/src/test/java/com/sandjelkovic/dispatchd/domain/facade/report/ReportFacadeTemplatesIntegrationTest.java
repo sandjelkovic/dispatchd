@@ -30,7 +30,7 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportFacadeTemplatesIntegrationTest extends BaseReportFacadeTest {
+public class ReportFacadeTemplatesIntegrationTest extends BaseIntegrationTest {
 
 	@Autowired
 	private ReportFacade target;

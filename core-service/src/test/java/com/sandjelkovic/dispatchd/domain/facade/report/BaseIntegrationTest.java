@@ -2,10 +2,13 @@ package com.sandjelkovic.dispatchd.domain.facade.report;
 
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportRepeatType;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.User;
 import com.sandjelkovic.dispatchd.domain.data.repository.GeneratedReportRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.ReportTemplateRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
+import com.sandjelkovic.dispatchd.domain.service.EpisodeService;
+import com.sandjelkovic.dispatchd.domain.service.SeasonService;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.helpers.TestDataGenerator;
 import com.sandjelkovic.dispatchd.testutils.exceptions.DataNotSetupException;
@@ -27,7 +30,7 @@ import java.util.stream.Stream;
  * @author ${sandjelkovic}
  * @date 13.1.17.
  */
-public class BaseReportFacadeTest {
+public class BaseIntegrationTest {
 
 	public static final String USER_NAME = "user";
 	public static final String USER_PASSWORD = "password";
@@ -48,6 +51,10 @@ public class BaseReportFacadeTest {
 	protected TestDataGenerator testDataGenerator;
 	@Autowired
 	protected TvShowService showService;
+	@Autowired
+	protected SeasonService seasonService;
+	@Autowired
+	protected EpisodeService episodeService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -194,5 +201,12 @@ public class BaseReportFacadeTest {
 		// Thanks Hibernate and JPA... Great cache you have there, if there would only be a way to turn it off for testing!
 		entityManager.flush();
 		entityManager.clear();
+	}
+
+	public Long fullySaveShow(TvShow show) {
+		Long showId = showService.save(show).getId();
+		seasonService.save(show.getSeasons());
+		episodeService.save(show.getEpisodes());
+		return showId;
 	}
 }

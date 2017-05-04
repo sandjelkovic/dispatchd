@@ -29,7 +29,7 @@ import static org.junit.Assert.fail;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
 		classes = {DispatchdApplication.class})
 @Transactional
-public class ReportFacadeTemplatesToBeGeneratedTest extends BaseReportFacadeTest {
+public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest {
 
 	@Autowired
 	private ReportFacade reportFacade;
