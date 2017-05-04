@@ -26,7 +26,7 @@ import java.util.Optional;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportFacadeTemplateSecurityTest extends BaseReportFacadeTest {
+public class ReportFacadeTemplateSecurityTest extends BaseIntegrationTest {
 
 	@Autowired
 	private ReportFacade target;

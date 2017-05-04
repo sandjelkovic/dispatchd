@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.*;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 @Transactional
-public class ReportFacadeRelationsIntegrationTest extends BaseReportFacadeTest {
+public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 
 	@Autowired
 	private ReportFacade target;
