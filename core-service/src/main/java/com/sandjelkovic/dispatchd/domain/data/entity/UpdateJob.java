@@ -1,5 +1,7 @@
 package com.sandjelkovic.dispatchd.domain.data.entity;
 
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table
+@ToString
 public class UpdateJob extends BasicEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

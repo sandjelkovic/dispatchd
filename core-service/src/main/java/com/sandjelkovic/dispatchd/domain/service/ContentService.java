@@ -13,4 +13,8 @@ public interface ContentService {
 	Page<Episode> findEpisodeListBySeason(Long seasonId, Pageable pageable);
 
 	TvShow findShow(Long showId);
+
+	Page<TvShow> findShowByTitleContaining(String title, Pageable pageable);
+
+	Page<TvShow> findShows(Pageable pageable);
 }

@@ -53,4 +53,14 @@ public class DefaultContentService implements ContentService {
 		return tvShowService.findOne(showId)
 				.orElseThrow(ShowNotFoundException::new);
 	}
+
+	@Override
+	public Page<TvShow> findShowByTitleContaining(String title, Pageable pageable) {
+		return tvShowService.findByTitleContaining(title, pageable);
+	}
+
+	@Override
+	public Page<TvShow> findShows(Pageable pageable) {
+		return tvShowService.findAll(pageable);
+	}
 }

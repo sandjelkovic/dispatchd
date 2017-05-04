@@ -57,7 +57,6 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	private ImportStatusRepository importStatusRepository;
 
 	@Override
-	@Transactional
 	public TvShow importShow(List<String> segments) {
 		log.debug("DefaultTraktImporterService.importShow");
 		String showId = segments.get(1);
@@ -65,6 +64,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	}
 
 	@Override
+	@Transactional
 	public TvShow importShow(String showId) {
 		TvShowTrakt traktShow = getTvShowFromTrakt(showId);
 		Future<List<SeasonTrakt>> seasonsFuture = getSeasonsFromTraktAsync(showId);
