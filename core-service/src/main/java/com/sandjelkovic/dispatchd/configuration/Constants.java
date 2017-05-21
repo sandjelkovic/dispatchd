@@ -8,8 +8,6 @@ public final class Constants {
 	public static final String[] ADMIN_ROLES = {"ROLE_USER", "ROLE_ADMIN"};
 	public static final String[] DEFAULT_USER_ROLES = {"ROLE_USER"};
 
-	public static final String SYSTEM_ACCOUNT = "system";
-
 	public static final String CONVERSION_SERVICE_BEAN_NAME = "mvcConversionService";
 	public static final String TEST_USERS_INIT_BEAN_NAME = "testUsersInit";
 	public static final String REST_ENDPOINT_API_PREFIX = "/api";
