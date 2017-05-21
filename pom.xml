@@ -20,7 +20,7 @@
 	<modules>
 		<module>core-service</module>
 		<module>monitor-service</module>
-		<module>config-service</module>
+		<!--<module>config-service</module>-->
 	</modules>
 
 	<properties>

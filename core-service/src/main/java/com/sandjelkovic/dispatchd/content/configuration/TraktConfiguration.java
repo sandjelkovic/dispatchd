@@ -43,7 +43,7 @@ public class TraktConfiguration {
 
 
 	@Bean
-	public TraktMediaProvider traktMediaProvider(TraktConfiguration traktConfiguration) {
+	public TraktMediaProvider defaultTraktMediaProvider(TraktConfiguration traktConfiguration) {
 		return new DefaultTraktMediaProvider(getTraktRestTemplate(), traktConfiguration);
 	}
 

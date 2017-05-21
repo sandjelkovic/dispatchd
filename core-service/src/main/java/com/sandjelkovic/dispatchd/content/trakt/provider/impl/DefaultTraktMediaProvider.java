@@ -37,6 +37,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment(showId)
 				.queryParam("extended", TraktConstants.EXTENSION_FULL_IMAGES);
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		TvShowTrakt response = restTemplate.getForObject(finalUri, TvShowTrakt.class);
 		log.debug("Retrieved TvShow: " + response);
 		return response;
@@ -49,6 +50,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment("episodes", episodeNumber)
 				.queryParam("extended", TraktConstants.EXTENSION_FULL_IMAGES);
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		EpisodeTrakt response = restTemplate.getForObject(finalUri, EpisodeTrakt.class);
 		log.debug("Retrieved Episode: " + response);
 		return response;
@@ -60,6 +62,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment("seasons", seasonNumber)
 				.queryParam("extended", TraktConstants.EXTENSION_FULL_IMAGES);
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		EpisodeTrakt[] response = restTemplate.getForObject(finalUri, EpisodeTrakt[].class);
 		List<EpisodeTrakt> episodesResponse = Arrays.asList(response);
 		log.debug("Retrieved SeasonEpisodes: " + episodesResponse);
@@ -80,6 +83,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment("seasons")
 				.queryParam("extended", TraktConstants.EXTENSION_FULL_IMAGES);
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		SeasonTrakt[] response = restTemplate.getForObject(finalUri, SeasonTrakt[].class);
 		List<SeasonTrakt> seasonsResponse = Arrays.asList(response);
 		log.debug("Retrieved Seasons: " + seasonsResponse);
@@ -92,7 +96,9 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment("seasons")
 				.queryParam("extended", TraktConstants.EXTENSION_MINIMAL);
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		SeasonTrakt[] response = restTemplate.getForObject(finalUri, SeasonTrakt[].class);
+		log.debug("Retrieved minimal Seasons: " + response);
 		return Arrays.asList(response);
 	}
 
@@ -102,6 +108,7 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment("seasons")
 				.queryParam("extended", TraktConstants.EXTENSION_FULL_IMAGES);
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		SeasonTrakt[] response = restTemplate.getForObject(finalUri, SeasonTrakt[].class);
 		SeasonTrakt season = (SeasonTrakt) extractItemFromArray(response, Integer.valueOf(seasonNumber));
 		log.debug("Retrieved Season: " + season);
@@ -114,9 +121,10 @@ public class DefaultTraktMediaProvider implements TraktMediaProvider {
 				.pathSegment("updates")
 				.pathSegment(fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		final URI finalUri = builder.build().encode().toUri();
+		log.debug("Calling Trakt API for URL: [ " + finalUri + " ]");
 		ShowUpdateTrakt[] response = restTemplate.getForObject(finalUri, ShowUpdateTrakt[].class);
 		List<ShowUpdateTrakt> responseList = Arrays.asList(response);
-		log.debug("Retrieved Updates: " + response);
+		log.debug("Retrieved Updates: " + Arrays.toString(response));
 		return responseList;
 	}
 

@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.content.trakt.provider;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
+import com.sandjelkovic.dispatchd.config.Constants;
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowUpdateTrakt;
@@ -8,6 +9,7 @@ import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,11 +28,12 @@ import static org.hamcrest.Matchers.*;
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(classes = {DispatchdApplication.class})
 public class TraktMediaProviderTest {
-	public static final String ID_ST_TNG = "star-trek-the-next-generation";
-	public static final String ID_KEY_TRAKT = "trakt";
-	public static final String ID_KEY_TVDB = "tvdb";
-	public static final String ID_KEY_IMDB = "imdb";
+	private static final String ID_KEY_TRAKT = "trakt";
+	private static final String ID_KEY_TVDB = "tvdb";
+	private static final String ID_KEY_IMDB = "imdb";
+
 	@Autowired
+	@Qualifier("defaultTraktMediaProvider")
 	private TraktMediaProvider provider;
 
 	@Test
@@ -41,7 +44,7 @@ public class TraktMediaProviderTest {
 
 	@Test
 	public void getShow() throws Exception {
-		TvShowTrakt tvShow = provider.getTvShow(ID_ST_TNG);
+		TvShowTrakt tvShow = provider.getTvShow(Constants.STAR_TREK_TNG_SLUG);
 		assertThat(tvShow, notNullValue());
 		assertThat(tvShow.getTitle(), is("Star Trek: The Next Generation"));
 		assertThat(tvShow.getOverview(), notNullValue());
@@ -52,7 +55,7 @@ public class TraktMediaProviderTest {
 
 	@Test
 	public void getSeasons() throws Exception {
-		List<SeasonTrakt> seasons = provider.getSeasons(ID_ST_TNG);
+		List<SeasonTrakt> seasons = provider.getSeasons(Constants.STAR_TREK_TNG_SLUG);
 		assertThat(seasons, notNullValue());
 		assertThat(seasons, not(empty()));
 		assertThat(seasons.size(), greaterThanOrEqualTo(7)); // at the time of writing, Trakt is reporting 8 seasons, with season 0 having 1 episode. Why Trakt, why...
@@ -65,7 +68,7 @@ public class TraktMediaProviderTest {
 
 	@Test
 	public void getShowEpisodes() throws Exception {
-		List<EpisodeTrakt> showEpisodes = provider.getShowEpisodes(ID_ST_TNG);
+		List<EpisodeTrakt> showEpisodes = provider.getShowEpisodes(Constants.STAR_TREK_TNG_SLUG);
 		assertThat(showEpisodes, notNullValue());
 		assertThat(showEpisodes, not(empty()));
 		showEpisodes.forEach(episode -> {
