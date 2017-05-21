@@ -2,7 +2,6 @@ package com.sandjelkovic.dispatchd.gateway.api.controller;
 
 import com.sandjelkovic.dispatchd.configuration.Constants;
 import com.sandjelkovic.dispatchd.converter.ReportTemplate2DTOConverter;
-import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.gateway.api.dto.RelationDTO;
 import com.sandjelkovic.dispatchd.gateway.api.dto.ShowConnectionsDTO;
@@ -11,16 +10,21 @@ import com.sandjelkovic.dispatchd.gateway.api.resource.TvShowListResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -36,7 +40,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 		produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
 		consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
 @Slf4j
-public class ReportTemplateRelationsController {
+public class ReportTemplateRelationsController extends BaseController {
 	@Autowired
 	private ConversionService conversionService;
 
@@ -81,14 +85,23 @@ public class ReportTemplateRelationsController {
 
 	@RequestMapping(value = "/{templateId}/shows", method = GET)
 	@ResponseStatus(OK)
-	public TvShowListResource getConnectionsToShow(@PathVariable Long templateId) {
+	public TvShowListResource getConnectionsToShow(@PathVariable Long templateId, Pageable pageable) {
 		// retrieve all shows connected to this template
-		List<TvShow> shows = reportFacade.findTemplateShows(templateId);
-		List<TvShowDTO> showDtos = shows.stream()
+		List<TvShowDTO> wholeDtoList = reportFacade.findTemplateShows(templateId).stream()
 				.map(show -> conversionService.convert(show, TvShowDTO.class))
 				.collect(Collectors.toList());
+		List<TvShowDTO> dtoList = wholeDtoList.stream()
+				.skip(pageable.getOffset())
+				.limit(pageable.getPageSize())
+				.collect(Collectors.toList());
 
-		return null;
+		Page<TvShowDTO> page = new PageImpl<>(wholeDtoList, pageable, wholeDtoList.size());
+
+		UriComponentsBuilder uri = linkTo(ReportTemplateRelationsController.class).toUriComponentsBuilder()
+				.pathSegment("{templateId}")
+				.pathSegment("shows");
+
+		return resourceProcessorInvoker.invokeProcessorsFor(new TvShowListResource(page, uri));
 	}
 
 }

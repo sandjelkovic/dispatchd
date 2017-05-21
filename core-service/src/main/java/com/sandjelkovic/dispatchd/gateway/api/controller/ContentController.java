@@ -9,6 +9,7 @@ import com.sandjelkovic.dispatchd.gateway.api.dto.SeasonDTO;
 import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
 import com.sandjelkovic.dispatchd.gateway.api.resource.EpisodeListResource;
 import com.sandjelkovic.dispatchd.gateway.api.resource.EpisodeResource;
+import com.sandjelkovic.dispatchd.gateway.api.resource.TvShowListResource;
 import com.sandjelkovic.dispatchd.gateway.api.resource.TvShowResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,15 +88,21 @@ public class ContentController extends BaseController {
 	}
 
 	@RequestMapping(path = "/shows")
-	public void findShowsByName(@RequestParam(required = false) String title,
-	                            Pageable pageable) {
-		Page<TvShow> shows;
+	public TvShowListResource findShowsByName(@RequestParam(required = false) String title,
+	                                          Pageable pageable) {
+		Page<TvShow> showsPage;
 		if (title == null) {
-			shows = contentService.findShows(pageable);
+			showsPage = contentService.findShows(pageable);
 		} else {
-			shows = contentService.findShowByTitleContaining(title, pageable);
+			showsPage = contentService.findShowByTitleContaining(title, pageable);
 		}
-		//todo .toResources
+		Page<TvShowDTO> dtoPage = showsPage
+				.map(source -> conversionService.convert(source, TvShowDTO.class));
+
+		UriComponentsBuilder uri = linkTo(ContentController.class).toUriComponentsBuilder()
+				.pathSegment("shows");
+
+		return resourceProcessorInvoker.invokeProcessorsFor(new TvShowListResource(dtoPage, uri));
 	}
 	// intentionally no /seasons or /episodes endpoint. Bind it to something.
 }
