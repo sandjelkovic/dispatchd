@@ -95,7 +95,7 @@ public class ReportTemplateRelationsController extends BaseController {
 				.limit(pageable.getPageSize())
 				.collect(Collectors.toList());
 
-		Page<TvShowDTO> page = new PageImpl<>(wholeDtoList, pageable, wholeDtoList.size());
+		Page<TvShowDTO> page = new PageImpl<>(dtoList, pageable, wholeDtoList.size());
 
 		UriComponentsBuilder uri = linkTo(ReportTemplateRelationsController.class).toUriComponentsBuilder()
 				.pathSegment("{templateId}")
