@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.gateway.api.resource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sandjelkovic.dispatchd.gateway.api.link.PageLinksAssembler;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,5 +11,6 @@ import org.springframework.hateoas.ResourceSupport;
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class PageableListResource extends ResourceSupport {
+	@JsonIgnore
 	private final PageLinksAssembler linksAssembler;
 }
