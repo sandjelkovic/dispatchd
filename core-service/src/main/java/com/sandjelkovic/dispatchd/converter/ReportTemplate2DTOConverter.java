@@ -11,6 +11,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
+
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -32,7 +34,7 @@ public class ReportTemplate2DTOConverter implements Converter<ReportTemplate, Re
 				.repeatDayOfWeek(source.getRepeatDayOfWeek())
 				.repeatType(source.getRepeatType())
 				.tvShows(source.getReportTemplate2TvShows().stream()
-						.sorted((o1, o2) -> o1.getOrderInReport().compareTo(o2.getOrderInReport()))
+						.sorted(Comparator.comparing(ReportTemplate2TvShow::getOrderInReport))
 						.map(ReportTemplate2TvShow::getTvShow)
 						.map(tvShow -> conversionService.convert(tvShow, TvShowDTO.class))
 						.collect(toList()))
