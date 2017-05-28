@@ -4,7 +4,6 @@ import com.sandjelkovic.dispatchd.DispatchdApplication;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportProgressStatus;
 import com.sandjelkovic.dispatchd.domain.data.entity.ImportStatus;
 import com.sandjelkovic.dispatchd.gateway.api.dto.ImportStatusDTO;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import java.time.ZonedDateTime;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,15 +36,15 @@ public class ImportStatus2ImportStatusDTOConverterTest {
 				.id(5L)
 				.finishTime(finishTime)
 				.initiationTime(initiationTime)
-				.mediaUrl("https://www.mediaurl.com/")
+				.mediaUrl("https://www.example.com/")
 				.status(ImportProgressStatus.SUCCESS);
 		ImportStatusDTO convertedDto = importStatus2ImportStatusDtoConverter.convert(status);
-		Assert.assertThat(convertedDto, notNullValue());
-		Assert.assertThat(convertedDto.getId(), is(status.getId()));
-		Assert.assertThat(convertedDto.getMediaUrl(), is(status.getMediaUrl()));
-		Assert.assertThat(convertedDto.getStatus(), is(status.getStatus()));
-		Assert.assertThat(convertedDto.getFinishTime(), is(status.getFinishTime()));
-		Assert.assertThat(convertedDto.getInitiationTime(), is(status.getInitiationTime()));
+		assertThat(convertedDto, notNullValue());
+		assertThat(convertedDto.getId(), is(status.getId()));
+		assertThat(convertedDto.getMediaUrl(), is(status.getMediaUrl()));
+		assertThat(convertedDto.getStatus(), is(status.getStatus()));
+		assertThat(convertedDto.getFinishTime(), is(status.getFinishTime()));
+		assertThat(convertedDto.getInitiationTime(), is(status.getInitiationTime()));
 	}
 
 }

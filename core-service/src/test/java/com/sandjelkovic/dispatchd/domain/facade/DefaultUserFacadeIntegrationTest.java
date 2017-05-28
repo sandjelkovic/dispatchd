@@ -33,7 +33,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
+import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -293,7 +293,7 @@ public class DefaultUserFacadeIntegrationTest {
 
 		facade.disableNotificationsFor(userDTO, tvShowDTO);
 
-		assertTrue(false);
+		fail();
 	}
 
 	private Duration convertTimeToDuration(BigInteger userPickedRelativeTimeToNotify) {
@@ -303,8 +303,7 @@ public class DefaultUserFacadeIntegrationTest {
 	private TvShowDTO getTvShowDtoFromTestTvShow() {
 		TvShowDTO tvShowDTO = new TvShowDTO();
 		tvShowDTO.setId(starTrekTNG.getId());
-		tvShowDTO.setIds(Collections.EMPTY_MAP);
-		tvShowDTO.setLastUpdatedAt(Instant.now());
+		tvShowDTO.setLastUpdatedAt(ZonedDateTime.now());
 		tvShowDTO.setYear(starTrekTNG.getYear());
 		return tvShowDTO;
 	}

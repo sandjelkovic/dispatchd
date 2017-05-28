@@ -36,7 +36,7 @@ public class ReportTemplate2DTOConverter implements Converter<ReportTemplate, Re
 				.tvShows(source.getReportTemplate2TvShows().stream()
 						.sorted(Comparator.comparing(ReportTemplate2TvShow::getOrderInReport))
 						.map(ReportTemplate2TvShow::getTvShow)
-						.map(tvShow -> conversionService.convert(tvShow, TvShowDTO.class))
+						.map(tvShow -> conversionService.convert(tvShow, TvShowDTO.class)) // wut?
 						.collect(toList()))
 				.username(source.getUser().getUsername());
 		return dto;
