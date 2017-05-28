@@ -6,4 +6,5 @@ package com.sandjelkovic.dispatchd.config;
  */
 public class Constants {
 	public static final String STAR_TREK_TNG_SLUG = "star-trek-the-next-generation";
+	public static final String AGENTS_OF_SHIELD_SLUG = "marvel-s-agents-of-s-h-i-e-l-d";
 }
