@@ -16,7 +16,6 @@ import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.exception.ConstraintException;
-import com.sandjelkovic.dispatchd.exception.ExistingRelationException;
 import com.sandjelkovic.dispatchd.exception.ReportTemplateNotFoundException;
 import com.sandjelkovic.dispatchd.exception.ReportsMaxContentCountReachedException;
 import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
@@ -55,9 +54,6 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Autowired
 	private TvShowService tvShowService;
-
-	@Autowired
-	private ReportTemplate2TvShowRelationRepository template2TvShowRelationRepository;
 
 	@Autowired
 	private TimeGenerator timeGenerator;
@@ -209,11 +205,7 @@ public class DefaultReportFacade implements ReportFacade {
 	public void connectShow(Long templateId, Long showId, int order) {
 		ReportTemplate template = findTemplate(templateId).orElseThrow(ReportTemplateNotFoundException::new);
 		TvShow show = tvShowService.findOne(showId).orElseThrow(ShowNotFoundException::new);
-
-		if (isAlreadyConnected(template, showId)) {
-			throw new ExistingRelationException();
-		}
-
+		// if connection already exists -> Update existing
 		relationRepository.save(createRelation(order, template, show));
 	}
 

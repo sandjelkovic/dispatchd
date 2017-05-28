@@ -65,5 +65,6 @@ public interface ReportFacade {
 	@PreAuthorize("authentication.name == @defaultReportFacade.findTemplate(#templateId).get().user.username")
 	void disconnectShow(Long templateId, String showId);
 
+	@PreAuthorize("authentication.name == @defaultReportFacade.findTemplate(#templateId).get().user.username")
 	void connectShow(Long templateId, Long showId, int order);
 }

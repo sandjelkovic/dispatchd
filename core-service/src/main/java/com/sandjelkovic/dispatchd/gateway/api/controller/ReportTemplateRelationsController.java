@@ -52,7 +52,7 @@ public class ReportTemplateRelationsController extends BaseController {
 
 	@RequestMapping(value = "/{templateId}/shows", method = POST)
 	@ResponseStatus(OK)
-	public void connectWithShows(@PathVariable Long templateId, @RequestBody RelationDTO relationDTO) {
+	public void connectWithShow(@PathVariable Long templateId, @RequestBody RelationDTO relationDTO) {
 		Long showId = Long.parseLong(relationDTO.getTargetId());
 		reportFacade.connectShow(templateId, showId, relationDTO.getOrder());
 	}
@@ -67,6 +67,8 @@ public class ReportTemplateRelationsController extends BaseController {
 	@ResponseStatus(OK)
 	public void updateConnectionToShow(@PathVariable Long templateId, @RequestBody RelationDTO relationDTO) {
 		// update relation template <> show. Update order in collection
+		Long showId = Long.parseLong(relationDTO.getTargetId());
+		reportFacade.connectShow(templateId, showId, relationDTO.getOrder());
 	}
 
 	@RequestMapping(value = "/{templateId}/shows/{showId}", method = DELETE)
