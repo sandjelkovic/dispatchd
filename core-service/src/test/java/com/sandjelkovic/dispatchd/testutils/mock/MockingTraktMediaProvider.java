@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.testutils.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sandjelkovic.dispatchd.common.helper.EmptyCollections;
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowUpdateTrakt;
@@ -85,7 +86,7 @@ public class MockingTraktMediaProvider implements TraktMediaProvider {
 	}
 
 	public List<ShowUpdateTrakt> getUpdates(LocalDate fromDate) {
-		throw new DataNotSetupException();
+		return EmptyCollections.list();
 	}
 
 	@Override

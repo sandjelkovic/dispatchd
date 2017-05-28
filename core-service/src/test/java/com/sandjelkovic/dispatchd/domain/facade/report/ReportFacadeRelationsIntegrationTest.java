@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.domain.facade.report;
 
 import com.sandjelkovic.dispatchd.DispatchdApplication;
+import com.sandjelkovic.dispatchd.content.trakt.importer.service.impl.DefaultTraktImporterService;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
@@ -20,6 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
 
+import static com.sandjelkovic.dispatchd.config.Constants.AGENTS_OF_SHIELD_SLUG;
+import static com.sandjelkovic.dispatchd.config.Constants.STAR_TREK_TNG_SLUG;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -35,16 +38,17 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 	@Autowired
 	private ReportFacade target;
 
+	@Autowired
+	private DefaultTraktImporterService importerService;
+
 	private TvShow tngShow;
 	private TvShow shieldShow;
 
 	@Before
 	public void setUp() throws Exception {
 		setUpUsers();
-		TvShow starTrekTNG = testDataGenerator.createStarTrekTNG();
-		tngShow = showService.save(starTrekTNG);
-		TvShow agentsOfShield = testDataGenerator.createAgentsOfShield();
-		shieldShow = showService.save(agentsOfShield);
+		tngShow = importerService.importShow(STAR_TREK_TNG_SLUG);
+		shieldShow = importerService.importShow(AGENTS_OF_SHIELD_SLUG);
 		refreshJPAContext();
 	}
 
