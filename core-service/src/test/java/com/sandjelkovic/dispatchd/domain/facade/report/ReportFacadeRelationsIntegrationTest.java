@@ -5,7 +5,6 @@ import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
-import com.sandjelkovic.dispatchd.exception.ExistingRelationException;
 import com.sandjelkovic.dispatchd.exception.ReportTemplateNotFoundException;
 import com.sandjelkovic.dispatchd.exception.ShowNotFoundException;
 import org.junit.Assert;
@@ -46,6 +45,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 		tngShow = showService.save(starTrekTNG);
 		TvShow agentsOfShield = testDataGenerator.createAgentsOfShield();
 		shieldShow = showService.save(agentsOfShield);
+		refreshJPAContext();
 	}
 
 	@Test
@@ -120,7 +120,6 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 		Assert.assertThat(shieldRelation.getOrderInReport(), equalTo(5));
 	}
 
-	@Test(expected = ExistingRelationException.class)
 	@WithMockUser(username = USER_NAME)
 	public void connectShowTwiceSameShow() throws Exception {
 		ReportTemplate template = reportTemplateRepository.save(generateTemplateWithGenerationInPastWithoutShows().user(getUser(USER_NAME)));
@@ -128,7 +127,19 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 		target.connectShow(template.getId(), tngShow.getId(), 2);
 		refreshJPAContext();
 		target.connectShow(template.getId(), tngShow.getId(), 5);
+		refreshJPAContext();
 
+		ReportTemplate templateAfter = reportTemplateRepository.findOne(template.getId());
+		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), notNullValue());
+		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), not(empty()));
+		// should have just updated
+		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), hasSize(1));
+
+		ReportTemplate2TvShow relation = templateAfter.getReportTemplate2TvShows().get(0);
+		Assert.assertThat(relation, notNullValue());
+		Assert.assertThat(relation.getTvShow().getId(), equalTo(tngShow.getId()));
+		// should be updated value
+		Assert.assertThat(relation.getOrderInReport(), equalTo(5));
 	}
 
 }
