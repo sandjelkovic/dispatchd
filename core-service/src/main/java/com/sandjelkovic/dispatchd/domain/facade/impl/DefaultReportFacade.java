@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class DefaultReportFacade implements ReportFacade {
+	//todo create services. Facade shouldn't use repositories. Move security to Services.
 
 	@Autowired
 	private ValuesConfiguration valuesConfiguration;
@@ -202,14 +203,14 @@ public class DefaultReportFacade implements ReportFacade {
 	}
 
 	@Override
-	public void connectShow(Long templateId, Long showId, int order) {
+	public void connectShow(Long templateId, Long showId, int order) { //todo TEST
 		ReportTemplate template = findTemplate(templateId).orElseThrow(ReportTemplateNotFoundException::new);
 		TvShow show = tvShowService.findOne(showId).orElseThrow(ShowNotFoundException::new);
 		// if connection already exists -> Update existing
-		relationRepository.save(createRelation(order, template, show));
+		relationRepository.save(generateRelation(order, template, show));
 	}
 
-	public ReportTemplate2TvShow createRelation(int order, ReportTemplate template, TvShow show) {
+	public ReportTemplate2TvShow generateRelation(int order, ReportTemplate template, TvShow show) {
 		ReportTemplate2TvShowPK relationPK = new ReportTemplate2TvShowPK()
 				.showId(show.getId())
 				.reporttemplateId(template.getId());
