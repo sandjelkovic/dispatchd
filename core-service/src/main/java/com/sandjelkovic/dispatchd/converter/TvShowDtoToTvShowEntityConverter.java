@@ -15,12 +15,12 @@ public class TvShowDtoToTvShowEntityConverter implements Converter<TvShowDTO, Tv
 		tvShow.setId(source.getId());
 		tvShow.setStatus(source.getStatus());
 		tvShow.setTitle(source.getTitle());
-		tvShow.setTraktId(source.getIds().getOrDefault("trakt", ""));
-		tvShow.setImdbId(source.getIds().getOrDefault("imdb", ""));
-		tvShow.setTmdbId(source.getIds().getOrDefault("tmdb", ""));
-		tvShow.setTvdbId(source.getIds().getOrDefault("tvdb", ""));
+		tvShow.setTraktId(source.getTraktId());
+		tvShow.setImdbId(source.getImdbId());
+		tvShow.setTmdbId(source.getTmdbId());
+		tvShow.setTvdbId(source.getTvdbId());
 		tvShow.setYear(source.getYear());
-		tvShow.setLastLocalUpdate(ChronoHelper.timestampFromNullable(source.getLastUpdatedAt()));
+		tvShow.setLastLocalUpdate(ChronoHelper.timestampFromNullable(source.getLastUpdatedAt().toInstant()));
 		return tvShow;
 	}
 }

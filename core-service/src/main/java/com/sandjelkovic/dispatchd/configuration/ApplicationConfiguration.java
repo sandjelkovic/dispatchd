@@ -3,7 +3,10 @@ package com.sandjelkovic.dispatchd.configuration;
 import com.sandjelkovic.dispatchd.common.helper.DefaultEventDispatcher;
 import com.sandjelkovic.dispatchd.common.orika.converter.LocalDateConverter;
 import com.sandjelkovic.dispatchd.common.orika.converter.ZonedDateTimeConverter;
+import com.sandjelkovic.dispatchd.common.orika.converter.ZonedDateTimeTimestampConverter;
 import com.sandjelkovic.dispatchd.domain.data.TimeGenerator;
+import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
+import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -33,6 +36,9 @@ public class ApplicationConfiguration {
 		DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 		mapperFactory.getConverterFactory().registerConverter(new ZonedDateTimeConverter());
 		mapperFactory.getConverterFactory().registerConverter(new LocalDateConverter());
+		mapperFactory.getConverterFactory().registerConverter(new ZonedDateTimeTimestampConverter());
+		mapperFactory.classMap(TvShow.class, TvShowDTO.class)
+				.field("lastLocalUpdate", "lastUpdatedAt").byDefault().register();
 		return mapperFactory;
 	}
 

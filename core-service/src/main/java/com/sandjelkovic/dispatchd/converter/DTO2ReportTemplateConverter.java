@@ -6,7 +6,6 @@ import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShow;
 import com.sandjelkovic.dispatchd.domain.data.entity.ReportTemplate2TvShowPK;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
-import com.sandjelkovic.dispatchd.domain.facade.ReportFacade;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
 import com.sandjelkovic.dispatchd.gateway.api.dto.ReportTemplateDTO;
 import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
@@ -25,13 +24,9 @@ public class DTO2ReportTemplateConverter implements Converter<ReportTemplateDTO,
 	@Autowired
 	private TvShowService tvShowService;
 
-	@Autowired
-	private ReportFacade reportFacade;
-
 	@Override
 	public ReportTemplate convert(ReportTemplateDTO source) {
-		ReportTemplate destination = new ReportTemplate();
-		destination.id(source.getId())
+		return new ReportTemplate().id(source.getId())
 				.active(source.getActive())
 				.description(source.getDescription())
 				.name(source.getName())
@@ -40,7 +35,6 @@ public class DTO2ReportTemplateConverter implements Converter<ReportTemplateDTO,
 				.repeatDayOfWeek(source.getRepeatDayOfWeek())
 				.repeatType(source.getRepeatType())
 				.reportTemplate2TvShows(getConvertedTvShows(source));
-		return destination;
 	}
 
 	private List<ReportTemplate2TvShow> getConvertedTvShows(ReportTemplateDTO source) {
