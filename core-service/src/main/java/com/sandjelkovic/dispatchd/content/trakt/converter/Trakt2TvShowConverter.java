@@ -3,14 +3,12 @@ package com.sandjelkovic.dispatchd.content.trakt.converter;
 import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
 import com.sandjelkovic.dispatchd.domain.data.entity.TvShow;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 
-@Component
-public class TvShowEntityConverter implements Converter<TvShowTrakt, TvShow> {
+public class Trakt2TvShowConverter implements Converter<TvShowTrakt, TvShow> {
 
 	@Override
 	public TvShow convert(TvShowTrakt source) {

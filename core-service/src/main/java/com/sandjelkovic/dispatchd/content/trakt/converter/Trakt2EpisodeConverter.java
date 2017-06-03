@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Component
-public class EpisodeEntityConverter implements Converter<EpisodeTrakt, Episode> {
+public class Trakt2EpisodeConverter implements Converter<EpisodeTrakt, Episode> {
 
 	@Override
 	public Episode convert(EpisodeTrakt source) {

@@ -10,8 +10,8 @@ import com.sandjelkovic.dispatchd.domain.data.repository.UpdateJobRepository;
 import com.sandjelkovic.dispatchd.domain.service.ContentRefreshService;
 import com.sandjelkovic.dispatchd.domain.service.EpisodeService;
 import com.sandjelkovic.dispatchd.domain.service.TvShowService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
@@ -32,20 +32,16 @@ import static java.util.stream.Collectors.toList;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class DefaultContentRefreshService implements ContentRefreshService {
-	@Autowired
 	private EpisodeService episodeService;
 
-	@Autowired
 	private TvShowService tvShowService;
 
-	@Autowired
 	private UpdateJobRepository jobRepository;
 
-	@Autowired
 	private TraktMediaProvider provider;
 
-	@Autowired
 	private TraktImporterService traktImporterService;
 
 	@Override
@@ -56,7 +52,7 @@ public class DefaultContentRefreshService implements ContentRefreshService {
 
 		List<String> traktIds = getTraktIds(updatedShows);
 		List<String> idsForImport = filterForLocalIds(traktIds);
-		log.debug("Shows to be importer (Trakt IDs): " + traktIds.toString());
+		log.debug("Shows to be imported (Trakt IDs): " + traktIds.toString());
 
 		// possible optimisation for failure cases -> scan internal db and compare retrieved.updatedAt < internal.lastLocalUpdate
 		// in order to only update shows that failed in  the past. Since the update time is started from the last successful refresh.

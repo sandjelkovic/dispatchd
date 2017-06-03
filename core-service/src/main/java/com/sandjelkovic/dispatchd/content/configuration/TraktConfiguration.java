@@ -1,6 +1,9 @@
 package com.sandjelkovic.dispatchd.content.configuration;
 
 import com.sandjelkovic.dispatchd.content.configuration.interceptor.HeaderRequestInterceptor;
+import com.sandjelkovic.dispatchd.content.trakt.converter.Trakt2EpisodeConverter;
+import com.sandjelkovic.dispatchd.content.trakt.converter.Trakt2SeasonConverter;
+import com.sandjelkovic.dispatchd.content.trakt.converter.Trakt2TvShowConverter;
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider;
 import com.sandjelkovic.dispatchd.content.trakt.provider.impl.DefaultTraktMediaProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +44,20 @@ public class TraktConfiguration {
 		return apiVersion;
 	}
 
+	@Bean
+	public Trakt2EpisodeConverter trakt2EpisodeConverter() {
+		return new Trakt2EpisodeConverter();
+	}
+
+	@Bean
+	public Trakt2SeasonConverter trakt2SeasonConverter() {
+		return new Trakt2SeasonConverter();
+	}
+
+	@Bean
+	public Trakt2TvShowConverter trakt2TvShowConverter() {
+		return new Trakt2TvShowConverter();
+	}
 
 	@Bean
 	public TraktMediaProvider defaultTraktMediaProvider(TraktConfiguration traktConfiguration) {
