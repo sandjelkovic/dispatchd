@@ -4,10 +4,8 @@ import com.sandjelkovic.dispatchd.common.helper.ChronoHelper;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.domain.data.entity.Season;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
-@Component
-public class SeasonEntityConverter implements Converter<SeasonTrakt, Season> {
+public class Trakt2SeasonConverter implements Converter<SeasonTrakt, Season> {
 
 	@Override
 	public Season convert(SeasonTrakt source) {
