@@ -5,7 +5,7 @@
 
 	<groupId>com.sandjelkovic.dispatch.monitor</groupId>
 	<artifactId>monitor-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${dispatchd.version}-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>monitor-service</name>
@@ -35,6 +35,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker.plugin.version}</version>
+				<configuration>
+					<skipDockerBuild>false</skipDockerBuild>
+					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<imageTags>
+						<imageTag>${project.version}</imageTag>
+					</imageTags>
+					<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
