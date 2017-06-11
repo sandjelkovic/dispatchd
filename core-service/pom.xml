@@ -5,7 +5,7 @@
 
 	<groupId>com.sandjelkovic.dispatchd.core</groupId>
 	<artifactId>core-service</artifactId>
-	<version>${dispatchd.version}-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>core-service</name>
@@ -172,7 +172,17 @@
 							<include>${project.build.finalName}.jar</include>
 						</resource>
 					</resources>
+					<pushImage>false</pushImage>
 				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
