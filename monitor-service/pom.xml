@@ -5,7 +5,7 @@
 
 	<groupId>com.sandjelkovic.dispatch.monitor</groupId>
 	<artifactId>monitor-service</artifactId>
-	<version>${dispatchd.version}-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>monitor-service</name>
