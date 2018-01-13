@@ -120,44 +120,41 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Override
 	public Optional<GeneratedReport> findGenerated(Long id) {
-		return Optional.ofNullable(generatedReportRepository.findOne(id));
+		return generatedReportRepository.findById(id);
 	}
 
 	@Override
 	public Optional<ReportTemplate> findTemplate(Long id) {
-		return Optional.ofNullable(reportTemplateRepository.findOne(id));
+		return reportTemplateRepository.findById(id);
 	}
 
 	@Override
 	public void delete(GeneratedReport generatedReport) {
-		if (generatedReportRepository.findOne(generatedReport.getId()) == null) {
-			throw new ResourceNotFoundException();
-		}
+		generatedReportRepository.findById(generatedReport.getId())
+				.orElseThrow(ResourceNotFoundException::new);
+
 		generatedReportRepository.delete(generatedReport);
 	}
 
 	@Override
 	public void delete(ReportTemplate reportTemplate) {
-		if (reportTemplateRepository.findOne(reportTemplate.getId()) == null) {
-			throw new ResourceNotFoundException();
-		}
+		reportTemplateRepository.findById(reportTemplate.getId())
+				.orElseThrow(ResourceNotFoundException::new);
 		reportTemplateRepository.delete(reportTemplate);
 	}
 
 	@Override
 	public void deleteTemplate(Long id) {
-		if (reportTemplateRepository.findOne(id) == null) {
-			throw new ResourceNotFoundException();
-		}
-		reportTemplateRepository.delete(id);
+		reportTemplateRepository.findById(id)
+				.orElseThrow(ResourceNotFoundException::new);
+		reportTemplateRepository.deleteById(id);
 	}
 
 	@Override
 	public void deleteGenerated(Long id) {
-		if (generatedReportRepository.findOne(id) == null) {
-			throw new ResourceNotFoundException();
-		}
-		generatedReportRepository.delete(id);
+		generatedReportRepository.findById(id)
+				.orElseThrow(ResourceNotFoundException::new);
+		generatedReportRepository.deleteById(id);
 	}
 
 	public List<ReportTemplate> findAll() {
@@ -182,11 +179,10 @@ public class DefaultReportFacade implements ReportFacade {
 
 	@Override
 	public void disconnectAllShows(Long templateId) {
-		ReportTemplate template = reportTemplateRepository.findOne(templateId);
-		if (template == null) {
-			throw new ResourceNotFoundException();
-		}
-		relationRepository.delete(template.getReportTemplate2TvShows()); //todo TEST
+		ReportTemplate template = reportTemplateRepository.findById(templateId)
+				.orElseThrow(ResourceNotFoundException::new);
+
+		relationRepository.deleteAll(template.getReportTemplate2TvShows()); //todo TEST
 	}
 
 	@Override
@@ -199,13 +195,13 @@ public class DefaultReportFacade implements ReportFacade {
 				.filter(rel -> rel.getShowId().equals(parsedShowId))
 				.findFirst()
 				.orElseThrow(ResourceNotFoundException::new);
-		relationRepository.delete(relation);
+		relationRepository.deleteById(relation);
 	}
 
 	@Override
 	public void connectShow(Long templateId, Long showId, int order) { //todo TEST
 		ReportTemplate template = findTemplate(templateId).orElseThrow(ReportTemplateNotFoundException::new);
-		TvShow show = tvShowService.findOne(showId).orElseThrow(ShowNotFoundException::new);
+		TvShow show = tvShowService.findById(showId).orElseThrow(ShowNotFoundException::new);
 		// if connection already exists -> Update existing
 		relationRepository.save(generateRelation(order, template, show));
 	}
@@ -237,6 +233,9 @@ public class DefaultReportFacade implements ReportFacade {
 		}
 		if (template.getTimeToGenerateReport() == null) {
 			template.setTimeToGenerateReport(getNewGenerationTimeForTemplate(template));
+		}
+		if (template.getTimeOfDayToDeliver() == null) {
+			throw new ConstraintException();
 		}
 
 	}

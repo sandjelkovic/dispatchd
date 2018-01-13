@@ -36,21 +36,21 @@ public class DefaultContentService implements ContentService {
 
 	@Override
 	public Page<Episode> findEpisodeListByShow(Long showId, Pageable pageable) {
-		TvShow show = tvShowService.findOne(showId)
+		TvShow show = tvShowService.findById(showId)
 				.orElseThrow(ShowNotFoundException::new);
 		return episodeService.findByTvShow(show, pageable);
 	}
 
 	@Override
 	public Page<Episode> findEpisodeListBySeason(Long seasonId, Pageable pageable) {
-		Season season = seasonService.findOne(seasonId)
+		Season season = seasonService.findById(seasonId)
 				.orElseThrow(ResourceNotFoundException::new);
 		return episodeService.findBySeason(season, pageable);
 	}
 
 	@Override
 	public TvShow findShow(Long showId) {
-		return tvShowService.findOne(showId)
+		return tvShowService.findById(showId)
 				.orElseThrow(ShowNotFoundException::new);
 	}
 

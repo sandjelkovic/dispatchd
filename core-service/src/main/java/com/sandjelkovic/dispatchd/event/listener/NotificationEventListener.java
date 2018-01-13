@@ -15,7 +15,7 @@ public class NotificationEventListener {
 	public void dispatchNotification(DispatchNotificationEvent event) {
 		//send mail
 		log.debug("Sending mail from " + event);
-		//save updated version to db or delete
+		//save updated version to db or deleteById
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {

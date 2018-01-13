@@ -48,7 +48,7 @@ public class ReportGeneratorServiceIntegrationTest {
 
 	@Before
 	public void setUp() throws Exception {
-		reportTemplateRepository.save(generateTemplatesWithTimesToGenerate(
+		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(55),
 				ZonedDateTime.now().minusMinutes(2),
 				ZonedDateTime.now().minusSeconds(5),
@@ -68,7 +68,7 @@ public class ReportGeneratorServiceIntegrationTest {
 
 		GeneratedReport generatedReport = target.generateReportFromTemplate(reportTemplate);
 
-		GeneratedReport retrievedReport = generatedReportRepository.findOne(generatedReport.getId());
+		GeneratedReport retrievedReport = generatedReportRepository.findById(generatedReport.getId()).get();
 		assertThat(retrievedReport, notNullValue());
 		assertThat(retrievedReport.getId(), notNullValue());
 		assertThat(retrievedReport.getReportTemplate(), notNullValue());

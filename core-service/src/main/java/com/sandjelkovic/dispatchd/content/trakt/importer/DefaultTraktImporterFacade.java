@@ -27,7 +27,6 @@ import org.springframework.web.util.UriComponents;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventListener {
@@ -45,7 +44,7 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 
 	@Override
 	public ImportStatusDTO getImportStatus(Long id) {
-		ImportStatus status = Optional.ofNullable(traktImporterService.findOneImportStatus(id))
+		ImportStatus status = traktImporterService.findImportStatus(id)
 				.orElseThrow(ResourceNotFoundException::new);
 		return conversionService.convert(status, ImportStatusDTO.class);
 	}
@@ -60,7 +59,7 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 		}
 		ImportStatus status = traktImporterService.createNewImportStatus(segments);
 		pickAndDoImport(segments, segments.get(0), status);
-		return conversionService.convert(traktImporterService.findOneImportStatus(status.getId()), ImportStatusDTO.class);
+		return conversionService.convert(getImportStatus(status.getId()), ImportStatusDTO.class);
 	}
 
 	private void pickAndDoImport(List<String> segments, String type, ImportStatus status) {
@@ -104,7 +103,8 @@ public class DefaultTraktImporterFacade implements ImporterFacade, ImportEventLi
 	}
 
 	public ImportStatus updateStatus(ImportStatus status, ImportProgressStatus progress) {
-		ImportStatus importStatus = traktImporterService.findOneImportStatus(status.getId());
+		ImportStatus importStatus = traktImporterService.findImportStatus(status.getId())
+				.orElseThrow(ResourceNotFoundException::new);
 		importStatus.setFinishTime(ZonedDateTime.now());
 		importStatus.setStatus(progress);
 		return traktImporterService.save(importStatus);

@@ -74,14 +74,14 @@ public class ReportTemplateRelationsController extends BaseController {
 	@RequestMapping(value = "/{templateId}/shows/{showId}", method = DELETE)
 	@ResponseStatus(OK)
 	public void deleteConnectionToShow(@PathVariable Long templateId, @PathVariable String showId) {
-		// delete relations template <> shows.
+		// deleteById relations template <> shows.
 		reportFacade.disconnectShow(templateId, showId);
 	}
 
 	@RequestMapping(value = "/{templateId}/shows", method = DELETE)
 	@ResponseStatus(OK)
 	public void deleteConnectionsToShow(@PathVariable Long templateId) {
-		// delete relations template <> shows.
+		// deleteById relations template <> shows.
 		reportFacade.disconnectAllShows(templateId);
 	}
 

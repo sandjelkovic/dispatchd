@@ -28,6 +28,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -84,7 +85,7 @@ public class DefaultTraktImporterService implements TraktImporterService {
 			episode.setSeason(seasonsMap.getOrDefault(episode.getSeasonNumber(), new Season()));
 		});
 		episodeService.save(episodeList);
-		return tvShowService.findOne(show.getId()).get();
+		return tvShowService.findById(show.getId()).get();
 	}
 
 	@Override
@@ -108,8 +109,8 @@ public class DefaultTraktImporterService implements TraktImporterService {
 	}
 
 	@Override
-	public ImportStatus findOneImportStatus(Long id) {
-		return importStatusRepository.findOne(id);
+	public Optional<ImportStatus> findImportStatus(Long id) {
+		return importStatusRepository.findById(id);
 	}
 
 	private TvShowTrakt getTvShowFromTrakt(String showId) {

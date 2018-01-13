@@ -20,7 +20,7 @@ public class DefaultEpisodeService implements EpisodeService {
 
 	@Override
 	public Iterable<Episode> save(Iterable<Episode> episodeList) {
-		return repository.save(episodeList);
+		return repository.saveAll(episodeList);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class DefaultEpisodeService implements EpisodeService {
 
 	@Override
 	public Optional<Episode> findOne(Long id) {
-		return Optional.ofNullable(repository.findOne(id));
+		return repository.findById(id);
 	}
 
 	@Override
