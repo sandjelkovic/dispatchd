@@ -71,7 +71,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 		target.connectShow(template.getId(), tngShow.getId(), 2);
 		refreshJPAContext();
 
-		ReportTemplate templateAfter = reportTemplateRepository.findOne(template.getId());
+		ReportTemplate templateAfter = reportTemplateRepository.findById(template.getId()).get();
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), notNullValue());
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), not(empty()));
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), hasSize(1));
@@ -107,7 +107,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 		target.connectShow(template.getId(), shieldShow.getId(), 5);
 
 		refreshJPAContext();
-		ReportTemplate templateAfter = reportTemplateRepository.findOne(template.getId());
+		ReportTemplate templateAfter = reportTemplateRepository.findById(template.getId()).get();
 
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), notNullValue());
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), not(empty()));
@@ -133,7 +133,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 		target.connectShow(template.getId(), tngShow.getId(), 5);
 		refreshJPAContext();
 
-		ReportTemplate templateAfter = reportTemplateRepository.findOne(template.getId());
+		ReportTemplate templateAfter = reportTemplateRepository.findById(template.getId()).get();
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), notNullValue());
 		Assert.assertThat(templateAfter.getReportTemplate2TvShows(), not(empty()));
 		// should have just updated

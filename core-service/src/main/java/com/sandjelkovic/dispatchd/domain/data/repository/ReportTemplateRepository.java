@@ -28,14 +28,8 @@ public interface ReportTemplateRepository extends PagingAndSortingRepository<Rep
 	Page<ReportTemplate> findByUserId(Pageable pageable, Long userId);
 
 	@Override
-	ReportTemplate findOne(Long id);
-
-	@Override
-	boolean exists(Long id);
-
-	@Override
 	@PreAuthorize("authentication.name == @defaultReportFacade.findGenerated(#id).get().reportTemplate.user.username")
-	void delete(Long id);
+	void deleteById(Long id);
 
 	@Override
 	@PreAuthorize("authentication.name == @defaultReportFacade.findGenerated(#entity.id).get().reportTemplate.user.username")

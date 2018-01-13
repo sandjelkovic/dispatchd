@@ -14,6 +14,7 @@ import com.sandjelkovic.dispatchd.domain.data.repository.TvShowRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserFollowingTvShowRepository;
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
+import com.sandjelkovic.dispatchd.exception.ResourceNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserDoesntFollowTvShowException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
 import com.sandjelkovic.dispatchd.gateway.api.dto.TvShowDTO;
@@ -138,13 +139,13 @@ public class DefaultUserFacadeIntegrationTest {
 		s2.setEpisodesAiredCount(22);
 		s2.setAirdate(Timestamp.valueOf("1988-11-22 02:00:00"));
 		seasonRepository.save(s1);
-		seasonRepository.saveAndFlush(s2);
+		seasonRepository.save(s2);
 		starTrekTNG = refreshTvShowAndInitialise(starTrekTNG.getId());
 
 	}
 
 	private TvShow refreshTvShowAndInitialise(Long id) {
-		TvShow show = tvShowRepository.findOne(id);
+		TvShow show = tvShowRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
 		show.setSeasons(seasonRepository.findByTvShow(show));
 		show.setEpisodes(episodeRepository.findByTvShow(show));
 		return show;
@@ -153,8 +154,8 @@ public class DefaultUserFacadeIntegrationTest {
 	@After
 	public void tearDown() throws Exception {
 		userRepository.delete(testUser);
-		episodeRepository.delete(starTrekTNG.getEpisodes());
-		seasonRepository.delete(starTrekTNG.getSeasons());
+		episodeRepository.deleteAll(starTrekTNG.getEpisodes());
+		seasonRepository.deleteAll(starTrekTNG.getSeasons());
 		starTrekTNG.setEpisodes(null);
 		starTrekTNG.setSeasons(null);
 		tvShowRepository.delete(starTrekTNG);

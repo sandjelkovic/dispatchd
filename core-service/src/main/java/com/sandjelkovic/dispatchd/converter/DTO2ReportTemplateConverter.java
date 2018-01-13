@@ -41,7 +41,7 @@ public class DTO2ReportTemplateConverter implements Converter<ReportTemplateDTO,
 		List<TvShow> collected = Optional.ofNullable(source.getTvShows())
 				.orElseGet(EmptyCollections::list).stream()
 				.map(TvShowDTO::getId)
-				.map(tvShowService::findOne)
+				.map(tvShowService::findById)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.collect(toList());

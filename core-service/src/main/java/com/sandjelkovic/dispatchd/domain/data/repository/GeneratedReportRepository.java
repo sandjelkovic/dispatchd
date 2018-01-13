@@ -18,14 +18,8 @@ public interface GeneratedReportRepository extends PagingAndSortingRepository<Ge
 	Page<GeneratedReport> findByReportTemplateIdAndReportTemplateUserUsername(Pageable pageable, Long templateId, String username);
 
 	@Override
-	GeneratedReport findOne(Long id);
-
-	@Override
-	boolean exists(Long id);
-
-	@Override
 	@PreAuthorize("authentication.name == @generatedReportRepository.findOne(#id).get().user.username")
-	void delete(Long id);
+	void deleteById(Long id);
 
 	@Override
 	@PreAuthorize("authentication.name == @generatedReportRepository.findOne(#entity.id).get().user.username")

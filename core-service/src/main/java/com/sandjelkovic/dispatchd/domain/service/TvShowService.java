@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface TvShowService {
 	TvShow save(TvShow tvShow);
 
-	Optional<TvShow> findOne(Long id);
+	Optional<TvShow> findById(Long id);
 
 	Optional<TvShow> findByTraktId(String traktId);
 

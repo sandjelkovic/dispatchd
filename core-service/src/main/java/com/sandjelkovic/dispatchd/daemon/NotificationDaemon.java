@@ -95,7 +95,7 @@ public class NotificationDaemon {
 
 	private void updateStatus(Set<UserEpisodeNotificationEvent> events) {
 		events.forEach(event -> event.setNotified(true));
-		notificationEventRepository.save(events);
+		notificationEventRepository.saveAll(events);
 	}
 
 	public Set<UserEpisodeNotificationEvent> collect() throws InterruptedException {

@@ -46,8 +46,8 @@ public class DefaultUserEpisodeNotificationEventHelperService implements UserEpi
 				.map(getUpdateTimestamp(following.getUserPickedRelativeTimeToNotify()))
 				.collect(partitioningBy(event -> event.getNotifyTime().toInstant().isAfter(Instant.now())));
 
-		notificationEventRepository.delete(notifications.get(false));
-		notificationEventRepository.save(notifications.get(true));
+		notificationEventRepository.deleteAll(notifications.get(false));
+		notificationEventRepository.saveAll(notifications.get(true));
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class DefaultUserEpisodeNotificationEventHelperService implements UserEpi
 				.map(episode -> notificationEventRepository.findByEpisodeAndUser(episode, following.getUser()))
 				.flatMap(Collection::stream)
 				.collect(toList());
-		notificationEventRepository.delete(events);
+		notificationEventRepository.deleteAll(events);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class DefaultUserEpisodeNotificationEventHelperService implements UserEpi
 				.filter(episode -> episode.getAirdate().toInstant().isAfter(Instant.now()))
 				.map(getEpisodeToNotificationEventMapper(following))
 				.collect(toList());
-		notificationEventRepository.save(events);
+		notificationEventRepository.saveAll(events);
 	}
 
 	private Function<? super Episode, UserEpisodeNotificationEvent> getEpisodeToNotificationEventMapper(UserFollowingTvShow following) {

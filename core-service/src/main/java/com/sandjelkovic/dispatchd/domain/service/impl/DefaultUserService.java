@@ -8,6 +8,7 @@ import com.sandjelkovic.dispatchd.domain.data.repository.UserFollowingTvShowRepo
 import com.sandjelkovic.dispatchd.domain.data.repository.UserRepository;
 import com.sandjelkovic.dispatchd.domain.service.UserEpisodeNotificationEventHelperService;
 import com.sandjelkovic.dispatchd.domain.service.UserService;
+import com.sandjelkovic.dispatchd.exception.ShowNotFoundException;
 import com.sandjelkovic.dispatchd.exception.UserDoesntFollowTvShowException;
 import com.sandjelkovic.dispatchd.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class DefaultUserService implements UserService {
 
 	@Override
 	public Optional<User> findById(Long id) {
-		return Optional.ofNullable(userRepository.findOne(id));
+		return userRepository.findById(id);
 	}
 
 	@Override
@@ -56,14 +57,15 @@ public class DefaultUserService implements UserService {
 
 	@Override
 	public void followTvShowForUser(User user, TvShow tvShow) {
-		Optional.ofNullable(userFollowingTvShowRepository.findOneByUserAndTvShow(user, tvShow))
-				.orElse(userFollowingTvShowRepository.save(new UserFollowingTvShow(user, tvShow)));
+		if (userFollowingTvShowRepository.findOneByUserAndTvShow(user, tvShow) == null) {
+			userFollowingTvShowRepository.save(new UserFollowingTvShow(user, tvShow));
+		}
 	}
 
 	@Override
 	public void followTvShowForUser(User user, TvShow tvShow, Duration delay) {
 		User userRetrieved = userRepository.findOneByUsername(user.getUsername()).orElseThrow(UserNotFoundException::new);
-		TvShow tvShowRetrieved = tvShowRepository.findOne(tvShow.getId());
+		TvShow tvShowRetrieved = tvShowRepository.findById(tvShow.getId()).orElseThrow(ShowNotFoundException::new);
 
 		UserFollowingTvShow following = Optional.ofNullable(userFollowingTvShowRepository.findOneByUserAndTvShow(user, tvShow))
 				.orElseGet(() -> new UserFollowingTvShow(userRetrieved, tvShowRetrieved));

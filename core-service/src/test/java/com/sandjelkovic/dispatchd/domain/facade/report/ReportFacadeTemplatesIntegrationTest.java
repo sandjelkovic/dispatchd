@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -75,7 +76,7 @@ public class ReportFacadeTemplatesIntegrationTest extends BaseIntegrationTest {
 
 		createTemplatesForUserTwo();
 
-		Page<ReportTemplate> pageOfTemplates = target.findTemplatesForUser(generateSimplePageable(0, amountToRetrieve, null), USER_NAME);
+		Page<ReportTemplate> pageOfTemplates = target.findTemplatesForUser(generateSimplePageable(0, amountToRetrieve, Sort.unsorted()), USER_NAME);
 
 		assertThat(pageOfTemplates.getTotalElements(), is(totalAmountToSave));
 		assertThat(pageOfTemplates.getNumberOfElements(), is(amountToRetrieve));

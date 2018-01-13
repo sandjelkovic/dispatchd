@@ -10,5 +10,5 @@ public interface SeasonService {
 
 	Season save(Season season);
 
-	Optional<Season> findOne(Long id);
+	Optional<Season> findById(Long id);
 }

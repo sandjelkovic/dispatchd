@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TraktImporterService {
 
@@ -20,5 +21,5 @@ public interface TraktImporterService {
 
 	ImportStatus save(ImportStatus status);
 
-	ImportStatus findOneImportStatus(Long id);
+	Optional<ImportStatus> findImportStatus(Long id);
 }
