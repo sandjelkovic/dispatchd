@@ -41,7 +41,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"testing"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = {DispatchdApplication.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = {DispatchdApplication.class})
 public class DefaultUserFacadeIntegrationTest {
 
 	public static final String INTEGRATION_TEST_USER_USERNAME = "integrationTestUser";
