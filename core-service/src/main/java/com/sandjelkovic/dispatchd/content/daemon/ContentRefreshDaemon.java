@@ -22,7 +22,7 @@ public class ContentRefreshDaemon {
 	private ContentRefreshService contentRefreshService;
 
 	@Async
-	@Scheduled(fixedDelayString = "#{${content.refresh.interval.minutes}*1000*60}", initialDelay = 1000 * 5)
+	@Scheduled(fixedDelayString = "#{${content.refresh.interval.minutes:1}*1000*60}", initialDelay = 1000 * 5)
 	public void invokeContentRefresh() {
 		log.debug("content refresh started");
 		try {
