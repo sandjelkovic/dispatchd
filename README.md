@@ -33,4 +33,5 @@ At this moment, only trakt is supported for imports. URL that needs to be provid
 |----------	|-----:	|
 | Configuration service 	| 8888 	|
 | Core service 	| 8080 	|
+| Content service 	| 8090 	|
 | Monitor service 	| 8010 	|
