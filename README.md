@@ -1,7 +1,9 @@
-# dispatchd
-Application to notify when episodes go live or aggregate those notifications in reports
+# dispatchd 
+[![Build Status](https://travis-ci.org/sandjelkovic/dispatchd.svg?branch=develop)](https://travis-ci.org/sandjelkovic/dispatchd)
 
-Currently in heavy development mode.
+| Application to notify when episodes go live or aggregate those notifications in reports
+
+| Currently in heavy development mode.
 
 #### Purpose
 Goal of this application is to provide updates for episodes airdates in the form of customisable reports.
