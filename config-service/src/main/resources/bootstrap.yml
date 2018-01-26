@@ -5,6 +5,13 @@ spring:
     name: configserver
   config:
     name: configserver
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configs/
   boot:
     admin:
       url: http://localhost:8010

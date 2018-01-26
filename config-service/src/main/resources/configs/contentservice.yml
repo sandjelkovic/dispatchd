@@ -1,0 +1,7 @@
+dispatchd:
+  config:
+    test: config_config_contentservice_yml
+content:
+    refresh:
+        interval:
+            minutes: 1
