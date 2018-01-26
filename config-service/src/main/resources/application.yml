@@ -1,7 +1,7 @@
 server:
-  port: 8001
+  port: 8888
 spring:
   application:
-    name: Dispatchd Config service
-management:
-  context-path: /actuator
+    name: configserver
+  profiles:
+    active: native
