@@ -19,9 +19,13 @@ data class Show(
         var status: String? = null,
         var lastLocalUpdate: ZonedDateTime? = null,
 
+        @Column(unique = true)
         var imdbId: String? = null,
+        @Column(unique = true)
         var tmdbId: String? = null,
+        @Column(unique = true)
         var traktId: String? = null,
+        @Column(unique = true)
         var tvdbId: String? = null,
 
         @OneToMany(mappedBy = "show")
