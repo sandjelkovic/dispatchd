@@ -29,7 +29,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-		<kotlin.version>1.2.10</kotlin.version>
+		<kotlin.version>1.2.21</kotlin.version>
 		<spring-cloud.version>Finchley.M5</spring-cloud.version>
 		<spring-boot.version>2.0.0.M7</spring-boot.version>
 		<docker.plugin.version>1.0.0</docker.plugin.version>
