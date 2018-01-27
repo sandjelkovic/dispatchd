@@ -16,9 +16,13 @@ data class Season(
         var description: String = "",
         var number: String? = null,
 
+        @Column(unique = true)
         var imdbId: String? = null,
+        @Column(unique = true)
         var tmdbId: String? = null,
+        @Column(unique = true)
         var traktId: String? = null,
+        @Column(unique = true)
         var tvdbId: String? = null,
 
         var episodesAiredCount: Int? = null,

@@ -37,6 +37,15 @@ class EpisodeRepositoryTest {
         assertThat(saved.id)
                 .isNotNull()
                 .isGreaterThan(0)
+
+        val foundOptional = repository.findById(saved.id!!)
+        assertThat(foundOptional)
+                .isPresent
+        assertThat(foundOptional.get())
+                .isEqualToIgnoringNullFields(episode)
+        assertThat(foundOptional.get().id)
+                .isNotNull()
+                .isGreaterThan(0)
     }
 
     @Test
@@ -48,6 +57,37 @@ class EpisodeRepositoryTest {
         assertThat(saved)
                 .isEqualToIgnoringNullFields(episode)
         assertThat(saved.id)
+                .isNotNull()
+                .isGreaterThan(0)
+
+        val foundOptional = repository.findById(saved.id!!)
+        assertThat(foundOptional)
+                .isPresent
+        assertThat(foundOptional.get())
+                .isEqualToIgnoringNullFields(episode)
+        assertThat(foundOptional.get().id)
+                .isNotNull()
+                .isGreaterThan(0)
+    }
+
+    @Test
+    fun saveEpisodeWithNewShow() {
+        val episode = Episode(show = Show())
+
+        val saved = repository.save(episode.copy())
+
+        assertThat(saved)
+                .isEqualToIgnoringNullFields(episode)
+        assertThat(saved.id)
+                .isNotNull()
+                .isGreaterThan(0)
+
+        val foundOptional = repository.findById(saved.id!!)
+        assertThat(foundOptional)
+                .isPresent
+        assertThat(foundOptional.get())
+                .isEqualToIgnoringNullFields(episode)
+        assertThat(foundOptional.get().id)
                 .isNotNull()
                 .isGreaterThan(0)
     }
@@ -142,7 +182,6 @@ class EpisodeRepositoryTest {
                 .doesNotHaveDuplicates()
                 .containsAll(episodes)
     }
-
 
     @Test
     fun findBySeasonPageable() {

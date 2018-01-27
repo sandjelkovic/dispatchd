@@ -23,9 +23,13 @@ data class Episode(
         var number: Int = 0,
         var seasonNumber: String? = null,
 
-        var tmdbId: String? = null,
+        @Column(unique = true)
         var imdbId: String? = null,
+        @Column(unique = true)
+        var tmdbId: String? = null,
+        @Column(unique = true)
         var traktId: String? = null,
+        @Column(unique = true)
         var tvdbId: String? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
