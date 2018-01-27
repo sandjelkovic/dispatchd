@@ -11,30 +11,30 @@ import javax.persistence.*
 data class Episode(
         @Id
         @GeneratedValue
-        var id: Long?,
+        var id: Long? = null,
         @Version
-        var version: Long,
-        var airDate: ZonedDateTime?,
-        var lastUpdated: ZonedDateTime?,
-        var customNumbering: String?,
+        var version: Long? = null,
+        var airDate: ZonedDateTime? = null,
+        var lastUpdated: ZonedDateTime? = null,
+        var customNumbering: String? = null,
         @Lob
         var description: String = "",
         var title: String = "",
         var number: Int = 0,
-        var seasonNumber: String?,
+        var seasonNumber: String? = null,
 
-        var tmdbId: String?,
-        var imdbId: String?,
-        var traktId: String?,
-        var tvdbId: String?,
+        var tmdbId: String? = null,
+        var imdbId: String? = null,
+        var traktId: String? = null,
+        var tvdbId: String? = null,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "seasonId")
-        var season: Season?,
+        var season: Season? = null,
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "imagesId")
-        var imagesGroup: ImagesGroup?,
+        var imagesGroup: ImagesGroup? = null,
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "showId", nullable = false)
-        var tvShow: TvShow?
+        @JoinColumn(name = "showId")
+        var show: Show? = null
 )
