@@ -9,3 +9,8 @@ spring:
 management:
   security:
     enabled: false
+trakt:
+  baseServiceUrl: https://api.trakt.tv
+  appId : superSecretAppIdFromTrakt
+  appSecret : superSecretAppSecretFromTrakt
+  apiVersion : 2
