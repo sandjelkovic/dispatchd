@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.content.configuration.interceptor;
+package com.sandjelkovic.dispatchd.contentservice.interceptor;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpRequest;
