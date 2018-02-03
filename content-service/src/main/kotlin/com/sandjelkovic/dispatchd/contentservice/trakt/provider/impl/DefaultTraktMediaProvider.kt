@@ -5,6 +5,7 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvid
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
+import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import org.springframework.web.util.UriComponentsBuilder
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder
  * @date 28.1.18.
  */
 @RefreshScope
+@Service
 class DefaultTraktMediaProvider(private val traktRestTemplate: RestTemplate) : TraktMediaProvider {
     companion object : KLogging()
 
