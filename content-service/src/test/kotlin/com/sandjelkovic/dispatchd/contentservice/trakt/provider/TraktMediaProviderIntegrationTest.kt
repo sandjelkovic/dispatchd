@@ -6,8 +6,11 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl.DefaultTrak
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration
+import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
@@ -21,6 +24,7 @@ import org.springframework.test.web.client.response.MockRestResponseCreators.wit
 @RunWith(SpringRunner::class)
 @RestClientTest(DefaultTraktMediaProvider::class)
 @AutoConfigureWebClient(registerRestTemplate = true)
+@ImportAutoConfiguration(RefreshAutoConfiguration::class)
 class TraktMediaProviderIntegrationTest {
 
     @Autowired
@@ -32,10 +36,12 @@ class TraktMediaProviderIntegrationTest {
 
     @Test
     fun getTvShow() {
-        val show = Show()
         val showId = "star-trek-tng"
-        server.expect(requestTo("/shows/$showId?extended=full,images"))
-                .andRespond(withSuccess().body(objectMapper.writeValueAsBytes(show)))
+        server.expect(requestTo("https://api.trakt.tv/shows/$showId?extended=full,images"))
+                .andRespond(withSuccess()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(objectMapper.writeValueAsString(Show())))
+        val show = traktMediaProvider.getShow(showId)
 
     }
 }
