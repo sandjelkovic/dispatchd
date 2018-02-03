@@ -1,0 +1,98 @@
+[
+  {
+    "number": 0,
+    "ids": {
+      "trakt": 3989,
+      "tvdb": 503425,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "rating": 8.34375,
+    "votes": 32,
+    "episode_count": 13,
+    "aired_episodes": 13,
+    "title": "Specials",
+    "overview": null,
+    "first_aired": "2013-08-26T02:00:00.000Z"
+  },
+  {
+    "number": 1,
+    "ids": {
+      "trakt": 3990,
+      "tvdb": 503426,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "rating": 7.77191,
+    "votes": 719,
+    "episode_count": 22,
+    "aired_episodes": 22,
+    "title": "Season 1",
+    "overview": null,
+    "first_aired": "2013-09-25T02:00:00.000Z"
+  },
+  {
+    "number": 2,
+    "ids": {
+      "trakt": 3991,
+      "tvdb": 591138,
+      "tmdb": null,
+      "tvrage": 1065660818
+    },
+    "rating": 8.27228,
+    "votes": 606,
+    "episode_count": 22,
+    "aired_episodes": 22,
+    "title": "Season 2",
+    "overview": null,
+    "first_aired": "2014-09-24T02:00:00.000Z"
+  },
+  {
+    "number": 3,
+    "ids": {
+      "trakt": 112236,
+      "tvdb": 625697,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "rating": 8.28604,
+    "votes": 437,
+    "episode_count": 22,
+    "aired_episodes": 22,
+    "title": "Season 3",
+    "overview": null,
+    "first_aired": "2015-09-30T02:00:00.000Z"
+  },
+  {
+    "number": 4,
+    "ids": {
+      "trakt": 124756,
+      "tvdb": 669888,
+      "tmdb": 78514,
+      "tvrage": null
+    },
+    "rating": 8.47486,
+    "votes": 179,
+    "episode_count": 22,
+    "aired_episodes": 22,
+    "title": "Season 4",
+    "overview": "Vengeance runs rampant this season as Coulson is a mere agent again, and Daisy has gone rogue after being under Hive's control. How will S.H.I.E.L.D. deal with the arrival of The Ghost Rider?",
+    "first_aired": "2016-09-21T02:00:00.000Z"
+  },
+  {
+    "number": 5,
+    "ids": {
+      "trakt": 143872,
+      "tvdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "rating": 0,
+    "votes": 0,
+    "episode_count": 1,
+    "aired_episodes": 0,
+    "title": "Season 5",
+    "overview": null,
+    "first_aired": null
+  }
+]
