@@ -5,6 +5,7 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl.DefaultTrak
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.containsString
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -72,6 +73,7 @@ class TraktMediaProviderIntegrationTest {
             else MediaType.ALL
 
     @Test
+    @Ignore
     fun getTvShow() {
         val showId = "star-trek-the-next-generation"
 //        val classPathResource = ClassPathResource("/stubs/shows/star-trek-the-next-generation/this.json")
