@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice
 
 import com.sandjelkovic.dispatchd.contentservice.interceptor.HeaderRequestInterceptor
+import com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl.DefaultTraktMediaProvider
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
@@ -37,4 +38,7 @@ class ContentConfig(
         return restTemplate
     }
 
+    //If the bean is defined this way, it can't be used for @RestClientTest.
+    @Bean
+    fun traktMediaProvider(traktRestTemplate: RestTemplate) = DefaultTraktMediaProvider(traktRestTemplate)
 }
