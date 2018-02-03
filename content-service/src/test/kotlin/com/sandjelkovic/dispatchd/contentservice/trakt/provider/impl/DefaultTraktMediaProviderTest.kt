@@ -7,7 +7,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForEntity
 import org.springframework.web.client.getForObject
 import java.net.URI
 
@@ -36,6 +35,6 @@ class DefaultTraktMediaProviderTest {
 
         assertThat(tvShow)
                 .isEqualTo(preparedShow)
-        verify(mockRestTemplate).getForEntity<ShowTrakt>(uri)
+        verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
     }
 }
