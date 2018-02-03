@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.contentservice.trakt.dto.dto
+package com.sandjelkovic.dispatchd.contentservice.trakt.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.ZonedDateTime
