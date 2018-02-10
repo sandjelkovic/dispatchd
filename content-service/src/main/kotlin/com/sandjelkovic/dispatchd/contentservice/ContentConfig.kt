@@ -1,12 +1,16 @@
 package com.sandjelkovic.dispatchd.contentservice
 
 import com.sandjelkovic.dispatchd.contentservice.interceptor.HeaderRequestInterceptor
+import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.client.RestTemplate
+import java.util.concurrent.Executor
+
 
 /**
  * @author sandjelkovic
@@ -37,7 +41,25 @@ class ContentConfig(
         return restTemplate
     }
 
+    @Bean
+    fun contentRefreshService() = DefaultContentRefreshService()
+
+    @Bean(name = arrayOf("threadPoolTaskExecutor"))
+    fun threadPoolTaskExecutor(): Executor {
+        return ThreadPoolTaskExecutor()
+    }
+
+    @Bean(name = arrayOf("contentRefreshTaskExecutor"))
+    fun contentRefreshTaskExecutor(): Executor = ThreadPoolTaskExecutor()
+            .apply {
+                corePoolSize = 1
+                maxPoolSize = 1
+            }
+
+
     //If the bean is defined this way, it can't be used for @RestClientTest.
 //    @Bean
 //    fun traktMediaProvider(traktRestTemplate: RestTemplate) = DefaultTraktMediaProvider(traktRestTemplate)
 }
+
+const val contentRefreshTaskExecutorBeanName = "contentRefreshTaskExecutor"

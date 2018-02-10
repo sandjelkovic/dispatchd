@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 public class ContentRefreshDaemon {
 	private static final Logger log = LoggerFactory.getLogger(ContentRefreshDaemon.class);
 
-	private volatile boolean inProgress = false;
-
 	@Autowired
 	private ContentRefreshService contentRefreshService;
 
