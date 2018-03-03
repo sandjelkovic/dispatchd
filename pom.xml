@@ -30,8 +30,8 @@
 		<java.version>1.8</java.version>
 		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 		<kotlin.version>1.2.21</kotlin.version>
-		<spring-cloud.version>Finchley.M5</spring-cloud.version>
-		<spring-boot.version>2.0.0.M7</spring-boot.version>
+		<spring-cloud.version>Finchley.M8</spring-cloud.version>
+		<spring-boot.version>2.0.0.RELEASE</spring-boot.version>
 		<docker.plugin.version>1.0.0</docker.plugin.version>
 		<docker.image.prefix>sandjelkovic</docker.image.prefix>
 	</properties>
@@ -42,6 +42,13 @@
 		<!--<groupId>org.springframework.boot</groupId>-->
 		<!--<artifactId>spring-boot-starter-web</artifactId>-->
 		<!--</dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
