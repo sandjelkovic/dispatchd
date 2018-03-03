@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice.data.entity
 
-import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -16,7 +17,7 @@ data class UpdateJob(
         var id: Long? = null,
         @Column(nullable = false)
         @NotNull
-        var finishTime: ZonedDateTime = ZonedDateTime.from(Instant.MIN),
+        var finishTime: ZonedDateTime = ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()),
         @NotNull
-        var isSuccess: Boolean = false
+        var success: Boolean = false
 )
