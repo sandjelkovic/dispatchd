@@ -1,20 +1,26 @@
 package com.sandjelkovic.dispatchd.contentservice.service.impl
 
+import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ContentRefreshService
+import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 
 /**
  * @author sandjelkovic
  * @date 10.2.18.
  */
-class DefaultContentRefreshService : ContentRefreshService {
+class DefaultContentRefreshService(val updateJobRepository: UpdateJobRepository, val provider: TraktMediaProvider) : ContentRefreshService {
+    override fun updateContentIfNeeded(): Long {
+        return 0;
+    }
+
     override fun updateAllContent(): Long {
         return 0;
     }
 
     companion object : KLogging()
 
-//    private val asyncResultMapper: java.util.function.Function<AsyncResult<TvShow>, TvShow>
+    //    private val asyncResultMapper: java.util.function.Function<AsyncResult<TvShow>, TvShow>
 //        get() = { tvShowAsyncResult ->
 //            try {
 //                return tvShowAsyncResult.get(1, TimeUnit.MINUTES)
@@ -23,16 +29,17 @@ class DefaultContentRefreshService : ContentRefreshService {
 //            }
 //        }
 //
-//    private
-//    val lastUpdateTime: ZonedDateTime
-//        get() = jobRepository!!.findFirstBySuccessOrderByFinishTimeDesc(true)
-//                .map(Function<UpdateJob, ZonedDateTime> { it.getFinishTime() })
-//                .orElseGet({ ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()) })
+//
+//    private fun lastUpdateTime() {
+//        updateJobRepository.findFirstBySuccessOrderByFinishTimeDesc(true)
+//                .map(UpdateJob::finishTime)
+//                .orElseGet { ZonedDateTime.from(Instant.MIN) }
+//    }
 //
 //    fun refreshExistingContent(): Long {
-//        val fromTime = lastUpdateTime
-//        log.debug("Refreshing content. Last update was: " + fromTime)
-//        val updatedShows = provider!!.getUpdates(fromTime.toLocalDate())
+//        val fromTime = lastUpdateTime()
+//        logger.debug("Refreshing content. Last update was: " + fromTime)
+//        val updatedShows = provider.getUpdates(fromTime.toLocalDate())
 //
 //        val traktIds = getTraktIds(updatedShows)
 //        val idsForImport = filterForLocalIds(traktIds)
