@@ -1,7 +1,9 @@
 package com.sandjelkovic.dispatchd.contentservice
 
+import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.contentservice.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
+import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
@@ -42,7 +44,7 @@ class ContentConfig(
     }
 
     @Bean
-    fun contentRefreshService() = DefaultContentRefreshService()
+    fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider) = DefaultContentRefreshService(updateJobRepository, traktMediaProvider)
 
     @Bean(name = arrayOf("threadPoolTaskExecutor"))
     fun threadPoolTaskExecutor(): Executor {

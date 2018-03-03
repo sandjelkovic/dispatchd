@@ -33,7 +33,7 @@ class DefaultContentRefreshService(val updateJobRepository: UpdateJobRepository,
 //    private fun lastUpdateTime() {
 //        updateJobRepository.findFirstBySuccessOrderByFinishTimeDesc(true)
 //                .map(UpdateJob::finishTime)
-//                .orElseGet { ZonedDateTime.from(Instant.MIN) }
+//                .orElseGet { ZonedDateTime.from(LocalDateTime.MIN, ZoneId.systemDefault()) }
 //    }
 //
 //    fun refreshExistingContent(): Long {
