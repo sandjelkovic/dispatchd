@@ -6,4 +6,5 @@ package com.sandjelkovic.dispatchd.contentservice.service
  */
 interface ContentRefreshService {
     fun updateAllContent(): Long
+    fun updateContentIfNeeded(): Long
 }
