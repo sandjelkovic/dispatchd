@@ -22,7 +22,7 @@ cache:
 compile:
   stage: build
   script:
-    - 'mvn $MAVEN_CLI_OPTS test-compile'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile'
 
 # Run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
