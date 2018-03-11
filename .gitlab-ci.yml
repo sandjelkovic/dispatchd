@@ -29,7 +29,7 @@ compile:
 verify:
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS verify'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify'
   artifacts:
     paths:
     - target/*.jar
