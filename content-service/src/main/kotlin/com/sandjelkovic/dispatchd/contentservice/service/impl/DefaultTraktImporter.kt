@@ -16,6 +16,7 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
+import org.springframework.stereotype.Service
 import org.springframework.util.concurrent.ListenableFuture
 import org.springframework.web.client.HttpClientErrorException
 import java.util.*
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutionException
  * @author sandjelkovic
  * @date 24.3.18.
  */
+@Service
 class DefaultTraktImporter(val showRepository: ShowRepository,
                            val seasonRepository: SeasonRepository,
                            val episodeRepository: EpisodeRepository,
