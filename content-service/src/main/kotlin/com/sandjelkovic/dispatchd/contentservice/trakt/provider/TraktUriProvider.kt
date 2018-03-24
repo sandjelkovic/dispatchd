@@ -13,5 +13,5 @@ interface TraktUriProvider {
     fun getSeasonEpisodesUri(showId: String, seasonNumber: String): URI
     fun getSeasonsUri(showId: String): URI
     fun getSeasonsMinimalUri(showId: String): URI
-    fun getSeasonEpisodesUri(fromDate: LocalDate): URI
+    fun getUpdatesUri(fromDate: LocalDate): URI
 }
