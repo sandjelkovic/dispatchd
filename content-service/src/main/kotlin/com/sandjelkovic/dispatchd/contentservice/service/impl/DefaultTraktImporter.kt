@@ -44,10 +44,9 @@ class DefaultTraktImporter(val showRepository: ShowRepository,
 
         val show = showRepository.save(conversionService.convert<Show>(traktShow))
 
-        val seasonsList: List<Season> = retrieveAndConvertSeasons(seasonsFuture)
+        val seasonMap = retrieveAndConvertSeasons(seasonsFuture)
                 .onEach { season -> season.show = show }
-
-        val seasonMap = seasonRepository.saveAll(seasonsList)
+                .also { seasonRepository.saveAll(it) }
                 .map { it.number to it }
                 .toMap()
 
