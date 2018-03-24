@@ -67,8 +67,7 @@ class DefaultTraktUriProvider : TraktUriProvider {
                 .build().encode().toUri()
     }
 
-
-    override fun getSeasonEpisodesUri(fromDate: LocalDate): URI {
+    override fun getUpdatesUri(fromDate: LocalDate): URI {
         return UriComponentsBuilder.fromHttpUrl(baseServiceUrl)
                 .pathSegment("shows")
                 .pathSegment("updates")

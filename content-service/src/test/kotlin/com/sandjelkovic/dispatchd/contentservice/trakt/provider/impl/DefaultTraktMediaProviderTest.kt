@@ -2,7 +2,6 @@ package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,27 +40,28 @@ class DefaultTraktMediaProviderTest {
     }
 
     @Test
-    fun getTvShow() {
+    fun `getShow should return retrieved show`() {
         val preparedShow = ShowTrakt(title = "Title")
         `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
                 .thenReturn(preparedShow)
 
-        val tvShow = provider.getShow(showId)
+        val showOptional = provider.getShow(showId)
 
-        assertThat(tvShow)
-                .isEqualTo(preparedShow)
+        assertThat(showOptional)
+                .isPresent
+                .hasValue(preparedShow)
         verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
         verify(mockUriProvider).getShowUri(showId)
     }
 
     @Test
-    fun getTvShowInvalid() {
+    fun `getShow should return empty Optional because the Show couldn't be retrieved`() {
         `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
                 .thenReturn(null)
 
-        val throwable = catchThrowable { provider.getShow(showId) }
+        val showOptional = provider.getShow(showId)
 
-        assertThat(throwable).isInstanceOf(kotlin.NullPointerException::class.java)
+        assertThat(showOptional).isNotPresent
 
         verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
         verify(mockUriProvider).getShowUri(showId)
