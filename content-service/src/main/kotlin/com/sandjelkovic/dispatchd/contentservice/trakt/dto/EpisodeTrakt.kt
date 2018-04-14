@@ -1,7 +1,6 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.time.Instant
 import java.time.ZonedDateTime
 
 /**
@@ -17,5 +16,5 @@ data class EpisodeTrakt(
         @JsonProperty("updated_at")
         val updatedAt: ZonedDateTime? = null,
         @JsonProperty("first_aired")
-        val firstAired: Instant? = null
+        val firstAired: ZonedDateTime? = null
 )

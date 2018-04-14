@@ -29,10 +29,10 @@ data class Show(
         var tvdbId: String? = null,
 
         @OneToMany(mappedBy = "show")
-        var episodes: List<Episode> = listOf(),
+        var episodes: List<Episode> = emptyList(),
 
         @OneToMany(mappedBy = "show")
-        var seasons: List<Season> = listOf(),
+        var seasons: List<Season> = emptyList(),
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "imagesId")
