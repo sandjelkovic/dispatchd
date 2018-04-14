@@ -22,14 +22,15 @@ cache:
 compile:
   stage: build
   script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret'
 
 # Run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 verify:
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify'
+    - 'mvn $MAVEN_CLI_OPTS org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipDocker verify -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret'
   artifacts:
     paths:
     - target/*.jar
+#org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipDocker -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret
