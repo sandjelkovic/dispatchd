@@ -1,12 +1,15 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
+import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import java.net.URI
@@ -62,6 +65,19 @@ class DefaultTraktMediaProviderTest {
         val showOptional = provider.getShow(showId)
 
         assertThat(showOptional).isNotPresent
+
+        verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
+        verify(mockUriProvider).getShowUri(showId)
+    }
+
+    @Test
+    fun `getShow should throw a RemoteServiceException because there was an HTTP Exception`() {
+        `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
+                .thenThrow(HttpClientErrorException::class.java)
+
+        val throwable = catchThrowable { provider.getShow(showId) }
+
+        assertThat(throwable).isInstanceOf(RemoteServiceException::class.java)
 
         verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
         verify(mockUriProvider).getShowUri(showId)
