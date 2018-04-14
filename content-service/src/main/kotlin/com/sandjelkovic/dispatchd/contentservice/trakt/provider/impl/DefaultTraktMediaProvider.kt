@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
+import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
@@ -8,6 +9,7 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktUriProvider
 import mu.KLogging
 import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import java.util.*
@@ -23,22 +25,28 @@ class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
 
     override fun getShow(showId: String): Optional<ShowTrakt> {
         val uri = traktUriProvider.getShowUri(showId)
-        val show: ShowTrakt? = traktRestTemplate.getForObject(uri)
+        val show: ShowTrakt? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
+
         logger.debug("Retrieved Show: $show")
+
         return Optional.ofNullable(show)
     }
 
     override fun getSeasons(showId: String): List<SeasonTrakt> {
         val uri = traktUriProvider.getSeasonsUri(showId)
-        val seasons: Array<SeasonTrakt>? = traktRestTemplate.getForObject(uri)
+        val seasons: Array<SeasonTrakt>? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
+
         logger.debug("Retrieved Seasons: $seasons")
+
         return seasons?.toList() ?: listOf()
     }
 
     override fun getSeasonsMinimal(showId: String): List<SeasonTrakt> {
         val uri = traktUriProvider.getSeasonsMinimalUri(showId)
-        val seasons: Array<SeasonTrakt>? = traktRestTemplate.getForObject(uri)
+        val seasons: Array<SeasonTrakt>? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
+
         logger.debug("Retrieved minimal Seasons: $seasons")
+
         return seasons?.toList() ?: listOf()
     }
 
@@ -50,8 +58,10 @@ class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
 
     override fun getSeasonEpisodes(showId: String, seasonNumber: String): List<EpisodeTrakt> {
         val uri = traktUriProvider.getSeasonEpisodesUri(showId, seasonNumber)
-        val episodes: Array<EpisodeTrakt>? = traktRestTemplate.getForObject(uri)
+        val episodes: Array<EpisodeTrakt>? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
+
         logger.debug("Retrieved Season's Episodes: $episodes")
+
         return episodes?.toList() ?: listOf()
     }
 
@@ -60,4 +70,11 @@ class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
 
     override fun getShowEpisodesAsync(showId: String): AsyncResult<List<EpisodeTrakt>> =
             AsyncResult(this.getShowEpisodes(showId))
+
+    protected fun <R> executeHttpOrMapException(block: () -> R): R =
+            try {
+                block()
+            } catch (e: HttpClientErrorException) {
+                throw RemoteServiceException(e)
+            }
 }
