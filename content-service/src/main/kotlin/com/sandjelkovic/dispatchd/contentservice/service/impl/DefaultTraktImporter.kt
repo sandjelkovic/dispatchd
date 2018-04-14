@@ -13,6 +13,7 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvid
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 
@@ -29,6 +30,7 @@ class DefaultTraktImporter(val showRepository: ShowRepository,
 
     companion object : KLogging()
 
+    @Transactional
     override fun importShow(showId: String): Show {
         val traktShow = provider.getShow(showId)
                 .orElseThrow { ShowDoesNotExistTraktException() }
