@@ -1,5 +1,8 @@
 package com.sandjelkovic.dispatchd.contentservice
 
+import com.sandjelkovic.dispatchd.contentservice.converter.Trakt2EpisodeConverter
+import com.sandjelkovic.dispatchd.contentservice.converter.Trakt2SeasonConverter
+import com.sandjelkovic.dispatchd.contentservice.converter.Trakt2ShowConverter
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.contentservice.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
@@ -48,12 +51,21 @@ class ContentConfig(
     @Bean
     fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider) = DefaultContentRefreshService(updateJobRepository, traktMediaProvider)
 
+    @Bean
+    fun trakt2EpisodeConverter() = Trakt2EpisodeConverter()
+
+    @Bean
+    fun trakt2SeasonConverter() = Trakt2SeasonConverter()
+
+    @Bean
+    fun trakt2ShowConverter() = Trakt2ShowConverter()
+
     @Bean(name = arrayOf("threadPoolTaskExecutor"))
     fun threadPoolTaskExecutor(): Executor {
         return ThreadPoolTaskExecutor()
     }
 
-    @Bean(name = arrayOf("contentRefreshTaskExecutor"))
+    @Bean(name = arrayOf(contentRefreshTaskExecutorBeanName))
     fun contentRefreshTaskExecutor(): Executor = ThreadPoolTaskExecutor()
             .apply {
                 corePoolSize = 1
