@@ -2,6 +2,7 @@ package com.sandjelkovic.dispatchd.contentservice.service
 
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import org.springframework.web.util.UriComponents
+import java.util.*
 
 /**
  * @author sandjelkovic
@@ -10,5 +11,5 @@ import org.springframework.web.util.UriComponents
 interface ImportService {
     fun importFromUriComponents(uriComponents: UriComponents): ImportStatus
 
-    fun getImportStatus(id: Long): ImportStatus
+    fun getImportStatus(id: Long): Optional<ImportStatus>
 }
