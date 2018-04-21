@@ -55,30 +55,30 @@ class ImportStatusRepositoryTest {
 
         val savedStatus = repository.save(status)
 
-        val foundEntity = repository.findById(savedStatus.id!!)
+        assert { repository.findById(savedStatus.id!!) }.returnedValue {
+            isPresentAndExtracted {
+                with(it) {
+                    assertk.assert(id).isNotNull { it.isEqualTo(savedStatus.id!!) }
+                    assertk.assert(finishTime).isNull()
+                    assertk.assert(initiationTime).isInLast(10.seconds)
+                    assertk.assert(mediaUrl).isEqualTo(mediaUrl)
+                }
 
-        assert(foundEntity).isPresentAndExtracted {
-            with(it) {
-                assert(id).isNotNull { it.isEqualTo(savedStatus.id!!) }
-                assert(finishTime).isNull()
-                assert(initiationTime).isInLast(10.seconds)
-                assert(mediaUrl).isEqualTo(mediaUrl)
+                // asserting directly on the wrapped variable
+                isPresent {
+                    it.isEqualTo(savedStatus)
+                }
             }
         }
 
-        // asserting directly on the wrapped variable
-        assert(foundEntity).isPresent {
-            it.isEqualTo(savedStatus)
+        @Test
+        fun shouldNotFindAny() {
+            val foundEntity = repository.findById(5555L)
+
+            assert(foundEntity).isEmpty()
         }
+
     }
-
-    @Test
-    fun shouldNotFindAny() {
-        val foundEntity = repository.findById(5555L)
-
-        assert(foundEntity).isEmpty()
-    }
-
 }
 
 const val mediaUrl = "https://github.com/sandjelkovic/test"
