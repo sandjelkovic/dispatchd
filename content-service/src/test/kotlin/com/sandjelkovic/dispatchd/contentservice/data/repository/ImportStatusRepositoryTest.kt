@@ -70,15 +70,15 @@ class ImportStatusRepositoryTest {
                 }
             }
         }
-
-        @Test
-        fun shouldNotFindAny() {
-            val foundEntity = repository.findById(5555L)
-
-            assert(foundEntity).isEmpty()
-        }
-
     }
+
+    @Test
+    fun shouldNotFindAny() {
+        val foundEntity = repository.findById(5555L)
+
+        assert(foundEntity).isEmpty()
+    }
+
 }
 
 const val mediaUrl = "https://github.com/sandjelkovic/test"
