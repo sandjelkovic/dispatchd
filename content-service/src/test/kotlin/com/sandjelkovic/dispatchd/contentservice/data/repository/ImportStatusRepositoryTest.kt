@@ -63,11 +63,10 @@ class ImportStatusRepositoryTest {
                     assert(initiationTime).isInLast(10.seconds)
                     assert(mediaUrl).isEqualTo(mediaUrl)
                 }
-
-                // asserting directly on the wrapped variable
-                isPresent {
-                    it.isEqualTo(savedStatus)
-                }
+            }
+            // asserting directly on the wrapped variable
+            isPresent {
+                it.isEqualTo(savedStatus)
             }
         }
     }
