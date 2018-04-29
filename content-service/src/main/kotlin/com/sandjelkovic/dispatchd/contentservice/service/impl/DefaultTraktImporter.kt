@@ -12,7 +12,6 @@ import com.sandjelkovic.dispatchd.contentservice.service.TraktImporter
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
-import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
@@ -21,12 +20,11 @@ import java.util.concurrent.Future
  * @author sandjelkovic
  * @date 24.3.18.
  */
-@Service
-class DefaultTraktImporter(val showRepository: ShowRepository,
-                           val seasonRepository: SeasonRepository,
-                           val episodeRepository: EpisodeRepository,
-                           val conversionService: ConversionService,
-                           val provider: TraktMediaProvider) : TraktImporter {
+open class DefaultTraktImporter(val showRepository: ShowRepository,
+                                val seasonRepository: SeasonRepository,
+                                val episodeRepository: EpisodeRepository,
+                                val conversionService: ConversionService,
+                                val provider: TraktMediaProvider) : TraktImporter {
 
     companion object : KLogging()
 
