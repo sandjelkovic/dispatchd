@@ -6,6 +6,7 @@ import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowUpdateTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"testing"})
 @SpringBootTest(classes = {DispatchdApplication.class})
+@Ignore
 public class TraktMediaProviderTest {
 	private static final String ID_KEY_TRAKT = "trakt";
 	private static final String ID_KEY_TVDB = "tvdb";
