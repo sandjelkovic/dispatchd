@@ -9,6 +9,8 @@ variables:
   # when running from the command line.
   # `installAtEnd` and `deployAtEnd`are only effective with recent version of the corresponding plugins.
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true"
+  MAVEN_CLI_SECRETS: "-Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret"
+  MAVEN_CLI_THIRD_PARTY: ""
 
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_REF_NAME"'
@@ -22,15 +24,22 @@ cache:
 compile:
   stage: build
   script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
 
 # Run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 verify:
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify'
   artifacts:
     paths:
     - target/*.jar
 #org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipDocker -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret
+verify third party:
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify $MAVEN_CLI_SECRETS -Dtests.profiles=third-party'
+  artifacts:
+    paths:
+    - target/*.jar

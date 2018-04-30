@@ -6,12 +6,12 @@ import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowUpdateTrakt;
 import com.sandjelkovic.dispatchd.content.trakt.dto.TvShowTrakt;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -27,8 +27,8 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"testing"})
+@IfProfileValue(name = "tests.profiles", values = {"third-party"})
 @SpringBootTest(classes = {DispatchdApplication.class})
-@Ignore
 public class TraktMediaProviderTest {
 	private static final String ID_KEY_TRAKT = "trakt";
 	private static final String ID_KEY_TVDB = "tvdb";
