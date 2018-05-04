@@ -30,7 +30,7 @@
 		<java.version>1.8</java.version>
 		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 		<kotlin.version>1.2.21</kotlin.version>
-		<spring-cloud.version>Finchley.M9</spring-cloud.version>
+		<spring-cloud.version>Finchley.RC1</spring-cloud.version>
 		<spring-boot.version>2.0.1.RELEASE</spring-boot.version>
 		<docker.plugin.version>1.0.0</docker.plugin.version>
 		<docker.image.prefix>sandjelkovic</docker.image.prefix>
