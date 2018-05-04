@@ -29,7 +29,7 @@ fun <T> Assert<Optional<T>>.isPresentAndExtracted(f: (T) -> Unit) {
 
 fun <T> Assert<Optional<T>>.isPresent(f: (Assert<T>) -> Unit) {
     assertk.assert(actual).isPresent()
-    assert(actual.get()).all(f)
+    assertk.assert(actual.get(), name = name).all(f)
 }
 
 fun Assert<ZonedDateTime>.isInLast(duration: Duration) {
