@@ -36,10 +36,10 @@ verify:
     paths:
     - target/*.jar
 #org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipDocker -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret
-verify third party:
-  stage: test
-  script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify $MAVEN_CLI_SECRETS -Dtests.profiles=third-party'
-  artifacts:
-    paths:
-    - target/*.jar
+#verify third party:
+#  stage: test
+#  script:
+#    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify $MAVEN_CLI_SECRETS -Dtests.profiles=third-party'
+#  artifacts:
+#    paths:
+#    - target/*.jar
