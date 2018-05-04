@@ -10,6 +10,7 @@ import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportServi
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultTraktImporter
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.context.annotation.Bean
@@ -59,7 +60,7 @@ class ContentConfig(
 
     @Bean
     fun traktImporter(showRepository: ShowRepository, seasonRepository: SeasonRepository,
-                      episodeRepository: EpisodeRepository, conversionService: ConversionService, provider: TraktMediaProvider) =
+                      episodeRepository: EpisodeRepository, @Qualifier("mvcConversionService") conversionService: ConversionService, provider: TraktMediaProvider) =
             DefaultTraktImporter(showRepository, seasonRepository, episodeRepository, conversionService, provider)
 
     @Bean
