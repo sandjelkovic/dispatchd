@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/shows/star-trek-the-next-generation-random?extended=full,images"
+  },
+  "response": {
+    "status": 404
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/shows/star-trek-the-next-generation/seasons?extended=full,images"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "number": 0,
+        "ids": {
+          "trakt": 2203,
+          "tvdb": 18937,
+          "tmdb": null,
+          "tvrage": null
+        },
+        "rating": 7,
+        "votes": 1,
+        "episode_count": 1,
+        "aired_episodes": 1,
+        "title": "Specials",
+        "overview": null,
+        "first_aired": "1994-05-22T01:00:00.000Z"
+      },
+      {
+        "number": 1,
+        "ids": {
+          "trakt": 2204,
+          "tvdb": 2298,
+          "tmdb": null,
+          "tvrage": null
+        },
+        "rating": 6.74468,
+        "votes": 47,
+        "episode_count": 26,
+        "aired_episodes": 26,
+        "title": "Season 1",
+        "overview": null,
+        "first_aired": "1987-09-29T01:00:00.000Z"
+      },
+      {
+        "number": 2,
+        "ids": {
+          "trakt": 2205,
+          "tvdb": 2299,
+          "tmdb": null,
+          "tvrage": null
+        },
+        "rating": 7.06061,
+        "votes": 33,
+        "episode_count": 22,
+        "aired_episodes": 22,
+        "title": "Season 2",
+        "overview": null,
+        "first_aired": "1988-11-22T02:00:00.000Z"
+      },
+      {
+        "number": 3,
+        "ids": {
+          "trakt": 2206,
+          "tvdb": 2300,
+          "tmdb": 1995,
+          "tvrage": null
+        },
+        "rating": 8.03226,
+        "votes": 31,
+        "episode_count": 26,
+        "aired_episodes": 26,
+        "title": "Season 3",
+        "overview": "The third season of the American science fiction television series Star Trek: The Next Generation commenced airing in broadcast syndication in the United States on September 25, 1989 and concluded on June 18, 1990 after airing 26 episodes. Set in the 24th century, the series follows the adventures of the crew of the Starfleet starship Enterprise-D. Season three featured the return of Gates McFadden as Dr. Beverly Crusher after she was replaced by Diana Muldaur for the second season. The season also saw the debut of several actors who would reappear in the same roles and others throughout the franchise, such as Dwight Schultz as Lt. Reginald Barclay, and Tony Todd as Kurn.\n\nFurther changes occurred to the writing staff, with Michael Piller brought on board as executive producer after Michael I. Wagner held the position for three weeks. Ronald D. Moore also joined the staff following the submission of a script for \"The Bonding\". Hans Beimler, Richard Manning, Melinda M. Snodgrass and Ira Steven Behr all left the staff at the end of the season. Actor Wil Wheaton also asked to leave following the way his character, Wesley Crusher, was written during the season – a decision he later regretted. Other changes included a modification to the opening sequence, and changes to the Starfleet uniforms on the show, which resulted in the creation of Patrick Stewart's \"Picard Maneuver\".",
+        "first_aired": "1989-09-26T01:00:00.000Z"
+      },
+      {
+        "number": 4,
+        "ids": {
+          "trakt": 2207,
+          "tvdb": 2301,
+          "tmdb": 1991,
+          "tvrage": null
+        },
+        "rating": 8.34615,
+        "votes": 26,
+        "episode_count": 26,
+        "aired_episodes": 26,
+        "title": "Season 4",
+        "overview": null,
+        "first_aired": "1990-09-25T01:00:00.000Z"
+      },
+      {
+        "number": 5,
+        "ids": {
+          "trakt": 2208,
+          "tvdb": 2302,
+          "tmdb": 1992,
+          "tvrage": null
+        },
+        "rating": 8.24,
+        "votes": 25,
+        "episode_count": 26,
+        "aired_episodes": 26,
+        "title": "Season 5",
+        "overview": null,
+        "first_aired": "1991-09-24T01:00:00.000Z"
+      },
+      {
+        "number": 6,
+        "ids": {
+          "trakt": 2209,
+          "tvdb": 2303,
+          "tmdb": 1993,
+          "tvrage": null
+        },
+        "rating": 8.16667,
+        "votes": 24,
+        "episode_count": 26,
+        "aired_episodes": 26,
+        "title": "Season 6",
+        "overview": null,
+        "first_aired": "1992-09-22T01:00:00.000Z"
+      },
+      {
+        "number": 7,
+        "ids": {
+          "trakt": 2210,
+          "tvdb": 2304,
+          "tmdb": 1994,
+          "tvrage": null
+        },
+        "rating": 7.92593,
+        "votes": 27,
+        "episode_count": 26,
+        "aired_episodes": 26,
+        "title": "Season 7",
+        "overview": null,
+        "first_aired": "1993-09-21T01:00:00.000Z"
+      }
+    ]
+  }
+}
