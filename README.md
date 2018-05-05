@@ -1,9 +1,11 @@
 # dispatchd 
-[![Build Status](https://travis-ci.org/sandjelkovic/dispatchd.svg?branch=develop)](https://travis-ci.org/sandjelkovic/dispatchd)
+Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges/develop/pipeline.svg)](https://gitlab.com/sandjelkovic/dispatchd/commits/develop)
 
-| Application to notify when episodes go live or aggregate those notifications in reports
+Travis CI : [![Build Status](https://travis-ci.org/sandjelkovic/dispatchd.svg?branch=develop)](https://travis-ci.org/sandjelkovic/dispatchd)
 
-| Currently in heavy development mode.
+> Application to notify when episodes go live or aggregate those notifications in reports
+
+> Currently in heavy development mode.
 
 #### Purpose
 Goal of this application is to provide updates for episodes airdates in the form of customisable reports.
