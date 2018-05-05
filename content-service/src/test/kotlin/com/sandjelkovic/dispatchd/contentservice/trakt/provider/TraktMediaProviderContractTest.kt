@@ -1,7 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider
 
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotNull
+import assertk.assertions.*
+import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isPresent
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +38,26 @@ class TraktMediaProviderContractTest {
                 }
                 assertk.assert(it.actual.year, "Show Year").isNotNull {
                     it.isEqualTo(1987)
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `should not throw an exception if show can't be found, but return an empty optional`() {
+        assertk.assert { provider.getShow("star-trek-the-next-generation-random") }.returnedValue {
+            isEmpty()
+        }
+    }
+
+    @Test
+    fun `should get and deserialize seasons of a show`() {
+        assertk.assert { provider.getSeasons("star-trek-the-next-generation") }.returnedValue {
+            hasSize(8)
+            each {
+                with(it.actual) {
+                    assert(number).isNotNull()
+                    assert(episodeCount).isNotNull { it.isGreaterThan(0) }
                 }
             }
         }

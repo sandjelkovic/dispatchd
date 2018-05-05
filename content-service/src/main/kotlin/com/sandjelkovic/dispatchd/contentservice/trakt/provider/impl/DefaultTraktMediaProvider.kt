@@ -7,6 +7,7 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktUriProvider
 import mu.KLogging
+import org.springframework.http.HttpStatus
 import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
@@ -25,7 +26,7 @@ class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
 
     override fun getShow(showId: String): Optional<ShowTrakt> {
         val uri = traktUriProvider.getShowUri(showId)
-        val show: ShowTrakt? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
+        val show: ShowTrakt? = executeHttpOrDefaultOnNotFound(block = { traktRestTemplate.getForObject(uri) }, default = { null })
 
         logger.debug("Retrieved Show: $show")
 
@@ -75,6 +76,24 @@ class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
             try {
                 block()
             } catch (e: HttpClientErrorException) {
+                logger.warn("HTTPClient error occurred when contacting Tract.", e)
                 throw RemoteServiceException(e)
+            }
+
+    protected fun <R> executeHttpOrDefault(block: () -> R, default: (HttpClientErrorException) -> R): R =
+            try {
+                block()
+            } catch (e: HttpClientErrorException) {
+                logger.warn("HTTPClient error occurred when contacting Tract.", e)
+                default(e)
+            }
+
+    protected fun <R> executeHttpOrDefaultOnNotFound(block: () -> R, default: () -> R): R =
+            executeHttpOrDefault(block) {
+                if (HttpStatus.NOT_FOUND == it.statusCode) {
+                    default()
+                } else {
+                    throw RemoteServiceException(it)
+                }
             }
 }
