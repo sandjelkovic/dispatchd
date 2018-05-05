@@ -21,7 +21,6 @@
 		<module>core-service</module>
 		<module>monitor-service</module>
 		<module>config-service</module>
-		<module>content-service</module>
 	</modules>
 
 	<properties>
