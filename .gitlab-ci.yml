@@ -26,6 +26,12 @@ compile:
   script:
     - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
 
+compile content service:
+  stage: build
+  script:
+    - 'cd content-service'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
+
 # Run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 verify:
@@ -35,6 +41,15 @@ verify:
   artifacts:
     paths:
     - target/*.jar
+
+verify content-service:
+  stage: test
+  script:
+    - 'cd content-service'
+    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify'
+  artifacts:
+    paths:
+    - content-service/target/*.jar
 #org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipDocker -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret
 #verify third party:
 #  stage: test
