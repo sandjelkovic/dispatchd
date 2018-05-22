@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,9 +38,9 @@ public class NotificationDaemon {
 
 	@Autowired
 	private UserEpisodeNotificationEventRepository notificationEventRepository;
-
-	@Autowired
-	private MailSender mailSender;
+//
+//	@Autowired
+//	private MailSender mailSender;
 
 	@Autowired
 	@Qualifier(Constants.CONVERSION_SERVICE_BEAN_NAME)
@@ -74,7 +73,7 @@ public class NotificationDaemon {
 				.map(event -> conversionService.convert(event, SimpleMailMessage.class))
 				.collect(toList());
 		SimpleMailMessage[] messageArray = convertMessageListToMessageArray(messages);
-		mailSender.send(messageArray);
+//		mailSender.send(messageArray);
 	}
 
 	private SimpleMailMessage[] convertMessageListToMessageArray(List<SimpleMailMessage> messages) {

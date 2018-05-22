@@ -14,11 +14,11 @@ spring:
           search-locations: classpath:/configs/
   boot:
     admin:
-      url: http://localhost:8010
+      client:
+        url: "http://localhost:8010"
+
 logging:
   level:
     com.sandjelkovic: DEBUG
-management:
-  context-path: /admin
-  security:
-    enabled: false
+
+

@@ -18,19 +18,16 @@
 	</parent>
 
 	<dependencies>
-		<!-- Disconnect Admin server until it supports Spring Boot 2 -->
-		<!-- See https://github.com/codecentric/spring-boot-admin/issues/465 -->
-
-		<!--<dependency>-->
-		<!--<groupId>de.codecentric</groupId>-->
-		<!--<artifactId>spring-boot-admin-server</artifactId>-->
-		<!--<version>1.4.6</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-		<!--<groupId>de.codecentric</groupId>-->
-		<!--<artifactId>spring-boot-admin-server-ui</artifactId>-->
-		<!--<version>1.4.6</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-server</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

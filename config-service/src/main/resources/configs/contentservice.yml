@@ -10,3 +10,14 @@ trakt:
   appId : superSecretAppIdFromTrakt
   appSecret : superSecretAppSecretFromTrakt
   apiVersion : 2
+spring:
+  boot:
+    admin:
+      client:
+        url: "http://localhost:8010"
+#        expose all actuator endpoints for SBA
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

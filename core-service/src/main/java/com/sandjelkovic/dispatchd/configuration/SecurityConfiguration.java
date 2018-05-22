@@ -57,6 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //		http.authorizeRequests().antMatchers("/jquery/**").permitAll();
 		http.authorizeRequests()
 				.antMatchers("/users/{username}/**").access("#username == authentication.name")
+				.antMatchers("/actuator**").permitAll()
+				.antMatchers("/actuator/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.httpBasic()
