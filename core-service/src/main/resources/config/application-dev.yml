@@ -2,12 +2,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-  boot:
-    admin:
-      url: http://localhost:8010
 logging:
   level:
     com.sandjelkovic: DEBUG
-management:
-  security:
-    enabled: false
