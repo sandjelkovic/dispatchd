@@ -6,11 +6,13 @@ spring:
     cloud:
       config:
         uri: http://localhost:8888
-management:
-  security:
-    enabled: false
 trakt:
   baseServiceUrl: https://api.trakt.tv
   appId : superSecretAppIdFromTrakt
   appSecret : superSecretAppSecretFromTrakt
   apiVersion : 2
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

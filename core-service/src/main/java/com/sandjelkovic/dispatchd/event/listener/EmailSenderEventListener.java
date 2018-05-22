@@ -3,9 +3,7 @@ package com.sandjelkovic.dispatchd.event.listener;
 import com.sandjelkovic.dispatchd.event.GeneratedReportEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.mail.MailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +11,9 @@ import org.springframework.stereotype.Component;
 public class EmailSenderEventListener {
 
 	private Logger log = LoggerFactory.getLogger(EmailSenderEventListener.class);
-
-	@Autowired
-	private MailSender mailSender;
+//
+//	@Autowired
+//	private MailSender mailSender;
 
 	@EventListener
 	@Async

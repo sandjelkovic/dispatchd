@@ -1,21 +1,2 @@
 server:
   port: 8010
-management:
-  security:
-    enabled: false
-  context-path: /admin
-spring:
-  boot:
-    admin:
-      username: mgmtuser
-      password: password
-      client:
-        management-url: /admin
-  application:
-    name: monitorService
-zuul:
-  sensitive-headers:
-security:
-  user:
-    name: defaultuser
-    password: password
