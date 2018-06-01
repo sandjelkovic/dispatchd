@@ -1,5 +1,8 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider
 
+import assertk.assertions.*
+import com.sandjelkovic.dispatchd.isEmpty
+import com.sandjelkovic.dispatchd.isPresent
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +32,7 @@ class TraktMediaProviderContractTest {
     @Test
     fun `should get and deserialize a show`() {
         assertk.assert { provider.getShow("star-trek-the-next-generation") }.returnedValue {
-            isPresent {
+            isPresent() {
                 assertk.assert(it.actual.title, "Show Title").isNotNull {
                     it.isEqualTo("Star Trek: The Next Generation")
                 }
