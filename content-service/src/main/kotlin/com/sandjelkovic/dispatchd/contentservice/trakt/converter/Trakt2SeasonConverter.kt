@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.contentservice.converter
+package com.sandjelkovic.dispatchd.contentservice.trakt.converter
 
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Season
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.SeasonTrakt

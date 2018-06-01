@@ -2,9 +2,9 @@ package com.sandjelkovic.dispatchd.contentservice
 
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
-import com.sandjelkovic.dispatchd.contentservice.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportService
+import com.sandjelkovic.dispatchd.contentservice.trakt.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value

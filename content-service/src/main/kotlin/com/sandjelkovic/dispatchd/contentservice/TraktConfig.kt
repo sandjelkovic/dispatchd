@@ -1,11 +1,11 @@
 package com.sandjelkovic.dispatchd.contentservice
 
-import com.sandjelkovic.dispatchd.contentservice.converter.Trakt2EpisodeConverter
-import com.sandjelkovic.dispatchd.contentservice.converter.Trakt2SeasonConverter
-import com.sandjelkovic.dispatchd.contentservice.converter.Trakt2ShowConverter
 import com.sandjelkovic.dispatchd.contentservice.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ShowRepository
+import com.sandjelkovic.dispatchd.contentservice.trakt.converter.Trakt2EpisodeConverter
+import com.sandjelkovic.dispatchd.contentservice.trakt.converter.Trakt2SeasonConverter
+import com.sandjelkovic.dispatchd.contentservice.trakt.converter.Trakt2ShowConverter
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.contentservice.trakt.service.TraktShowImporter
 import org.springframework.beans.factory.annotation.Qualifier
