@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.contentservice.service.impl
+package com.sandjelkovic.dispatchd.contentservice.trakt.service
 
 import com.sandjelkovic.dispatchd.contentservice.convert
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Episode
@@ -8,7 +8,7 @@ import com.sandjelkovic.dispatchd.contentservice.data.repository.EpisodeReposito
 import com.sandjelkovic.dispatchd.contentservice.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ShowDoesNotExistTraktException
-import com.sandjelkovic.dispatchd.contentservice.service.TraktImporter
+import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
@@ -20,14 +20,15 @@ import java.util.concurrent.Future
  * @author sandjelkovic
  * @date 24.3.18.
  */
-open class DefaultTraktImporter(val showRepository: ShowRepository,
-                                val seasonRepository: SeasonRepository,
-                                val episodeRepository: EpisodeRepository,
-                                val conversionService: ConversionService,
-                                val provider: TraktMediaProvider) : TraktImporter {
+open class TraktShowImporter(val showRepository: ShowRepository,
+                             val seasonRepository: SeasonRepository,
+                             val episodeRepository: EpisodeRepository,
+                             val conversionService: ConversionService,
+                             val provider: TraktMediaProvider) : ShowImporter {
 
     companion object : KLogging()
 
+    // TODO Remove reliance on @Transactional
     @Transactional
     override fun importShow(showId: String): Show {
         val traktShow = provider.getShow(showId)

@@ -1,8 +1,5 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider
 
-import assertk.assertions.*
-import com.sandjelkovic.dispatchd.isEmpty
-import com.sandjelkovic.dispatchd.isPresent
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
