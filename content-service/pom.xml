@@ -37,21 +37,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 		</dependency>
-		<!--reminder to use -->
-		<!-- todo use @retryable for remote calls -->
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.retry</groupId>-->
-		<!--<artifactId>spring-retry</artifactId>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -59,6 +49,11 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-core</artifactId>
+			<version>0.7.2</version>
 		</dependency>
 
 		<dependency>
@@ -68,10 +63,6 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-kotlin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 
 		<dependency>
@@ -94,11 +85,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 		</dependency>
-		<!--<dependency>-->
-		<!--<groupId>org.jetbrains.kotlin</groupId>-->
-		<!--<artifactId>kotlin-test-junit</artifactId>-->
-		<!--<scope>test</scope>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>com.willowtreeapps.assertk</groupId>
 			<artifactId>assertk</artifactId>
@@ -109,6 +95,11 @@
 			<groupId>com.nhaarman</groupId>
 			<artifactId>mockito-kotlin</artifactId>
 			<version>1.5.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
 			<scope>test</scope>
 		</dependency>
 
