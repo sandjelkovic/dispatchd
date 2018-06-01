@@ -6,7 +6,6 @@ import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
  * @author sandjelkovic
  * @date 24.3.18.
  */
-interface TraktImporter {
-
+interface ShowImporter {
     fun importShow(showId: String): Show
 }
