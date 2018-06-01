@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.contentservice.interceptor
+package com.sandjelkovic.dispatchd.contentservice.trakt.interceptor
 
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
