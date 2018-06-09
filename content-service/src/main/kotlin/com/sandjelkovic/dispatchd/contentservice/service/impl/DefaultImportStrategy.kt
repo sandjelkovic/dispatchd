@@ -1,9 +1,10 @@
-package com.sandjelkovic.dispatchd.contentservice.service
+package com.sandjelkovic.dispatchd.contentservice.service.impl
 
 import arrow.core.Either
 import arrow.core.Option
 import arrow.core.flatMap
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
+import com.sandjelkovic.dispatchd.contentservice.service.*
 import mu.KLogging
 import java.net.URI
 
