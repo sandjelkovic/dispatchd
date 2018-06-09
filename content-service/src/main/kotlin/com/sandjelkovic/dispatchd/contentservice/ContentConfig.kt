@@ -2,11 +2,11 @@ package com.sandjelkovic.dispatchd.contentservice
 
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
-import com.sandjelkovic.dispatchd.contentservice.service.DefaultImportStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.ImportStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportService
+import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportStrategy
 import com.sandjelkovic.dispatchd.contentservice.trakt.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
@@ -54,7 +54,7 @@ class ContentConfig(
 
     @Bean
     fun importStrategy(showImporters: List<ShowImporter>) = DefaultImportStrategy(showImporters)
-    
+
     @Bean(name = arrayOf("threadPoolTaskExecutor"))
     fun threadPoolTaskExecutor(): Executor {
         return ThreadPoolTaskExecutor()
