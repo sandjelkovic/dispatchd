@@ -1,5 +1,6 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.service
 
+import arrow.core.Option
 import com.sandjelkovic.dispatchd.contentservice.convert
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Episode
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Season
@@ -13,6 +14,8 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvid
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.util.UriComponentsBuilder
+import java.net.URI
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 
@@ -25,8 +28,15 @@ open class TraktShowImporter(val showRepository: ShowRepository,
                              val episodeRepository: EpisodeRepository,
                              val conversionService: ConversionService,
                              val provider: TraktMediaProvider) : ShowImporter {
-
     companion object : KLogging()
+
+    override fun getIdentifier(uri: URI): Option<String> = Option.just(UriComponentsBuilder.fromUri(uri).build())
+            .map { it.pathSegments }
+            .filter { it.size > 1 }
+            .map { it[1] }
+
+
+    override fun supports(host: String): Boolean = host == "trakt.com"
 
     // TODO Remove reliance on @Transactional
     @Transactional
