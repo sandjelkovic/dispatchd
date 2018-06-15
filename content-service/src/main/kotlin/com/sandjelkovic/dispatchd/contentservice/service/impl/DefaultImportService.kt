@@ -5,6 +5,7 @@ import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportProgressStatu
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
+import com.sandjelkovic.dispatchd.contentservice.service.ImportException
 import com.sandjelkovic.dispatchd.contentservice.service.ImportService
 import com.sandjelkovic.dispatchd.contentservice.service.ImportStrategy
 import java.net.URI
@@ -15,18 +16,13 @@ import java.util.*
  * @date 24.3.18.
  */
 class DefaultImportService(val importStatusRepository: ImportStatusRepository, val importStrategy: ImportStrategy) : ImportService {
-    override fun importFromUri(uri: URI): ImportStatus {
+    override fun importFromUri(uri: URI): Either<ImportException, ImportStatus> {
         val importStatus = importStatusRepository.save(ImportStatus(mediaUrl = uri.toString(), status = ImportProgressStatus.QUEUED))
-        val importer = importStrategy.getImporter(uri)
-        when (importer) {
-            is Either.Left -> {
-                importStatusRepository.save(importStatus.copy(status = ImportProgressStatus.ERROR))
-            }
-            is Either.Right -> {
-                startImport(importer.b)
-            }
-        }
-        return importStatus
+        return importStrategy.getImporter(uri)
+                .map {
+                    startImport(it)
+                    importStatusRepository.findById(importStatus.id!!).orElse(importStatus)
+                }
     }
 
     private fun startImport(f: () -> Show) = f() // should be async
