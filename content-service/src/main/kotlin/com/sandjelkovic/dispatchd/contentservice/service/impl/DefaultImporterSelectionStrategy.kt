@@ -1,24 +1,20 @@
 package com.sandjelkovic.dispatchd.contentservice.service.impl
 
 import arrow.core.Either
-import arrow.core.flatMap
 import arrow.core.toOption
-import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
-import com.sandjelkovic.dispatchd.contentservice.service.*
+import com.sandjelkovic.dispatchd.contentservice.service.ImportException
+import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
+import com.sandjelkovic.dispatchd.contentservice.service.UnsupportedBackendException
 import mu.KLogging
 import java.net.URI
 
 class DefaultImporterSelectionStrategy(private val showImporters: List<ShowImporter>) : ImporterSelectionStrategy {
     companion object : KLogging()
 
-    override fun getImporter(uri: URI): Either<ImportException, () -> Show> =
+    override fun getImporter(uri: URI): Either<ImportException, ShowImporter> =
             showImporters.firstOrNull { it.supports(uri.host) }.toOption()
                     .toEither { UnsupportedBackendException() }
-                    .flatMap { importer ->
-                        importer.getIdentifier(uri)
-                                .map { identifier -> { importer.importShow(identifier) } }
-                                .toEither { InvalidImportUrlException() }
-                    }
 
 //            override fun getImporter(uri: URI): Option<() -> Show> =
 //            Option.fromNullable(showImporters.firstOrNull { it.supports(uri.host) })

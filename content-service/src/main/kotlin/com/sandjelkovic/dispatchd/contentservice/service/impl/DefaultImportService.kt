@@ -1,13 +1,11 @@
 package com.sandjelkovic.dispatchd.contentservice.service.impl
 
 import arrow.core.Either
+import arrow.core.flatMap
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportProgressStatus
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
-import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
-import com.sandjelkovic.dispatchd.contentservice.service.ImportException
-import com.sandjelkovic.dispatchd.contentservice.service.ImportService
-import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.*
 import java.net.URI
 import java.util.*
 
@@ -15,17 +13,35 @@ import java.util.*
  * @author sandjelkovic
  * @date 24.3.18.
  */
-class DefaultImportService(val importStatusRepository: ImportStatusRepository, val importerSelectionStrategy: ImporterSelectionStrategy) : ImportService {
+class DefaultImportService(private val importStatusRepository: ImportStatusRepository,
+                           private val importerSelectionStrategy: ImporterSelectionStrategy,
+                           private val asyncService: SpringAsyncService) : ImportService {
     override fun importFromUri(uri: URI): Either<ImportException, ImportStatus> {
         val importStatus = importStatusRepository.save(ImportStatus(mediaUrl = uri.toString(), status = ImportProgressStatus.QUEUED))
         return importerSelectionStrategy.getImporter(uri)
-                .map {
-                    startImport(it)
-                    importStatusRepository.findById(importStatus.id!!).orElse(importStatus)
+                .flatMap { importer ->
+                    importer.getIdentifier(uri)
+                            .map { asyncService.async { executeImport(importer, it, importStatus) } }
+                            .map { importStatusRepository.findById(importStatus.id!!).orElse(importStatus) }
+                            .toEither { InvalidImportUrlException() }
                 }
     }
 
-    private fun startImport(f: () -> Show) = f() // should be async
+    private fun executeImport(importer: ShowImporter, it: String, oldStatus: ImportStatus) {
+        val either = importer.importShow(it)
+        val status = importStatusRepository.findById(oldStatus.id!!).orElse(oldStatus)
+
+        val statusToSave: ImportProgressStatus = when (either) {
+            is Either.Right -> ImportProgressStatus.SUCCESS
+            is Either.Left -> when {
+                either.a is UnknownImportException -> ImportProgressStatus.ERROR
+                either.a is ShowAlreadyImportedException -> ImportProgressStatus.ERROR_SHOW_ALREADY_EXISTS
+                either.a is ShowDoesNotExistTraktException -> ImportProgressStatus.ERROR_REMOTE_SERVER
+                else -> ImportProgressStatus.ERROR
+            }
+        }
+        importStatusRepository.save(status.copy(status = statusToSave))
+    }
 
     override fun getImportStatus(id: Long): Optional<ImportStatus> = importStatusRepository.findById(id)
 }
