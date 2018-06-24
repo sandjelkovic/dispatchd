@@ -4,10 +4,10 @@ import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRep
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
-import com.sandjelkovic.dispatchd.contentservice.service.SpringAsyncService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImporterSelectionStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.impl.SpringAsyncService
 import com.sandjelkovic.dispatchd.contentservice.trakt.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
