@@ -8,7 +8,6 @@ import com.nhaarman.mockito_kotlin.verify
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
-import com.sandjelkovic.dispatchd.contentservice.service.SpringAsyncService
 import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isPresent
 import org.junit.Before
