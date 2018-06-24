@@ -1,6 +1,8 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.service
 
+import arrow.core.Either
 import arrow.core.Option
+import arrow.core.flatMap
 import com.sandjelkovic.dispatchd.contentservice.convert
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Episode
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Season
@@ -8,8 +10,8 @@ import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
 import com.sandjelkovic.dispatchd.contentservice.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ShowRepository
-import com.sandjelkovic.dispatchd.contentservice.service.ShowDoesNotExistTraktException
-import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
+import com.sandjelkovic.dispatchd.contentservice.flatMapToOption
+import com.sandjelkovic.dispatchd.contentservice.service.*
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
@@ -40,32 +42,39 @@ open class TraktShowImporter(val showRepository: ShowRepository,
 
     // TODO Remove reliance on @Transactional
     @Transactional
-    override fun importShow(showId: String): Show {
-        val traktShow = provider.getShow(showId)
-                .orElseThrow { ShowDoesNotExistTraktException() }
-
-        val seasonsFuture = provider.getSeasonsAsync(showId)
-        val episodesFuture = provider.getShowEpisodesAsync(showId)
-
-        val show = showRepository.save(conversionService.convert<Show>(traktShow))
-
-        val seasonMap = extractFromFutureOrDefault(seasonsFuture) { emptyList() }
-                .map { seasonTrakt -> conversionService.convert<Season>(seasonTrakt) }
-                .onEach { season -> season.show = show }
-                .also { seasonRepository.saveAll(it) }
-                .map { it.number to it }
-                .toMap()
-
-        extractFromFutureOrDefault(episodesFuture) { emptyList() }
-                .map { episodeTrakt -> conversionService.convert<Episode>(episodeTrakt) }
-                .onEach { episode ->
-                    episode.show = show
-                    episode.season = seasonMap.getOrElse(episode.seasonNumber, { Season() })
+    override fun importShow(showId: String): Either<ImportException, Show> {
+        return provider.getShow(showId)
+                .flatMapToOption()
+                .toEither { ShowDoesNotExistTraktException() }
+                .flatMap { show ->
+                    showRepository.findByTraktId(show.ids["trakt"] ?: showId)
+                            .flatMapToOption()
+                            .toEither { ShowAlreadyImportedException() }
                 }
-                .also { episodeRepository.saveAll(it) }
+                .flatMap { traktShow ->
+                    val seasonsFuture = provider.getSeasonsAsync(showId)
+                    val episodesFuture = provider.getShowEpisodesAsync(showId)
 
-        return showRepository.findById(show.id!!)
-                .orElseThrow { RuntimeException("Error during import -> Show with ID ${show.id} is saved but can't be read") }
+                    val savedShow = showRepository.save(conversionService.convert(traktShow))
+
+                    val seasonMap = extractFromFutureOrDefault(seasonsFuture) { emptyList() }
+                            .map { seasonTrakt -> conversionService.convert<Season>(seasonTrakt) }
+                            .onEach { season -> season.show = savedShow }
+                            .also { seasonRepository.saveAll(it) }
+                            .map { it.number to it }
+                            .toMap()
+
+                    extractFromFutureOrDefault(episodesFuture) { emptyList() }
+                            .map { episodeTrakt -> conversionService.convert<Episode>(episodeTrakt) }
+                            .onEach { episode ->
+                                episode.show = savedShow
+                                episode.season = seasonMap.getOrElse(episode.seasonNumber, { Season() })
+                            }
+                            .also { episodeRepository.saveAll(it) }
+                    showRepository.findById(savedShow.id!!)
+                            .flatMapToOption()
+                            .toEither { UnknownImportException("Error during import -> Show with ID ${savedShow.id} is saved but can't be read") }
+                }
     }
 
     private fun <T> extractFromFutureOrDefault(future: Future<T>, default: () -> T): T =

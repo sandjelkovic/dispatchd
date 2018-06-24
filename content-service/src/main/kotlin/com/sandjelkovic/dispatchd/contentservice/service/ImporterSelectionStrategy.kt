@@ -1,7 +1,6 @@
 package com.sandjelkovic.dispatchd.contentservice.service
 
 import arrow.core.Either
-import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
 import java.net.URI
 
 /**
@@ -9,5 +8,5 @@ import java.net.URI
  * @date 9.6.18.
  */
 interface ImporterSelectionStrategy {
-    fun getImporter(uri: URI): Either<ImportException, () -> Show>
+    fun getImporter(uri: URI): Either<ImportException, ShowImporter>
 }

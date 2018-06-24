@@ -8,6 +8,7 @@ import com.nhaarman.mockito_kotlin.verify
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.SpringAsyncService
 import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isPresent
 import org.junit.Before
@@ -32,15 +33,14 @@ class DefaultImportServiceTest {
         on { findById(validStatusId) } doReturn Optional.of(importStatus.copy(id = validStatusId))
         on { findById(ArgumentMatchers.longThat { it != validStatusId }) } doReturn Optional.empty<ImportStatus>()
     }
-    private val mockImporterSelectionStrategy: ImporterSelectionStrategy = mock {
-
-    }
+    private val mockImporterSelectionStrategy: ImporterSelectionStrategy = mock {}
+    private val mockSpringAsyncService: SpringAsyncService = mock {}
 
     private lateinit var service: DefaultImportService
 
     @Before
     fun setUp() {
-        service = DefaultImportService(mockRepository, mockImporterSelectionStrategy)
+        service = DefaultImportService(mockRepository, mockImporterSelectionStrategy, mockSpringAsyncService)
     }
 
     @Test

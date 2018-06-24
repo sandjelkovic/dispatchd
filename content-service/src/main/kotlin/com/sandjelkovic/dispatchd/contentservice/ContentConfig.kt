@@ -4,6 +4,7 @@ import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRep
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
+import com.sandjelkovic.dispatchd.contentservice.service.SpringAsyncService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImporterSelectionStrategy
@@ -50,7 +51,8 @@ class ContentConfig(
     fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider) = DefaultContentRefreshService(updateJobRepository, traktMediaProvider)
 
     @Bean
-    fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy) = DefaultImportService(importStatusRepository, importerSelectionStrategy)
+    fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy, asyncService: SpringAsyncService) =
+            DefaultImportService(importStatusRepository, importerSelectionStrategy, asyncService)
 
     @Bean
     fun importStrategy(showImporters: List<ShowImporter>) = DefaultImporterSelectionStrategy(showImporters)
