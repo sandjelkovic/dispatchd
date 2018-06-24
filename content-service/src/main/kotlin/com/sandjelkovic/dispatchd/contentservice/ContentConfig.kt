@@ -2,11 +2,11 @@ package com.sandjelkovic.dispatchd.contentservice
 
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
-import com.sandjelkovic.dispatchd.contentservice.service.ImportStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultContentRefreshService
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportService
-import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.contentservice.trakt.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import mu.KLogging
@@ -50,10 +50,10 @@ class ContentConfig(
     fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider) = DefaultContentRefreshService(updateJobRepository, traktMediaProvider)
 
     @Bean
-    fun importService(importStatusRepository: ImportStatusRepository, importStrategy: ImportStrategy) = DefaultImportService(importStatusRepository, importStrategy)
+    fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy) = DefaultImportService(importStatusRepository, importerSelectionStrategy)
 
     @Bean
-    fun importStrategy(showImporters: List<ShowImporter>) = DefaultImportStrategy(showImporters)
+    fun importStrategy(showImporters: List<ShowImporter>) = DefaultImporterSelectionStrategy(showImporters)
 
     @Bean(name = arrayOf("threadPoolTaskExecutor"))
     fun threadPoolTaskExecutor(): Executor {

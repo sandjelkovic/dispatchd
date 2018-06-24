@@ -8,6 +8,6 @@ import java.net.URI
  * @author sandjelkovic
  * @date 9.6.18.
  */
-interface ImportStrategy {
+interface ImporterSelectionStrategy {
     fun getImporter(uri: URI): Either<ImportException, () -> Show>
 }

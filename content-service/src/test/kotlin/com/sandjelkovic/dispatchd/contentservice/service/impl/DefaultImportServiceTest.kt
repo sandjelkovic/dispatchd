@@ -7,7 +7,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
-import com.sandjelkovic.dispatchd.contentservice.service.ImportStrategy
+import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isPresent
 import org.junit.Before
@@ -32,7 +32,7 @@ class DefaultImportServiceTest {
         on { findById(validStatusId) } doReturn Optional.of(importStatus.copy(id = validStatusId))
         on { findById(ArgumentMatchers.longThat { it != validStatusId }) } doReturn Optional.empty<ImportStatus>()
     }
-    private val mockImportStrategy: ImportStrategy = mock {
+    private val mockImporterSelectionStrategy: ImporterSelectionStrategy = mock {
 
     }
 
@@ -40,7 +40,7 @@ class DefaultImportServiceTest {
 
     @Before
     fun setUp() {
-        service = DefaultImportService(mockRepository, mockImportStrategy)
+        service = DefaultImportService(mockRepository, mockImporterSelectionStrategy)
     }
 
     @Test
