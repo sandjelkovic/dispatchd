@@ -25,15 +25,14 @@ class ImportController(private val importService: ImportService) {
         if (requestBody.mediaUrl.isBlank()) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
-        try {
-            URI.create(requestBody.mediaUrl)
+        return try {
+            val uri = URI.create(requestBody.mediaUrl)!!
+            importService.importFromUri(uri)
+                    .map { ResponseEntity(Resource(it), HttpStatus.ACCEPTED) }
+                    .toOption()
+                    .getOrElse { ResponseEntity(HttpStatus.BAD_REQUEST) }
         } catch (e: IllegalArgumentException) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
-        val uri = URI.create(requestBody.mediaUrl)!!
-        return importService.importFromUri(uri)
-                .map { ResponseEntity(Resource(it), HttpStatus.ACCEPTED) }
-                .toOption()
-                .getOrElse { ResponseEntity(HttpStatus.ACCEPTED) }
     }
 }
