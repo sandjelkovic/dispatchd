@@ -1,13 +1,14 @@
 package com.sandjelkovic.dispatchd.contentservice.service.impl
 
 import arrow.core.Either
+import arrow.core.Option
 import arrow.core.flatMap
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportProgressStatus
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
+import com.sandjelkovic.dispatchd.contentservice.flatMapToOption
 import com.sandjelkovic.dispatchd.contentservice.service.*
 import java.net.URI
-import java.util.*
 
 /**
  * @author sandjelkovic
@@ -43,5 +44,5 @@ class DefaultImportService(private val importStatusRepository: ImportStatusRepos
         importStatusRepository.save(status.copy(status = statusToSave))
     }
 
-    override fun getImportStatus(id: Long): Optional<ImportStatus> = importStatusRepository.findById(id)
+    override fun getImportStatus(id: Long): Option<ImportStatus> = importStatusRepository.findById(id).flatMapToOption()
 }
