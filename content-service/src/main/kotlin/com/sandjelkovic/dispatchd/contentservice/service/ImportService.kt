@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.contentservice.service
 
 import arrow.core.Either
+import arrow.core.Option
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import java.net.URI
-import java.util.*
 
 /**
  * @author sandjelkovic
@@ -12,5 +12,5 @@ import java.util.*
 interface ImportService {
     fun importFromUri(uri: URI): Either<ImportException, ImportStatus>
 
-    fun getImportStatus(id: Long): Optional<ImportStatus>
+    fun getImportStatus(id: Long): Option<ImportStatus>
 }

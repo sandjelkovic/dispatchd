@@ -7,10 +7,7 @@ import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportRequestDto
 import org.springframework.hateoas.Resource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 /**
@@ -32,7 +29,13 @@ class ImportController(private val importService: ImportService) {
                     .toOption()
                     .getOrElse { ResponseEntity(HttpStatus.BAD_REQUEST) }
         } catch (e: IllegalArgumentException) {
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
+            ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }
+
+    @GetMapping("/{statusId}")
+    fun getImportStatus(statusId: Long): ResponseEntity<Resource<ImportStatus>> =
+            importService.getImportStatus(statusId)
+                    .map { ResponseEntity(Resource(it), HttpStatus.OK) }
+                    .getOrElse { ResponseEntity(HttpStatus.NOT_FOUND) }
 }

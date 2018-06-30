@@ -12,7 +12,7 @@ import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrate
 import com.sandjelkovic.dispatchd.contentservice.service.InvalidImportUrlException
 import com.sandjelkovic.dispatchd.contentservice.service.UnsupportedBackendException
 import com.sandjelkovic.dispatchd.isEmpty
-import com.sandjelkovic.dispatchd.isPresent
+import com.sandjelkovic.dispatchd.isNotEmpty
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,7 +53,7 @@ class DefaultImportServiceTest {
     @Test
     fun `should return one status`() {
         assert { service.getImportStatus(validStatusId) }.returnedValue {
-            isPresent {
+            isNotEmpty {
                 it.isEqualTo(importStatus.copy(id = validStatusId))
             }
         }

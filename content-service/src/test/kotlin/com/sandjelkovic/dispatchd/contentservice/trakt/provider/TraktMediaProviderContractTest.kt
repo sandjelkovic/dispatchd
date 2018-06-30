@@ -32,7 +32,7 @@ class TraktMediaProviderContractTest {
     @Test
     fun `should get and deserialize a show`() {
         assertk.assert { provider.getShow("star-trek-the-next-generation") }.returnedValue {
-            isPresent() {
+            isPresent {
                 assertk.assert(it.actual.title, "Show Title").isNotNull {
                     it.isEqualTo("Star Trek: The Next Generation")
                 }
