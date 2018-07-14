@@ -38,7 +38,7 @@ open class TraktShowImporter(val showRepository: ShowRepository,
             .map { it[1] }
 
 
-    override fun supports(host: String): Boolean = host == "trakt.com"
+    override fun supports(host: String): Boolean = host == "trakt.tv"
 
     // TODO Remove reliance on @Transactional
     @Transactional

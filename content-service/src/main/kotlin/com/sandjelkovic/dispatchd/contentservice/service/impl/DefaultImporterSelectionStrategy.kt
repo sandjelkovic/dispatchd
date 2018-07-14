@@ -1,6 +1,8 @@
 package com.sandjelkovic.dispatchd.contentservice.service.impl
 
 import arrow.core.Either
+import arrow.core.Try
+import arrow.core.getOrElse
 import arrow.core.toOption
 import com.sandjelkovic.dispatchd.contentservice.service.ImportException
 import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
@@ -13,8 +15,9 @@ class DefaultImporterSelectionStrategy(private val showImporters: List<ShowImpor
     companion object : KLogging()
 
     override fun getImporter(uri: URI): Either<ImportException, ShowImporter> =
-            showImporters.firstOrNull { it.supports(uri.host) }.toOption()
-                    .toEither { UnsupportedBackendException() }
+            showImporters.firstOrNull { importer ->
+                Try { importer.supports(uri.host) }.getOrElse { false }
+            }.toOption().toEither { UnsupportedBackendException() }
 
 //            override fun getImporter(uri: URI): Option<() -> Show> =
 //            Option.fromNullable(showImporters.firstOrNull { it.supports(uri.host) })
