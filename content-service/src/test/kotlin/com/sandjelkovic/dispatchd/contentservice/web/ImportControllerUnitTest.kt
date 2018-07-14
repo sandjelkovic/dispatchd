@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus
  * @author sandjelkovic
  * @date 24.6.18.
  */
-class ImportControllerTest {
+class ImportControllerUnitTest {
 
     private val importService: ImportService = mock {
         on { importFromUri(any()) } doReturn Either.Left(InvalidImportUrlException())
