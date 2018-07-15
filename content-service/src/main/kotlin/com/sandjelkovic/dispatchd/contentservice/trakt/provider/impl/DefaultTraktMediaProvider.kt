@@ -9,7 +9,6 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktUriProvider
 import mu.KLogging
 import org.springframework.http.HttpStatus
 import org.springframework.scheduling.annotation.AsyncResult
-import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
@@ -19,9 +18,8 @@ import java.util.*
  * @author sandjelkovic
  * @date 28.1.18.
  */
-@Service
-class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
-                                private val traktRestTemplate: RestTemplate) : TraktMediaProvider {
+open class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
+                                     private val traktRestTemplate: RestTemplate) : TraktMediaProvider {
     companion object : KLogging()
 
     override fun getShow(showId: String): Optional<ShowTrakt> {

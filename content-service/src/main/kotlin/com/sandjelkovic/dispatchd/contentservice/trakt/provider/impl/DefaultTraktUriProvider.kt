@@ -2,8 +2,6 @@ package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktUriProvider
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.cloud.context.config.annotation.RefreshScope
-import org.springframework.stereotype.Service
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 import java.time.LocalDate
@@ -13,9 +11,7 @@ import java.time.format.DateTimeFormatter
  * @author sandjelkovic
  * @date 11.3.18.
  */
-@RefreshScope
-@Service
-class DefaultTraktUriProvider : TraktUriProvider {
+open class DefaultTraktUriProvider : TraktUriProvider {
 
     companion object {
         const val extensionParameterName = "extended"

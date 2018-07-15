@@ -6,8 +6,12 @@ import com.sandjelkovic.dispatchd.contentservice.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.contentservice.trakt.converter.Trakt2EpisodeConverter
 import com.sandjelkovic.dispatchd.contentservice.trakt.converter.Trakt2SeasonConverter
 import com.sandjelkovic.dispatchd.contentservice.trakt.converter.Trakt2ShowConverter
+import com.sandjelkovic.dispatchd.contentservice.trakt.interceptor.HeaderRequestInterceptor
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
+import com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl.DefaultTraktMediaProvider
+import com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl.DefaultTraktUriProvider
 import com.sandjelkovic.dispatchd.contentservice.trakt.service.TraktShowImporter
+import mu.KLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
@@ -15,6 +19,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.ConversionService
 import org.springframework.scheduling.annotation.EnableAsync
+import org.springframework.web.client.RestTemplate
 
 /**
  * @author sandjelkovic
@@ -28,11 +33,32 @@ class TraktConfig(
         var baseServiceUrl: String,
         @Value("\${trakt.appSecret: }")
         var appSecret: String) {
+    companion object : KLogging()
 
     @Bean
     fun traktImporter(showRepository: ShowRepository, seasonRepository: SeasonRepository,
                       episodeRepository: EpisodeRepository, @Qualifier("mvcConversionService") conversionService: ConversionService, provider: TraktMediaProvider) =
             TraktShowImporter(showRepository, seasonRepository, episodeRepository, conversionService, provider)
+
+    @Bean
+    @RefreshScope
+    fun traktUriProvider() = DefaultTraktUriProvider()
+
+    @Bean
+    @RefreshScope
+    fun traktMediaProvider(traktRestTemplate: RestTemplate) = DefaultTraktMediaProvider(traktUriProvider(), traktRestTemplate)
+
+    @Bean
+    @RefreshScope
+    fun traktRestTemplate(
+            @Value("\${trakt.appId: }") appId: String,
+            @Value("\${trakt.apiVersion: }") apiVersion: String): RestTemplate = RestTemplate().apply {
+        interceptors.addAll(listOf(
+                HeaderRequestInterceptor("Content-type", "application/json"),
+                HeaderRequestInterceptor("trakt-api-key", appId),
+                HeaderRequestInterceptor("trakt-api-version", apiVersion)
+        ))
+    }
 
     @Bean
     fun trakt2EpisodeConverter() = Trakt2EpisodeConverter()
