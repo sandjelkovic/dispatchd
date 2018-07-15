@@ -28,8 +28,8 @@ class DefaultImportService(private val importStatusRepository: ImportStatusRepos
                 }
     }
 
-    private fun executeImport(importer: ShowImporter, it: String, oldStatus: ImportStatus) {
-        val either = importer.importShow(it)
+    private fun executeImport(importer: ShowImporter, showIdentifier: String, oldStatus: ImportStatus) {
+        val either = importer.importShow(showIdentifier)
         val status = importStatusRepository.findById(oldStatus.id!!).orElse(oldStatus)
 
         val statusToSave: ImportProgressStatus = when (either) {
