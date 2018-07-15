@@ -43,9 +43,14 @@ class ContentConfig(
     fun importStrategy(showImporters: List<ShowImporter>) = DefaultImporterSelectionStrategy(showImporters)
 
     @Bean(name = arrayOf("threadPoolTaskExecutor"))
-    fun threadPoolTaskExecutor(): Executor {
-        return ThreadPoolTaskExecutor()
-    }
+    fun threadPoolTaskExecutor(): Executor = ThreadPoolTaskExecutor()
+
+    @Bean
+    fun taskExecutor(): Executor = ThreadPoolTaskExecutor()
+            .apply {
+                corePoolSize = 2
+                maxPoolSize = 10
+            }
 
     @Bean(name = arrayOf(contentRefreshTaskExecutorBeanName))
     fun contentRefreshTaskExecutor(): Executor = ThreadPoolTaskExecutor()
