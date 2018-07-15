@@ -7,7 +7,7 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.sandjelkovic.dispatchd.contentservice.service.ImportService
 import com.sandjelkovic.dispatchd.contentservice.service.InvalidImportUrlException
-import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportRequestDto
+import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportDto
 import org.junit.Test
 import org.springframework.http.HttpStatus
 
@@ -26,13 +26,13 @@ class ImportControllerUnitTest {
         val importController = ImportController(importService)
 
         assertk.assert {
-            val newImport = importController.newImport(ImportRequestDto("random string"))
+            val newImport = importController.newImport(ImportDto("random string"))
             newImport.statusCode
         }.returnedValue {
             isEqualTo(HttpStatus.BAD_REQUEST)
         }
 
-        assertk.assert { importController.newImport(ImportRequestDto("")).statusCode }.returnedValue {
+        assertk.assert { importController.newImport(ImportDto("")).statusCode }.returnedValue {
             isEqualTo(HttpStatus.BAD_REQUEST)
         }
     }
