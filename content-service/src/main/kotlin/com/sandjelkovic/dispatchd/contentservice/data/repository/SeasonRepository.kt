@@ -12,5 +12,6 @@ import org.springframework.data.repository.PagingAndSortingRepository
  */
 interface SeasonRepository : PagingAndSortingRepository<Season, Long> {
     fun findByShow(show: Show): List<Season>
+
     fun findByShow(show: Show, pageable: Pageable): Page<Season>
 }
