@@ -68,7 +68,7 @@ public class NotificationDaemon {
 		}
 	}
 
-	private void dispatchBatched(Set<UserEpisodeNotificationEvent> events) throws InterruptedException {
+	private void dispatchBatched(Set<UserEpisodeNotificationEvent> events) {
 		List<SimpleMailMessage> messages = events.stream()
 				.map(event -> conversionService.convert(event, SimpleMailMessage.class))
 				.collect(toList());
@@ -84,7 +84,7 @@ public class NotificationDaemon {
 		return array;
 	}
 
-	private void dispatchEventDriven(Set<UserEpisodeNotificationEvent> events) throws InterruptedException {
+	private void dispatchEventDriven(Set<UserEpisodeNotificationEvent> events) {
 		events.forEach(this::publishEvent);
 	}
 
@@ -97,7 +97,7 @@ public class NotificationDaemon {
 		notificationEventRepository.saveAll(events);
 	}
 
-	public Set<UserEpisodeNotificationEvent> collect() throws InterruptedException {
+	public Set<UserEpisodeNotificationEvent> collect() {
 		Instant upperBound = Instant.now().plus(DEFAULT_INTERVAL);
 		return notificationEventRepository.findByNotifiedFalseAndNotifyTimeBeforeOrderByNotifyTime(Timestamp.from(upperBound))
 				.stream()

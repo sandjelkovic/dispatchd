@@ -51,7 +51,7 @@ public class ReportFacadeTemplatesIntegrationTest extends BaseIntegrationTest {
 
 	@Test
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
-	public void findExistingTemplate() throws Exception {
+	public void findExistingTemplate() {
 		User user = getUser(USER_NAME);
 		ReportTemplate reportTemplate = generateTemplateWithGenerationInFutureWithoutShows().user(user);
 		reportTemplate = reportTemplateRepository.save(reportTemplate);
@@ -65,7 +65,7 @@ public class ReportFacadeTemplatesIntegrationTest extends BaseIntegrationTest {
 
 	@Test
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
-	public void findTemplatesForUser() throws Exception {
+	public void findTemplatesForUser() {
 		User user = getUser(USER_NAME);
 		int amountToRetrieve = 4;
 		long totalAmountToSave = 6;

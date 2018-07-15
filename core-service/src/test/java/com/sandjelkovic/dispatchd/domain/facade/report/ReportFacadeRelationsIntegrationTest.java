@@ -45,7 +45,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 	private TvShow shieldShow;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		setUpUsers();
 		tngShow = importerService.importShow(STAR_TREK_TNG_SLUG);
 		shieldShow = importerService.importShow(AGENTS_OF_SHIELD_SLUG);
@@ -53,18 +53,18 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 	}
 
 	@Test
-	public void disconnectAllShows() throws Exception {
+	public void disconnectAllShows() {
 
 	}
 
 	@Test
-	public void disconnectShow() throws Exception {
+	public void disconnectShow() {
 
 	}
 
 	@Test
 	@WithMockUser(username = USER_NAME)
-	public void connectShowHappyCase() throws Exception {
+	public void connectShowHappyCase() {
 		ReportTemplate template = reportTemplateRepository.save(generateTemplateWithGenerationInPastWithoutShows().user(getUser(USER_NAME)));
 
 		refreshJPAContext();
@@ -84,13 +84,13 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 
 	@Test(expected = ReportTemplateNotFoundException.class)
 	@WithMockUser(username = USER_NAME)
-	public void connectShowNoExistingTemplate() throws Exception {
+	public void connectShowNoExistingTemplate() {
 		target.connectShow(9999L, tngShow.getId(), 2);
 	}
 
 	@Test(expected = ShowNotFoundException.class)
 	@WithMockUser(username = USER_NAME)
-	public void connectShowNoExistingShow() throws Exception {
+	public void connectShowNoExistingShow() {
 		ReportTemplate template = reportTemplateRepository.save(generateTemplateWithGenerationInPastWithoutShows().user(getUser(USER_NAME)));
 
 		target.connectShow(template.getId(), 9999L, 2);
@@ -98,7 +98,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 
 	@Test
 	@WithMockUser(username = USER_NAME)
-	public void connectShowMoreShowsSequentially() throws Exception {
+	public void connectShowMoreShowsSequentially() {
 		ReportTemplate template = reportTemplateRepository.save(generateTemplateWithGenerationInPastWithoutShows().user(getUser(USER_NAME)));
 
 		refreshJPAContext();
@@ -125,7 +125,7 @@ public class ReportFacadeRelationsIntegrationTest extends BaseIntegrationTest {
 	}
 
 	@WithMockUser(username = USER_NAME)
-	public void connectShowTwiceSameShow() throws Exception {
+	public void connectShowTwiceSameShow() {
 		ReportTemplate template = reportTemplateRepository.save(generateTemplateWithGenerationInPastWithoutShows().user(getUser(USER_NAME)));
 
 		target.connectShow(template.getId(), tngShow.getId(), 2);

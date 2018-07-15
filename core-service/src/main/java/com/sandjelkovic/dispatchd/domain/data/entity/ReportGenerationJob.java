@@ -109,6 +109,6 @@ public class ReportGenerationJob extends BasicEntity implements Serializable {
 	public enum JobStatus {
 		NOT_STARTED,
 		IN_PROGRESS,
-		FINISHED;
+		FINISHED
 	}
 }

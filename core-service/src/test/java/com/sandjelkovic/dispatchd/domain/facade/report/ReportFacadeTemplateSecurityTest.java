@@ -38,7 +38,7 @@ public class ReportFacadeTemplateSecurityTest extends BaseIntegrationTest {
 
 	@Test(expected = AccessDeniedException.class)
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
-	public void findExistingTemplateOfDifferentUser() throws Exception {
+	public void findExistingTemplateOfDifferentUser() {
 		User userTwo = getUser(USER_TWO_NAME);
 		ReportTemplate reportTemplate = generateTemplateWithGenerationInFutureWithoutShows().user(userTwo);
 		reportTemplate = reportTemplateRepository.save(reportTemplate);

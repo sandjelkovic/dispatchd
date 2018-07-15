@@ -9,5 +9,5 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface ReportGenerationJobRepository extends JpaRepository<ReportGenerationJob, Long> {
-	public List<ReportGenerationJob> findByJobStatusAndTimeToFire(JobStatus jobStatus, ZonedDateTime timeToFire);
+	List<ReportGenerationJob> findByJobStatusAndTimeToFire(JobStatus jobStatus, ZonedDateTime timeToFire);
 }

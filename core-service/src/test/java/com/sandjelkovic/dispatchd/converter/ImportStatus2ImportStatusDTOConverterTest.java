@@ -29,7 +29,7 @@ public class ImportStatus2ImportStatusDTOConverterTest {
 	private ImportStatus2ImportStatusDtoConverter importStatus2ImportStatusDtoConverter;
 
 	@Test
-	public void convertTest() throws Exception {
+	public void convertTest() {
 		ZonedDateTime finishTime = ZonedDateTime.now().minusMinutes(1);
 		ZonedDateTime initiationTime = ZonedDateTime.now().minusMinutes(5);
 		ImportStatus status = new ImportStatus()

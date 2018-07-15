@@ -39,13 +39,13 @@ public class TraktMediaProviderTest {
 	private TraktMediaProvider provider;
 
 	@Test
-	public void getUpdates() throws Exception {
+	public void getUpdates() {
 		List<ShowUpdateTrakt> updates = provider.getUpdates(LocalDate.now().minusDays(7));
 		assertThat(updates.size(), greaterThanOrEqualTo(2));
 	}
 
 	@Test
-	public void getShow() throws Exception {
+	public void getShow() {
 		TvShowTrakt tvShow = provider.getTvShow(Constants.STAR_TREK_TNG_SLUG);
 		assertThat(tvShow, notNullValue());
 		assertThat(tvShow.getTitle(), is("Star Trek: The Next Generation"));
@@ -56,7 +56,7 @@ public class TraktMediaProviderTest {
 	}
 
 	@Test
-	public void getSeasons() throws Exception {
+	public void getSeasons() {
 		List<SeasonTrakt> seasons = provider.getSeasons(Constants.STAR_TREK_TNG_SLUG);
 		assertThat(seasons, notNullValue());
 		assertThat(seasons, not(empty()));
@@ -69,7 +69,7 @@ public class TraktMediaProviderTest {
 	}
 
 	@Test
-	public void getShowEpisodes() throws Exception {
+	public void getShowEpisodes() {
 		List<EpisodeTrakt> showEpisodes = provider.getShowEpisodes(Constants.STAR_TREK_TNG_SLUG);
 		assertThat(showEpisodes, notNullValue());
 		assertThat(showEpisodes, not(empty()));
