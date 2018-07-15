@@ -1,19 +1,22 @@
 package com.sandjelkovic.dispatchd.contentservice.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportProgressStatus
-import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportRequestDto
+import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportDto
+import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportStatusWebDto
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.hateoas.Resource
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 /**
  * @author sandjelkovic
@@ -34,16 +37,17 @@ class ImportControllerIntegrationTest {
 
     @Test
     fun `Should start import and return status`() {
-        val importRequestDto = ImportRequestDto(mediaUrl = mediaUrl)
+        val importRequestDto = ImportDto(mediaUrl = mediaUrl)
         mockMvc.perform(
                 post("/import")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(jacksonMapper.writeValueAsString(importRequestDto))
                         .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isAccepted)
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.jsonPath("\$.mediaUrl").value(mediaUrl))
-                .andExpect(MockMvcResultMatchers.jsonPath("\$.status").value(ImportProgressStatus.QUEUED.toString()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("\$.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("\$..statusId").isNotEmpty)
+                .andExpect(jsonPath("\$.status").value(ImportProgressStatus.QUEUED.toString()))
                 // TODO Hateoas URLs. Location header.
                 // write out Response
                 .andReturn().response.contentAsString.also { println(it) }
@@ -51,7 +55,7 @@ class ImportControllerIntegrationTest {
 
     @Test
     fun `Should fail on invalid URL`() {
-        val importRequestDto = ImportRequestDto(mediaUrl = "http::///something.net")
+        val importRequestDto = ImportDto(mediaUrl = "http::///something.net")
         mockMvc.perform(
                 post("/import")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -62,7 +66,7 @@ class ImportControllerIntegrationTest {
 
     @Test
     fun `Should fail on not supported backend`() {
-        val importRequestDto = ImportRequestDto(mediaUrl = "https://www.imdb.com/title/tt0092455/?ref_=nv_sr_1")
+        val importRequestDto = ImportDto(mediaUrl = "https://www.imdb.com/title/tt0092455/?ref_=nv_sr_1")
         mockMvc.perform(
                 post("/import")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -78,5 +82,30 @@ class ImportControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `Should create a new Import and read it's status`() {
+        val importRequestDto = ImportDto(mediaUrl = mediaUrl)
+        val importStatusResponse = mockMvc.perform(
+                post("/import")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(jacksonMapper.writeValueAsString(importRequestDto))
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isAccepted)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("\$.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("\$.statusId").isNotEmpty)
+                .andExpect(jsonPath("\$.status").value(ImportProgressStatus.QUEUED.toString()))
+                .andReturn().response.contentAsString.let { jacksonMapper.readValue<Resource<ImportStatusWebDto>>(it) }
+
+        mockMvc.perform(
+                get("/import/${importStatusResponse.content.statusId}")  // todo refactor to use link.self
+                        .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("\$.mediaUrl").value(mediaUrl))
+                .andExpect(jsonPath("\$.statusId").isNotEmpty)
+                .andExpect(jsonPath("\$.status").value(ImportProgressStatus.QUEUED.toString()))
     }
 }
