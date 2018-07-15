@@ -11,11 +11,11 @@ import mu.KLogging
  */
 class DefaultContentRefreshService(val updateJobRepository: UpdateJobRepository, val provider: TraktMediaProvider) : ContentRefreshService {
     override fun updateContentIfNeeded(): Long {
-        return 0;
+        return 0
     }
 
     override fun updateAllContent(): Long {
-        return 0;
+        return 0
     }
 
     companion object : KLogging()

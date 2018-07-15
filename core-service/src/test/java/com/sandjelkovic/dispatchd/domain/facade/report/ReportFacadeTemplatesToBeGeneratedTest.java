@@ -34,12 +34,12 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	private ReportFacade reportFacade;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 	}
 
 	@Test
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
-	public void saveExistingFilledTemplateTest() throws Exception {
+	public void saveExistingFilledTemplateTest() {
 		long countBefore = reportTemplateRepository.count();
 		ReportTemplate beforeSaveBean = generateTemplateWithGenerationInPastWithoutShows();
 
@@ -57,7 +57,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 
 	@Test
 	@WithMockUser(username = USER_NAME, password = USER_PASSWORD, roles = {"USER"})
-	public void saveNewTemplateTest() throws Exception {
+	public void saveNewTemplateTest() {
 		long countBefore = reportTemplateRepository.count();
 		ReportTemplate beforeSaveBean = generateTemplateAsNewTemplate();
 
@@ -90,7 +90,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	}
 
 	@Test
-	public void getTemplatesBetweenWeeklyTest() throws Exception {
+	public void getTemplatesBetweenWeeklyTest() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(2),
 				ZonedDateTime.now().minusSeconds(5),
@@ -104,7 +104,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	}
 
 	@Test
-	public void getTemplatesBetweenNoResultTest() throws Exception {
+	public void getTemplatesBetweenNoResultTest() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(2),
 				ZonedDateTime.now().minusSeconds(5),
@@ -119,7 +119,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	}
 
 	@Test
-	public void getTemplatesBetweenWithoutFromParamSuccessTest() throws Exception {
+	public void getTemplatesBetweenWithoutFromParamSuccessTest() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(2),
 				ZonedDateTime.now().minusSeconds(5),
@@ -133,7 +133,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	}
 
 	@Test
-	public void getTemplatesBetweenWithoutFromParamNoResultTest() throws Exception {
+	public void getTemplatesBetweenWithoutFromParamNoResultTest() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().plusHours(2),
 				ZonedDateTime.now().plusMinutes(15),
@@ -147,7 +147,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	}
 
 	@Test
-	public void getTemplatesBetweenInverseDatesTest() throws Exception {
+	public void getTemplatesBetweenInverseDatesTest() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(2),
 				ZonedDateTime.now().minusSeconds(5),
@@ -162,7 +162,7 @@ public class ReportFacadeTemplatesToBeGeneratedTest extends BaseIntegrationTest 
 	}
 
 	@Test
-	public void getTemplatesBetweenAllNullsTest() throws Exception {
+	public void getTemplatesBetweenAllNullsTest() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(2),
 				ZonedDateTime.now().minusSeconds(5),

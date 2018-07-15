@@ -19,7 +19,7 @@ public class BasicEntityTest {
 	private BasicEntity otherEntity;
 
 	@Test
-	public void testEqualsEqualIds() throws Exception {
+	public void testEqualsEqualIds() {
 		currentEntity = generateEntity(1);
 		otherEntity = generateEntity(1);
 
@@ -27,7 +27,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsNotEqualIds() throws Exception {
+	public void testEqualsNotEqualIds() {
 		currentEntity = generateEntity(1);
 		otherEntity = generateEntity(2);
 
@@ -35,7 +35,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsCurrentIdNull() throws Exception {
+	public void testEqualsCurrentIdNull() {
 		currentEntity = generateEntity(null);
 		otherEntity = generateEntity(2);
 
@@ -43,7 +43,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsOtherIdNull() throws Exception {
+	public void testEqualsOtherIdNull() {
 		currentEntity = generateEntity(1);
 		otherEntity = generateEntity(null);
 
@@ -51,7 +51,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsBothIdsNull() throws Exception {
+	public void testEqualsBothIdsNull() {
 		currentEntity = generateEntity(null);
 		otherEntity = generateEntity(null);
 
@@ -59,7 +59,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsStringIdsSame() throws Exception {
+	public void testEqualsStringIdsSame() {
 		currentEntity = generateEntity("id1");
 		otherEntity = generateEntity("id1");
 
@@ -67,7 +67,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsStringIdSDifferentVariablesSameString() throws Exception {
+	public void testEqualsStringIdSDifferentVariablesSameString() {
 		String id1 = "string id";
 		String id2 = "string id";
 
@@ -78,7 +78,7 @@ public class BasicEntityTest {
 	}
 
 	@Test
-	public void testEqualsStringIdsDifferentStrings() throws Exception {
+	public void testEqualsStringIdsDifferentStrings() {
 		String id1 = "string id1";
 		String id2 = "string id2";
 

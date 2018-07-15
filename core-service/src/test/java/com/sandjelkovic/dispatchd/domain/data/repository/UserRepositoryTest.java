@@ -23,7 +23,7 @@ public class UserRepositoryTest {
 	private UserRepository userRepository;
 
 	@Test
-	public void testFindByUsername() throws Exception {
+	public void testFindByUsername() {
 		User user = new User();
 		user.setUsername("root");
 		user.setEmail("root@root.com");

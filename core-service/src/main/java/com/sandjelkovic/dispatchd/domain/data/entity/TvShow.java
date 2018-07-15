@@ -296,6 +296,6 @@ public class TvShow extends BasicEntity implements Serializable {
 		NOTSTARTED,
 		ONGOING,
 		ONBREAK,
-		FINISHED;
+		FINISHED
 	}
 }

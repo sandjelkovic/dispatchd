@@ -47,7 +47,7 @@ public class ReportGeneratorServiceIntegrationTest {
 	private ReportGeneratorService target;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		reportTemplateRepository.saveAll(generateTemplatesWithTimesToGenerate(
 				ZonedDateTime.now().minusMinutes(55),
 				ZonedDateTime.now().minusMinutes(2),
@@ -61,7 +61,7 @@ public class ReportGeneratorServiceIntegrationTest {
 	}
 
 	@Test
-	public void generateReportFromTemplate() throws Exception {
+	public void generateReportFromTemplate() {
 		ReportTemplate reportTemplate = generateOneTemplateWithTimeToGenerate(ZonedDateTime.now());
 		reportTemplate = reportTemplateRepository.save(reportTemplate);
 		ZonedDateTime newGenerationTimeForTemplate = reportFacade.getNewGenerationTimeForTemplate(reportTemplate);

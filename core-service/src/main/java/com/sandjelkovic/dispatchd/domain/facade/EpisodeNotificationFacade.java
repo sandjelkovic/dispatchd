@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public interface EpisodeNotificationFacade {
-	public List<EpisodeNotificationDTO> findUnreadNotifications();
+	List<EpisodeNotificationDTO> findUnreadNotifications();
 
-	public List<EpisodeNotificationDTO> findUnreadNotifications(Instant endTime);
+	List<EpisodeNotificationDTO> findUnreadNotifications(Instant endTime);
 
-	public List<EpisodeNotificationDTO> findUnreadNotifications(Instant beginTime, Instant endTime);
+	List<EpisodeNotificationDTO> findUnreadNotifications(Instant beginTime, Instant endTime);
 }

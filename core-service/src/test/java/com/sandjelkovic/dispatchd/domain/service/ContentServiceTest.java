@@ -38,14 +38,14 @@ public class ContentServiceTest extends BaseIntegrationTest {
 	private ContentService contentService;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		super.setUpUsers();
 		TvShow sttng = importerService.importShow(STAR_TREK_TNG_SLUG);
 		refreshJPAContext();
 	}
 
 	@Test
-	public void findEpisodeById() throws Exception {
+	public void findEpisodeById() {
 		TvShow tng = showService.findByTitle("Star Trek: The Next Generation")
 				.stream()
 				.findAny()
@@ -62,27 +62,27 @@ public class ContentServiceTest extends BaseIntegrationTest {
 	}
 
 	@Test
-	public void findEpisodeListByShow() throws Exception {
+	public void findEpisodeListByShow() {
 
 	}
 
 	@Test
-	public void findEpisodeListBySeason() throws Exception {
+	public void findEpisodeListBySeason() {
 
 	}
 
 	@Test
-	public void findShow() throws Exception {
+	public void findShow() {
 
 	}
 
 	@Test
-	public void findShowByTitleContaining() throws Exception {
+	public void findShowByTitleContaining() {
 
 	}
 
 	@Test
-	public void findShows() throws Exception {
+	public void findShows() {
 
 	}
 

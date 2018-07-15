@@ -81,7 +81,7 @@ public class DefaultUserFacadeIntegrationTest {
 	private TvShowDTO tvShowDTO;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		testUser = new User();
 		testUser.setUsername(INTEGRATION_TEST_USER_USERNAME);
 		testUser.setApproved(INTEGRATION_TEST_USER_APPROVED);
@@ -152,7 +152,7 @@ public class DefaultUserFacadeIntegrationTest {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		userRepository.delete(testUser);
 		episodeRepository.deleteAll(starTrekTNG.getEpisodes());
 		seasonRepository.deleteAll(starTrekTNG.getSeasons());
@@ -162,11 +162,11 @@ public class DefaultUserFacadeIntegrationTest {
 	}
 
 	@Test
-	public void testFindUser() throws Exception {
+	public void testFindUser() {
 	}
 
 	@Test
-	public void testDisableUserViaUsername() throws Exception {
+	public void testDisableUserViaUsername() {
 		facade.disableUser(testUser.getUsername());
 		User user = userRepository.findOneByUsername(testUser.getUsername())
 				.orElseThrow(UserNotFoundException::new);
@@ -174,7 +174,7 @@ public class DefaultUserFacadeIntegrationTest {
 	}
 
 	@Test
-	public void testEnableUserViaUsername() throws Exception {
+	public void testEnableUserViaUsername() {
 		testUser.setEnabled(false);
 		userRepository.save(testUser);
 
@@ -182,17 +182,16 @@ public class DefaultUserFacadeIntegrationTest {
 
 		User user = userRepository.findOneByUsername(testUser.getUsername())
 				.orElseThrow(UserNotFoundException::new);
-		;
 		assertTrue(user.isEnabled());
 	}
 
 	@Test
-	public void testRegister() throws Exception {
+	public void testRegister() {
 
 	}
 
 	@Test
-	public void testFollowTvShow() throws Exception {
+	public void testFollowTvShow() {
 
 		facade.followTvShow(userDTO, tvShowDTO);
 
@@ -203,7 +202,7 @@ public class DefaultUserFacadeIntegrationTest {
 
 
 	@Test
-	public void testUnfollowTvShow() throws Exception {
+	public void testUnfollowTvShow() {
 		UserFollowingTvShow following = new UserFollowingTvShow(testUser, starTrekTNG);
 		followingRepository.save(following);
 		UserDTO userDTO = getUserDtoFromTestUser();

@@ -36,7 +36,7 @@ public class TvShow2DTOConverterTest {
 	private TestDataGenerator generator;
 
 	@Test
-	public void convert() throws Exception {
+	public void convert() {
 		TvShow source = generator.createStarTrekTNG();
 
 		TvShowDTO result = converter.convert(source);
