@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<kotlin.version>1.2.51</kotlin.version>
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+		<arrow.version>0.7.2</arrow.version>
 		<docker.plugin.version>1.0.0</docker.plugin.version>
 		<docker.image.prefix>sandjelkovic</docker.image.prefix>
 	</properties>
@@ -54,11 +55,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.arrow-kt</groupId>
-			<artifactId>arrow-core</artifactId>
-			<version>0.7.2</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -78,6 +74,60 @@
 			<artifactId>kotlin-logging</artifactId>
 			<version>1.5.3</version>
 		</dependency>
+
+		<!-- Arrow -->
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-core</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-syntax</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-typeclasses</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-data</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-docs</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-instances-core</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-instances-data</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-optics</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.arrow-kt</groupId>
+			<artifactId>arrow-generic</artifactId>
+			<version>${arrow.version}</version>
+		</dependency>
+		<!--<dependency>-->
+		<!--<groupId>io.arrow-kt</groupId>-->
+		<!--<artifactId>arrow-annotations-processor</artifactId>-->
+		<!--<version>${arrow.version}</version>-->
+		<!--</dependency>-->
+
+		<!-- End Arrow -->
 
 		<!-- Testing -->
 		<dependency>
