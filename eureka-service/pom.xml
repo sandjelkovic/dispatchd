@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.sandjelkovic.dispatchd</groupId>
+	<groupId>com.sandjelkovic.dispatchd.eureka</groupId>
 	<artifactId>eureka-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -12,20 +12,20 @@
 	<description>Eureka service for Dispatchd</description>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.sandjelkovic.dispatchd</groupId>
+		<artifactId>dispatchd</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
 	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<kotlin.version>1.2.51</kotlin.version>
-		<spring-boot-admin.version>2.0.1</spring-boot-admin.version>
-		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
-	</properties>
+	<!--<properties>-->
+	<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+	<!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
+	<!--<java.version>1.8</java.version>-->
+	<!--<kotlin.version>1.2.51</kotlin.version>-->
+	<!--<spring-boot-admin.version>2.0.1</spring-boot-admin.version>-->
+	<!--<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>-->
+	<!--</properties>-->
 
 	<dependencies>
 		<dependency>
@@ -51,10 +51,12 @@
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
+			<version>${kotlin.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-reflect</artifactId>
+			<version>${kotlin.version}</version>
 		</dependency>
 
 		<dependency>
@@ -70,13 +72,6 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-dependencies</artifactId>
-				<version>${spring-boot-admin.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

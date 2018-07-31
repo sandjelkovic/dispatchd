@@ -21,6 +21,7 @@
 		<module>core-service</module>
 		<module>monitor-service</module>
 		<module>config-service</module>
+		<module>eureka-service</module>
 	</modules>
 
 	<properties>
@@ -31,6 +32,7 @@
 		<kotlin.version>1.2.51</kotlin.version>
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<spring-boot.version>2.0.1.RELEASE</spring-boot.version>
+		<spring-boot-admin.version>2.0.1</spring-boot-admin.version>
 		<docker.plugin.version>1.0.0</docker.plugin.version>
 		<docker.image.prefix>sandjelkovic</docker.image.prefix>
 	</properties>
@@ -53,6 +55,13 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-dependencies</artifactId>
+				<version>${spring-boot-admin.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
