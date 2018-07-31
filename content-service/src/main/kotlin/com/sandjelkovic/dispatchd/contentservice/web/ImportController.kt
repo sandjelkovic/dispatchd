@@ -1,6 +1,9 @@
 package com.sandjelkovic.dispatchd.contentservice.web
 
+import arrow.core.Try
+import arrow.core.flatMap
 import arrow.core.getOrElse
+import arrow.core.toOption
 import com.sandjelkovic.dispatchd.contentservice.service.ImportService
 import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportDto
 import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportStatusWebDto
@@ -19,20 +22,14 @@ import java.net.URI
 @RequestMapping(value = ["/import"])
 class ImportController(private val importService: ImportService) {
     @PostMapping
-    fun newImport(@RequestBody requestBody: ImportDto): ResponseEntity<Resource<ImportStatusWebDto>> {
-        if (requestBody.mediaUrl.isBlank()) {
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
-        }
-        return try {
-            val uri = URI.create(requestBody.mediaUrl)!!
-            importService.importFromUri(uri)
+    fun newImport(@RequestBody requestBody: ImportDto): ResponseEntity<Resource<ImportStatusWebDto>> =
+            requestBody.mediaUrl.toOption()
+                    .filter { it.isNotBlank() }
+                    .toEither { }
+                    .flatMap { Try { URI.create(requestBody.mediaUrl) }.filter { it != null }.toEither() }
+                    .flatMap { importService.importFromUri(it) }
                     .map { ResponseEntity(Resource(it.toWebDto()), HttpStatus.ACCEPTED) }
-                    .toOption()
                     .getOrElse { ResponseEntity(HttpStatus.BAD_REQUEST) }
-        } catch (e: IllegalArgumentException) {
-            ResponseEntity(HttpStatus.BAD_REQUEST)
-        }
-    }
 
     @GetMapping("/{statusId}")
     fun getImportStatus(@PathVariable statusId: Long): ResponseEntity<Resource<ImportStatusWebDto>> =
