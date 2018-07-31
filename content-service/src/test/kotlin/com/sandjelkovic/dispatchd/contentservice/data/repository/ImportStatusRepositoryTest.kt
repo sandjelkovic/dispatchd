@@ -5,11 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
-import com.sandjelkovic.dispatchd.contentservice.seconds
 import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isInLast
 import com.sandjelkovic.dispatchd.isPresent
 import com.sandjelkovic.dispatchd.isPresentAndExtracted
+import com.sandjelkovic.kxjtime.seconds
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
