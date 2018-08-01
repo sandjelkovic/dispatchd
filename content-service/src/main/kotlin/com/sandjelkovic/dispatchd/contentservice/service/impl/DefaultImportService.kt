@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.Option
 import arrow.core.flatMap
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportProgressStatus
+import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportProgressStatus.*
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.contentservice.flatMapToOption
@@ -18,7 +19,7 @@ class DefaultImportService(private val importStatusRepository: ImportStatusRepos
                            private val importerSelectionStrategy: ImporterSelectionStrategy,
                            private val asyncService: SpringAsyncService) : ImportService {
     override fun importFromUri(uri: URI): Either<ImportException, ImportStatus> {
-        val importStatus = importStatusRepository.save(ImportStatus(mediaUrl = uri.toString(), status = ImportProgressStatus.QUEUED))
+        val importStatus = importStatusRepository.save(ImportStatus(mediaUrl = uri.toString(), status = QUEUED))
         return importerSelectionStrategy.getImporter(uri)
                 .flatMap { importer ->
                     importer.getIdentifier(uri)
@@ -28,21 +29,23 @@ class DefaultImportService(private val importStatusRepository: ImportStatusRepos
                 }
     }
 
-    private fun executeImport(importer: ShowImporter, showIdentifier: String, oldStatus: ImportStatus) {
-        val either = importer.importShow(showIdentifier)
-        val status = importStatusRepository.findById(oldStatus.id!!).orElse(oldStatus)
+    private fun executeImport(importer: ShowImporter, showIdentifier: String, oldStatus: ImportStatus) =
+            importStatusRepository.findById(oldStatus.id!!).orElse(oldStatus)
+                    .let { status ->
+                        importer.importShow(showIdentifier)
+                                .fold(::mapExceptionToProgressStatus) { SUCCESS }
+                                .let {
+                                    importStatusRepository.save(status.copy(status = it))
+                                }
+                    }
 
-        val statusToSave: ImportProgressStatus = when (either) {
-            is Either.Right -> ImportProgressStatus.SUCCESS
-            is Either.Left -> when {
-                either.a is UnknownImportException -> ImportProgressStatus.ERROR
-                either.a is ShowAlreadyImportedException -> ImportProgressStatus.ERROR_SHOW_ALREADY_EXISTS
-                either.a is ShowDoesNotExistTraktException -> ImportProgressStatus.ERROR_REMOTE_SERVER
-                else -> ImportProgressStatus.ERROR
+    private fun mapExceptionToProgressStatus(exception: ImportException): ImportProgressStatus =
+            when (exception) {
+                is UnknownImportException -> ERROR
+                is ShowAlreadyImportedException -> ERROR_SHOW_ALREADY_EXISTS
+                is ShowDoesNotExistTraktException -> ERROR_REMOTE_SERVER
+                else -> ERROR
             }
-        }
-        importStatusRepository.save(status.copy(status = statusToSave))
-    }
 
     override fun getImportStatus(id: Long): Option<ImportStatus> = importStatusRepository.findById(id).flatMapToOption()
 }

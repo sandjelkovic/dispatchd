@@ -1,8 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.service
 
-import arrow.core.Either
-import arrow.core.Option
-import arrow.core.flatMap
+import arrow.core.*
+import arrow.syntax.function.pipe
 import com.sandjelkovic.dispatchd.contentservice.convert
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Episode
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Season
@@ -18,7 +17,6 @@ import org.springframework.core.convert.ConversionService
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
-import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 
 /**
@@ -33,9 +31,8 @@ open class TraktShowImporter(val showRepository: ShowRepository,
     companion object : KLogging()
 
     override fun getIdentifier(uri: URI): Option<String> = Option.just(UriComponentsBuilder.fromUri(uri).build())
-            .map { it.pathSegments }
-            .filter { it.size > 1 }
-            .map { it[1] }
+            .filter { it.pathSegments.size > 1 }
+            .map { it.pathSegments[1] }
 
 
     override fun supports(host: String): Boolean = host == "trakt.tv"
@@ -77,14 +74,7 @@ open class TraktShowImporter(val showRepository: ShowRepository,
                 }
     }
 
-    private fun <T> extractFromFutureOrDefault(future: Future<T>, default: () -> T): T =
-            try {
-                future.get()
-            } catch (e: InterruptedException) {
-                logger.error(e.message, e.cause)
-                default()
-            } catch (e: ExecutionException) {
-                logger.error(e.message, e.cause)
-                default()
-            }
+    private fun <T> extractFromFutureOrDefault(future: Future<T>, default: (Unit) -> T): T =
+            Try { future.get() }
+                    .getOrElse { logger.warn(it.message, it) pipe default }
 }
