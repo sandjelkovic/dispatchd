@@ -3,29 +3,19 @@ Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges
 
 Travis CI : [![Build Status](https://travis-ci.org/sandjelkovic/dispatchd.svg?branch=develop)](https://travis-ci.org/sandjelkovic/dispatchd)
 
-> Application to notify when episodes go live or aggregate those notifications in reports
-
-> Currently in heavy development mode.
+ Application to notify when episodes go live or aggregate those notifications in reports
 
 #### Purpose
 Goal of this application is to provide updates for episodes airdates in the form of customisable reports.
 
 #### Media content provider services
 * Currently, only https://trakt.tv/ is being used to retrieve information about Shows, Seasons and Episodes, including airdates.
-* Importing of shows to local db is also supported only from trakt.
+* Importing of shows to local database is also supported only from trakt.
 
 #### Development setup 
-* Checkout.
-* Import maven project.
-* Update credentials in property files or set up run configuration to override those properties (recommended).
-* Set the database URL for profile in use (default for dev is Linux based in relation to user home).
-* Set up run configuration to use "dev" profile
-* Run.
+* Coming soon
 
 #### Credentials to update
-* spring.mail.host (if not gmail)
-* spring.mail.username
-* spring.mail.password
 * trakt.appId
 * trakt.appSecret
 
@@ -36,6 +26,7 @@ At this moment, only trakt is supported for imports. URL that needs to be provid
 | Service 	| Port
 |----------	|-----:	|
 | Configuration service 	| 8888 	|
-| Core service 	| 8080 	|
-| Content service 	| 8090 	|
+| Eureka service 	| 8761 	|
 | Monitor service 	| 8010 	|
+| Core service 	| 8080 	|
+| Content service 	| - 	|
