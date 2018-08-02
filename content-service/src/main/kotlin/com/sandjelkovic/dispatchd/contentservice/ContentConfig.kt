@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice
 
 import com.sandjelkovic.dispatchd.contentservice.data.repository.ImportStatusRepository
+import com.sandjelkovic.dispatchd.contentservice.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.contentservice.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.contentservice.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.ShowImporter
@@ -9,6 +10,7 @@ import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImportServi
 import com.sandjelkovic.dispatchd.contentservice.service.impl.DefaultImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.contentservice.service.impl.SpringAsyncService
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
+import com.sandjelkovic.dispatchd.contentservice.trakt.service.TraktShowImporter
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
@@ -33,7 +35,8 @@ class ContentConfig(
     companion object : KLogging()
 
     @Bean
-    fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider) = DefaultContentRefreshService(updateJobRepository, traktMediaProvider)
+    fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider, showRepository: ShowRepository, traktShowImporter: TraktShowImporter) =
+            DefaultContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter)
 
     @Bean
     fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy, asyncService: SpringAsyncService) =
