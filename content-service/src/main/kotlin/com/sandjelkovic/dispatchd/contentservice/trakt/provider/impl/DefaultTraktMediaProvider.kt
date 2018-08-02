@@ -1,9 +1,13 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
+import arrow.core.Either
+import arrow.core.Try
+import arrow.syntax.function.pipe
 import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
+import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowUpdateTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.contentservice.trakt.provider.TraktUriProvider
 import mu.KLogging
@@ -12,6 +16,7 @@ import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -69,6 +74,22 @@ open class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvi
 
     override fun getShowEpisodesAsync(showId: String): AsyncResult<List<EpisodeTrakt>> =
             AsyncResult(this.getShowEpisodes(showId))
+
+    override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =
+            traktUriProvider.getUpdatesUri(fromDate) pipe { uri ->
+                Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri) }
+                        .map { it?.toList() ?: listOf() }
+                        .toEither()
+                        .mapLeft { RemoteServiceException(it) }
+            }
+//
+//    override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =
+//            traktUriProvider.getUpdatesUri(fromDate).let { uri ->
+//                Try { traktRestTemplate.getForObject(uri, Array<ShowUpdateTrakt>::class.java) }
+//                        .map { it?.toList() ?: listOf() }
+//                        .toEither()
+//                        .mapLeft { RemoteServiceException(it) }
+//            }
 
     protected fun <R> executeHttpOrMapException(block: () -> R): R =
             try {
