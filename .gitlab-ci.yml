@@ -1,5 +1,4 @@
-# Use Maven 3.5 and JDK8
-image: maven:3.5-jdk-8
+image: java:8
 
 variables:
   # This will supress any download for dependencies and plugins or upload messages which would clutter the console log.
@@ -24,20 +23,20 @@ cache:
 compile:
   stage: build
   script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
+  - './mvnw $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
 
 compile content service:
   stage: build
   script:
     - 'cd content-service'
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
+    - './mvnw $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
 
 # Run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 verify:
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify'
+  - './mvnw $MAVEN_CLI_OPTS -DskipDocker verify'
   artifacts:
     paths:
     - target/*.jar
@@ -46,7 +45,7 @@ verify content-service:
   stage: test
   script:
     - 'cd content-service'
-    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify'
+    - './mvnw $MAVEN_CLI_OPTS -DskipDocker verify'
   artifacts:
     paths:
     - content-service/target/*.jar
