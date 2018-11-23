@@ -3,13 +3,11 @@ package com.sandjelkovic.dispatchd.content.trakt.converter;
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt;
 import com.sandjelkovic.dispatchd.domain.data.entity.Episode;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-@Component
 public class Trakt2EpisodeConverter implements Converter<EpisodeTrakt, Episode> {
 
 	@Override

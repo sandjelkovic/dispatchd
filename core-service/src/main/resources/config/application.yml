@@ -9,6 +9,10 @@ report:
 spring:
     application:
         name: coreService
+    boot:
+      admin:
+        client:
+          url: "http://localhost:8010"
     jackson:
         serialization:
             WRITE_DATES_AS_TIMESTAMPS: false
@@ -19,8 +23,3 @@ management:
     web:
       exposure:
         include: "*"
-spring:
-  boot:
-    admin:
-      client:
-        url: "http://localhost:8010"
