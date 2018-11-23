@@ -4,6 +4,7 @@ import arrow.core.Either
 import assertk.assert
 import assertk.assertions.isEqualTo
 import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.isA
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
@@ -37,6 +38,7 @@ class DefaultImportServiceTest {
         on { save(importStatus) } doReturn importStatus.copy(id = 100L)
         on { findById(validStatusId) } doReturn Optional.of(importStatus.copy(id = validStatusId))
         on { findById(ArgumentMatchers.longThat { it != validStatusId }) } doReturn Optional.empty<ImportStatus>()
+        on { save(isA<ImportStatus>()) } doReturn ImportStatus()
     }
     private val mockImporterSelectionStrategy: ImporterSelectionStrategy = mock {
         on { getImporter(kotlinLangURI) } doReturn Either.left(UnsupportedBackendException())
