@@ -21,7 +21,12 @@ import java.time.ZonedDateTime
  * @author sandjelkovic
  * @date 10.2.18.
  */
-class DefaultContentRefreshService(val updateJobRepository: UpdateJobRepository, val provider: TraktMediaProvider, val showRepository: ShowRepository, val importer: ShowImporter) : ContentRefreshService {
+class DefaultContentRefreshService(
+    val updateJobRepository: UpdateJobRepository,
+    val provider: TraktMediaProvider,
+    val showRepository: ShowRepository,
+    val importer: ShowImporter
+) : ContentRefreshService {
     override fun updateContentIfNeeded(): Either<RemoteServiceException, Int> {
         return refreshExistingContent()
     }
@@ -33,45 +38,44 @@ class DefaultContentRefreshService(val updateJobRepository: UpdateJobRepository,
     companion object : KLogging()
 
     fun refreshExistingContent(): Either<RemoteServiceException, Int> =
-            getLastUpdateTime().also {
-                logger.debug("Refreshing content. Last update was: $it")
-            }.let { fromTime ->
+        getLastUpdateTime()
+            .also { logger.debug("Refreshing content. Last update was: $it") }
+            .let { fromTime ->
                 provider.getUpdates(fromTime.toLocalDate())
-                        .map { getIdsForUpdate(it) }
-                        .map { it.also { logger.debug { "Shows to be imported (Trakt IDs): $it" } } }
-                        .map { ids -> ids.map { Try { importer.importShow(it) } }.count { it.isSuccess() } }
-                        .also { createNewJobReport() }
+                    .map { getIdsForUpdate(it) }
+                    .map { it.also { logger.debug { "Shows to be imported (Trakt IDs): $it" } } }
+                    .map { ids -> ids.map { Try { importer.importShow(it) } }.count { it.isSuccess() } }
+                    .also { createNewJobReport() }
             }
 //        // possible optimisation for failure cases -> scan internal db and compare retrieved.updatedAt < internal.lastLocalUpdate
 //        // in order to only update shows that failed in  the past. Since the update time is started from the last successful refresh.
 //        // independent update of each show in order to continue the refresh evens if some fail.
 
-    private fun getIdsForUpdate(it: List<ShowUpdateTrakt>): List<String> {
-        return it.map { extractTraktId(it) }
-                .mapNotNull { it.orNull() }
-                .filter { id -> showExists(id) }
-    }
+    private fun getIdsForUpdate(it: List<ShowUpdateTrakt>): List<String> = it
+        .map(::extractTraktId)
+        .mapNotNull { it.orNull() }
+        .filter(::showExists)
 
     private fun showExists(id: String) = showRepository.findByTraktId(id).isPresent
 
     private fun extractTraktId(update: ShowUpdateTrakt): Option<String> = update.toOption()
-            .flatMap { it.show.toOption() }
-            .map { it.ids }
-            .filter { it.containsKey("trakt") }
-            .map { it["trakt"]!! }
+        .flatMap { it.show.toOption() }
+        .map { it.ids }
+        .filter { it.containsKey("trakt") }
+        .map { it["trakt"]!! }
 
     private fun getLastUpdateTime(): ZonedDateTime =
-            updateJobRepository.findFirstBySuccessOrderByFinishTimeDesc(true)
-                    .map { it.finishTime }
-                    .orElseGet { ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()) }
+        updateJobRepository.findFirstBySuccessOrderByFinishTimeDesc(true)
+            .map { it.finishTime }
+            .orElseGet { ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()) }
 
     private fun createNewJobReport() =
-            updateJobRepository.save(
-                    UpdateJob().apply {
-                        finishTime = ZonedDateTime.now()
-                        success = true
-                    }
-            ).also {
-                logger.debug("Saved job: $it")
+        updateJobRepository.save(
+            UpdateJob().apply {
+                finishTime = ZonedDateTime.now()
+                success = true
             }
+        ).also {
+            logger.debug("Saved job: $it")
+        }
 }
