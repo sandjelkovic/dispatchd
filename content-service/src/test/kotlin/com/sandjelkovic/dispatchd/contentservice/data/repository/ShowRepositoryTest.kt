@@ -27,26 +27,28 @@ class ShowRepositoryTest {
         val saved = repository.save(show.copy())
 
         assertThat(saved)
-                .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
+            .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
         assertThat(saved.id)
-                .isNotNull()
-                .isGreaterThan(0)
+            .isNotNull()
+            .isGreaterThan(0)
 
         val foundOptional = repository.findById(saved.id!!)
         assertThat(foundOptional)
-                .isPresent
+            .isPresent
         assertThat(foundOptional.get())
-                .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
+            .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
         assertThat(foundOptional.get().id)
-                .isNotNull()
-                .isGreaterThan(0)
+            .isNotNull()
+            .isGreaterThan(0)
     }
 
     private fun exampleShow(): Show {
-        return Show(description = "Show Description",
-                traktId = "traktId",
+        return Show(
+            description = "Show Description",
+            traktId = "traktId",
             lastLocalUpdate = ZonedDateTime.now().minusYears(1000),
-                title = "Title")
+            title = "Title"
+        )
     }
 
     @Test
@@ -56,19 +58,19 @@ class ShowRepositoryTest {
         val saved = repository.save(show.copy())
 
         assertThat(saved)
-                .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
+            .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
         assertThat(saved.id)
-                .isNotNull()
-                .isGreaterThan(0)
+            .isNotNull()
+            .isGreaterThan(0)
 
         val foundOptional = repository.findById(saved.id!!)
         assertThat(foundOptional)
-                .isPresent
+            .isPresent
         assertThat(foundOptional.get())
-                .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
+            .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
         assertThat(foundOptional.get().id)
-                .isNotNull()
-                .isGreaterThan(0)
+            .isNotNull()
+            .isGreaterThan(0)
     }
 
     @Test
@@ -78,19 +80,19 @@ class ShowRepositoryTest {
         val saved = repository.save(show.copy())
 
         assertThat(saved)
-                .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
+            .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
         assertThat(saved.id)
-                .isNotNull()
-                .isGreaterThan(0)
+            .isNotNull()
+            .isGreaterThan(0)
 
         val foundOptional = repository.findById(saved.id!!)
         assertThat(foundOptional)
-                .isPresent
+            .isPresent
         assertThat(foundOptional.get())
-                .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
+            .isEqualToIgnoringGivenFields(show, "id", "episodes", "seasons")
         assertThat(foundOptional.get().id)
-                .isNotNull()
-                .isGreaterThan(0)
+            .isNotNull()
+            .isGreaterThan(0)
     }
 
     @Test
@@ -100,9 +102,9 @@ class ShowRepositoryTest {
 
         val foundOptional = repository.findByTraktId(show.traktId!!)
         assertThat(foundOptional)
-                .isPresent
+            .isPresent
         assertThat(foundOptional.get())
-                .isEqualTo(saved)
+            .isEqualTo(saved)
     }
 
     @Test
@@ -113,11 +115,11 @@ class ShowRepositoryTest {
         val found = repository.findByTitle(show.title)
 
         assertThat(found)
-                .isNotNull
-                .isNotEmpty
-                .hasSize(1)
-                .first()
-                .isEqualTo(saved)
+            .isNotNull
+            .isNotEmpty
+            .hasSize(1)
+            .first()
+            .isEqualTo(saved)
     }
 
     @Test
@@ -128,11 +130,11 @@ class ShowRepositoryTest {
         val found = repository.findByTitleContaining(show.title.substring(2), Pageable.unpaged())
 
         assertThat(found)
-                .isNotNull
-                .isNotEmpty
-                .hasSize(1)
-                .first()
-                .isEqualTo(saved)
+            .isNotNull
+            .isNotEmpty
+            .hasSize(1)
+            .first()
+            .isEqualTo(saved)
     }
 }
 
