@@ -1,9 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice.web
 
-import arrow.core.Try
-import arrow.core.flatMap
-import arrow.core.getOrElse
-import arrow.core.toOption
+import arrow.core.*
+import com.sandjelkovic.dispatchd.contentservice.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.contentservice.service.ImportService
 import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportDto
 import com.sandjelkovic.dispatchd.contentservice.web.dto.ImportStatusWebDto
@@ -23,17 +21,27 @@ import java.net.URI
 class ImportController(private val importService: ImportService) {
     @PostMapping
     fun newImport(@RequestBody requestBody: ImportDto): ResponseEntity<Resource<ImportStatusWebDto>> =
-            requestBody.mediaUrl.toOption()
-                    .filter { it.isNotBlank() }
-                    .toEither { }
-                    .flatMap { Try { URI.create(requestBody.mediaUrl) }.filter { it != null }.toEither() }
-                    .flatMap { importService.importFromUri(it) }
-                    .map { ResponseEntity(Resource(it.toWebDto()), HttpStatus.ACCEPTED) }
-                    .getOrElse { ResponseEntity(HttpStatus.BAD_REQUEST) }
+        validateImportRequest(requestBody)
+            .flatMap { convertToUri(requestBody) }
+            .flatMap(importService::importFromUri)
+            .map(ImportStatus::toWebDto)
+            .map { ResponseEntity(Resource(it), HttpStatus.ACCEPTED) }
+            .getOrElse { ResponseEntity(HttpStatus.BAD_REQUEST) }
+
+    private fun validateImportRequest(requestBody: ImportDto): Either<Unit, String> =
+        requestBody.mediaUrl.toOption()
+            .filter { it.isNotBlank() }
+            .toEither { }
+
+    private fun convertToUri(requestBody: ImportDto) =
+        Try { URI.create(requestBody.mediaUrl) }
+            .filter { it != null }
+            .toEither()
 
     @GetMapping("/{statusId}")
     fun getImportStatus(@PathVariable statusId: Long): ResponseEntity<Resource<ImportStatusWebDto>> =
-            importService.getImportStatus(statusId)
-                    .map { ResponseEntity(Resource(it.toWebDto()), HttpStatus.OK) }
-                    .getOrElse { ResponseEntity(HttpStatus.NOT_FOUND) }
+        importService.getImportStatus(statusId)
+            .map(ImportStatus::toWebDto)
+            .map { ResponseEntity(Resource(it), HttpStatus.OK) }
+            .getOrElse { ResponseEntity(HttpStatus.NOT_FOUND) }
 }
