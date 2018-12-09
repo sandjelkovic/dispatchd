@@ -20,6 +20,7 @@ import org.springframework.hateoas.Resources
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.stream.Collectors
@@ -42,14 +43,14 @@ class ShowController(
         .let { ResponseEntity(Resource(it), HttpStatus.OK) }
 
     @GetMapping("/{showId}")
-    fun show(showId: String) = getShow(showId)
+    fun show(@PathVariable showId: String) = getShow(showId)
         .map { Resource(it.toDto()) }
         .map { ResponseEntity(it, HttpStatus.OK) }
         .getOrElse { ResponseEntity<Resource<ShowDto>>(HttpStatus.NOT_FOUND) }
 
 
     @GetMapping("/{showId}/seasons")
-    fun seasons(showId: String): ResponseEntity<Resources<SeasonDto>> =
+    fun seasons(@PathVariable showId: String): ResponseEntity<Resources<SeasonDto>> =
     //TODO Validate show Id
         getShow(showId)
             .map(seasonRepository::findByShow)
