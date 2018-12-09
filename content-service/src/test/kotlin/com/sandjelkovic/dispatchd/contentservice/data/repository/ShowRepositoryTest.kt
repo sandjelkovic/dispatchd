@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit4.SpringRunner
+import java.time.ZonedDateTime
 
 /**
  * @author sandjelkovic
@@ -44,7 +45,7 @@ class ShowRepositoryTest {
     private fun exampleShow(): Show {
         return Show(description = "Show Description",
                 traktId = "traktId",
-                lastLocalUpdate = null,
+            lastLocalUpdate = ZonedDateTime.now().minusYears(1000),
                 title = "Title")
     }
 

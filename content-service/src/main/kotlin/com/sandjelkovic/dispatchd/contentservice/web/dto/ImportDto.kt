@@ -21,3 +21,4 @@ fun ImportStatus.toWebDto() = ImportStatusWebDto(statusId = id!!,
         initiationTime = initiationTime,
         finishTime = finishTime,
         status = status)
+ 
