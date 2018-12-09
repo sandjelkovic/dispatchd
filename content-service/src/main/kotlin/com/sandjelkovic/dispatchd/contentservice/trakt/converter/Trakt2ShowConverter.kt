@@ -13,7 +13,7 @@ class Trakt2ShowConverter : Converter<ShowTrakt, Show> {
     override fun convert(source: ShowTrakt): Show = Show().apply {
         title = source.title ?: ""
         description = source.overview ?: ""
-        status = source.status
+        status = source.status ?: ""
         year = source.year
         lastLocalUpdate = ZonedDateTime.now()
         traktId = source.ids.getOrDefault("trakt", "")
