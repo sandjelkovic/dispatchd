@@ -2,6 +2,7 @@ package com.sandjelkovic.dispatchd.contentservice.web.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.sandjelkovic.dispatchd.contentservice.data.entity.Episode
 import java.time.ZonedDateTime
 
 /**
@@ -9,7 +10,7 @@ import java.time.ZonedDateTime
  * @date 2018-12-09
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-class EpisodeDTO {
+class EpisodeDto {
 
     private var id: Long? = null
 
@@ -40,73 +41,90 @@ class EpisodeDTO {
 
     private var tvShowId: Long? = null
 
-    fun id(id: Long?): EpisodeDTO {
+    fun id(id: Long?): EpisodeDto {
         this.id = id
         return this
     }
 
-    fun airdate(airdate: ZonedDateTime): EpisodeDTO {
+    fun airdate(airdate: ZonedDateTime): EpisodeDto {
         this.airdate = airdate
         return this
     }
 
-    fun lastUpdated(lastUpdated: ZonedDateTime): EpisodeDTO {
+    fun lastUpdated(lastUpdated: ZonedDateTime): EpisodeDto {
         this.lastUpdated = lastUpdated
         return this
     }
 
-    fun customNumbering(customNumbering: String): EpisodeDTO {
+    fun customNumbering(customNumbering: String): EpisodeDto {
         this.customNumbering = customNumbering
         return this
     }
 
-    fun description(description: String): EpisodeDTO {
+    fun description(description: String): EpisodeDto {
         this.description = description
         return this
     }
 
-    fun number(number: Int?): EpisodeDTO {
+    fun number(number: Int?): EpisodeDto {
         this.number = number
         return this
     }
 
-    fun seasonNumber(seasonNumber: String): EpisodeDTO {
+    fun seasonNumber(seasonNumber: String): EpisodeDto {
         this.seasonNumber = seasonNumber
         return this
     }
 
-    fun title(title: String): EpisodeDTO {
+    fun title(title: String): EpisodeDto {
         this.title = title
         return this
     }
 
-    fun imdbId(imdbId: String): EpisodeDTO {
+    fun imdbId(imdbId: String): EpisodeDto {
         this.imdbId = imdbId
         return this
     }
 
-    fun tmdbId(tmdbId: String): EpisodeDTO {
+    fun tmdbId(tmdbId: String): EpisodeDto {
         this.tmdbId = tmdbId
         return this
     }
 
-    fun traktId(traktId: String): EpisodeDTO {
+    fun traktId(traktId: String): EpisodeDto {
         this.traktId = traktId
         return this
     }
 
-    fun tvdbId(tvdbId: String): EpisodeDTO {
+    fun tvdbId(tvdbId: String): EpisodeDto {
         this.tvdbId = tvdbId
         return this
     }
 
-    fun seasonId(seasonId: Long?): EpisodeDTO {
+    fun seasonId(seasonId: Long?): EpisodeDto {
         this.seasonId = seasonId
         return this
     }
 
-    fun tvShowId(tvShowId: Long?): EpisodeDTO {
+    fun tvShowId(tvShowId: Long?): EpisodeDto {
         this.tvShowId = tvShowId
         return this
     }
 }
+
+fun Episode.toDto() = Episode(
+    id = id,
+    version = version,
+    airDate = airDate,
+    lastUpdated = lastUpdated,
+    customNumbering = customNumbering,
+    description = description,
+    title = title,
+    number = number,
+    seasonNumber = seasonNumber,
+    imdbId = imdbId,
+    tmdbId = tmdbId,
+    traktId = traktId,
+    tvdbId = tvdbId,
+    imagesGroup = imagesGroup
+)

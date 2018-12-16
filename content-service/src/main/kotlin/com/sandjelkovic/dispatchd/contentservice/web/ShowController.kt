@@ -4,6 +4,7 @@ import arrow.core.Try
 import arrow.core.getOrElse
 import arrow.data.Validated
 import arrow.data.invalid
+import com.sandjelkovic.dispatchd.contentservice.data.entity.Episode
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Season
 import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
 import com.sandjelkovic.dispatchd.contentservice.data.repository.EpisodeRepository
@@ -17,13 +18,12 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.hateoas.Resource
 import org.springframework.hateoas.Resources
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.stream.Collectors
+import java.util.stream.Collectors.toList
 
 /**
  * @author sandjelkovic
@@ -40,13 +40,13 @@ class ShowController(
     @GetMapping
     fun shows(page: Pageable): ResponseEntity<Resource<Page<ShowDto>>> = showRepository.findAll(page)
         .map(Show::toDto)
-        .let { ResponseEntity(Resource(it), HttpStatus.OK) }
+        .let { okResponse(Resource(it)) }
 
     @GetMapping("/{showId}")
     fun show(@PathVariable showId: String) = getShow(showId)
         .map { Resource(it.toDto()) }
-        .map { ResponseEntity(it, HttpStatus.OK) }
-        .getOrElse { ResponseEntity<Resource<ShowDto>>(HttpStatus.NOT_FOUND) }
+        .map(this::okResponse)
+        .getOrElse { ResponseEntity.notFound().build() }
 
 
     @GetMapping("/{showId}/seasons")
@@ -54,11 +54,20 @@ class ShowController(
     //TODO Validate show Id
         getShow(showId)
             .map(seasonRepository::findByShow)
-            .map { it.map(Season::toDto) }
-            .map { it.collect(Collectors.toList()) }
+            .map { it.map(Season::toDto).collect(toList()) }
             .map { Resources(it) }
-            .map { ResponseEntity(it, HttpStatus.OK) }
-            .getOrElse { ResponseEntity<Resources<SeasonDto>>(HttpStatus.NOT_FOUND) }
+            .map(this::okResponse)
+            .getOrElse { ResponseEntity.notFound().build() }
+
+    @GetMapping("/{showId}/seasons/{seasonNumber}/episodes")
+    fun episodes(@PathVariable showId: String, @PathVariable seasonNumber: String) {
+        getShow(showId)
+            .map { episodeRepository.findBySeason_Show_IdAndSeason_Number(it.id!!, seasonNumber) }
+            .map { it.map(Episode::toDto).collect(toList()) }
+            .map { Resources(it) }
+            .map(this::okResponse)
+            .getOrElse { ResponseEntity.notFound().build() }
+    }
 
     private fun getShow(showId: String) = validateShowId(showId)
         .map { showRepository.findById(it) }
@@ -73,4 +82,5 @@ class ShowController(
                 { Validated.Valid(it) }
             )
 
+    private fun <T> okResponse(payload: T) = ResponseEntity.ok().body(payload)
 }
