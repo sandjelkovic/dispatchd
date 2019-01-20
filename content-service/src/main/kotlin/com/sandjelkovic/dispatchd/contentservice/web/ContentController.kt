@@ -32,7 +32,7 @@ import java.util.stream.Collectors.toList
 
 @RestController
 @RequestMapping("/shows")
-class ShowController(
+class ContentController(
     val episodeRepository: EpisodeRepository,
     val seasonRepository: SeasonRepository,
     val showRepository: ShowRepository
@@ -45,8 +45,8 @@ class ShowController(
     @GetMapping("/{showId}")
     fun show(@PathVariable showId: String) = getShow(showId)
         .map { Resource(it.toDto()) }
-        .map(this::okResponse)
-        .getOrElse { ResponseEntity.notFound().build() }
+        .map(::okResponse)
+        .getOrElse(::notFoundResponse)
 
 
     @GetMapping("/{showId}/seasons")
@@ -56,8 +56,8 @@ class ShowController(
             .map(seasonRepository::findByShow)
             .map { it.map(Season::toDto).collect(toList()) }
             .map { Resources(it) }
-            .map(this::okResponse)
-            .getOrElse { ResponseEntity.notFound().build() }
+            .map(::okResponse)
+            .getOrElse(::notFoundResponse)
 
     @GetMapping("/{showId}/seasons/{seasonNumber}/episodes")
     fun episodes(@PathVariable showId: String, @PathVariable seasonNumber: String) {
@@ -65,8 +65,8 @@ class ShowController(
             .map { episodeRepository.findBySeason_Show_IdAndSeason_Number(it.id!!, seasonNumber) }
             .map { it.map(Episode::toDto).collect(toList()) }
             .map { Resources(it) }
-            .map(this::okResponse)
-            .getOrElse { ResponseEntity.notFound().build() }
+            .map(::okResponse)
+            .getOrElse(::notFoundResponse)
     }
 
     private fun getShow(showId: String) = validateShowId(showId)
@@ -83,4 +83,6 @@ class ShowController(
             )
 
     private fun <T> okResponse(payload: T) = ResponseEntity.ok().body(payload)
+
+    private fun <T> notFoundResponse() = ResponseEntity.notFound().build<T>()
 }
