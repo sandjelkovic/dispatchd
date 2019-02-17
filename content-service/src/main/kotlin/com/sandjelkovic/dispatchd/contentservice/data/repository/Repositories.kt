@@ -36,6 +36,8 @@ interface SeasonRepository : PagingAndSortingRepository<Season, Long> {
 interface ShowRepository : PagingAndSortingRepository<Show, Long> {
     fun findByTraktId(traktId: String): Optional<Show>
 
+    fun findByTraktSlug(traktSlug: String): Optional<Show>
+
     fun findByTitle(title: String): Stream<Show>
 
     fun findByTitleContaining(title: String, pageable: Pageable): Page<Show>

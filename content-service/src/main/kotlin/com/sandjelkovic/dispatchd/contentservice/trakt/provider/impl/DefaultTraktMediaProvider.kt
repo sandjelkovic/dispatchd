@@ -1,7 +1,6 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
-import arrow.core.Either
-import arrow.core.Try
+import arrow.core.*
 import arrow.syntax.function.pipe
 import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.EpisodeTrakt
@@ -17,24 +16,41 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import java.time.LocalDate
-import java.util.*
 
 /**
  * @author sandjelkovic
  * @date 28.1.18.
  */
-open class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvider,
-                                     private val traktRestTemplate: RestTemplate) : TraktMediaProvider {
+open class DefaultTraktMediaProvider(
+    private val traktUriProvider: TraktUriProvider,
+    private val traktRestTemplate: RestTemplate
+) : TraktMediaProvider {
     companion object : KLogging()
 
-    override fun getShow(showId: String): Optional<ShowTrakt> {
+    override fun getShow(showId: String): Try<Option<ShowTrakt>> {
         val uri = traktUriProvider.getShowUri(showId)
-        val show: ShowTrakt? = executeHttpOrDefaultOnNotFound(block = { traktRestTemplate.getForObject(uri) }, default = { null })
 
-        logger.debug("Retrieved Show: $show")
-
-        return Optional.ofNullable(show)
+        return Try { traktRestTemplate.getForObject<ShowTrakt>(uri) }
+            .map { it.toOption() }
+            .recoverWith(
+                partialRecovery(::isHttpClientErrorAndNotFound) { Success(Option.empty<ShowTrakt>()) }
+            )
     }
+
+    fun <T> partialRecovery(
+        predicate: (Throwable) -> Boolean,
+        success: (Throwable) -> Success<T>
+    ): (Throwable) -> Try<T> =
+        { throwable: Throwable ->
+            when {
+                predicate(throwable) -> success(throwable)
+                else -> Failure(throwable)
+            }
+        }
+
+    private fun isHttpClientErrorAndNotFound(it: Throwable) = it is HttpClientErrorException && isNotFound(it)
+
+    private fun isNotFound(it: HttpClientErrorException) = HttpStatus.NOT_FOUND == it.statusCode
 
     override fun getSeasons(showId: String): List<SeasonTrakt> {
         val uri = traktUriProvider.getSeasonsUri(showId)
@@ -56,8 +72,8 @@ open class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvi
 
     override fun getShowEpisodes(showId: String): List<EpisodeTrakt> {
         return this.getSeasonsMinimal(showId)
-                .map { season -> this.getSeasonEpisodes(showId, season.number ?: "") }
-                .flatMap { it.toList() }
+            .map { season -> this.getSeasonEpisodes(showId, season.number ?: "") }
+            .flatMap { it.toList() }
     }
 
     override fun getSeasonEpisodes(showId: String, seasonNumber: String): List<EpisodeTrakt> {
@@ -70,18 +86,18 @@ open class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvi
     }
 
     override fun getSeasonsAsync(showId: String): AsyncResult<List<SeasonTrakt>> =
-            AsyncResult(this.getSeasons(showId))
+        AsyncResult(this.getSeasons(showId))
 
     override fun getShowEpisodesAsync(showId: String): AsyncResult<List<EpisodeTrakt>> =
-            AsyncResult(this.getShowEpisodes(showId))
+        AsyncResult(this.getShowEpisodes(showId))
 
     override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =
-            traktUriProvider.getUpdatesUri(fromDate) pipe { uri ->
-                Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri) }
-                        .map { it?.toList() ?: listOf() }
-                        .toEither()
-                        .mapLeft { RemoteServiceException(it) }
-            }
+        traktUriProvider.getUpdatesUri(fromDate) pipe { uri ->
+            Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri) }
+                .map { it?.toList() ?: listOf() }
+                .toEither()
+                .mapLeft { RemoteServiceException(it) }
+        }
 //
 //    override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =
 //            traktUriProvider.getUpdatesUri(fromDate).let { uri ->
@@ -92,27 +108,27 @@ open class DefaultTraktMediaProvider(private val traktUriProvider: TraktUriProvi
 //            }
 
     protected fun <R> executeHttpOrMapException(block: () -> R): R =
-            try {
-                block()
-            } catch (e: HttpClientErrorException) {
-                logger.warn("HTTPClient error occurred when contacting Tract.", e)
-                throw RemoteServiceException(e)
-            }
+        try {
+            block()
+        } catch (e: HttpClientErrorException) {
+            logger.warn("HTTPClient error occurred when contacting Tract.", e)
+            throw RemoteServiceException(e)
+        }
 
     protected fun <R> executeHttpOrDefault(block: () -> R, default: (HttpClientErrorException) -> R): R =
-            try {
-                block()
-            } catch (e: HttpClientErrorException) {
-                logger.warn("HTTPClient error occurred when contacting Tract.", e)
-                default(e)
-            }
+        try {
+            block()
+        } catch (e: HttpClientErrorException) {
+            logger.warn("HTTPClient error occurred when contacting Tract.", e)
+            default(e)
+        }
 
     protected fun <R> executeHttpOrDefaultOnNotFound(block: () -> R, default: () -> R): R =
-            executeHttpOrDefault(block) {
-                if (HttpStatus.NOT_FOUND == it.statusCode) {
-                    default()
-                } else {
-                    throw RemoteServiceException(it)
-                }
+        executeHttpOrDefault(block) {
+            if (HttpStatus.NOT_FOUND == it.statusCode) {
+                default()
+            } else {
+                throw RemoteServiceException(it)
             }
+        }
 }

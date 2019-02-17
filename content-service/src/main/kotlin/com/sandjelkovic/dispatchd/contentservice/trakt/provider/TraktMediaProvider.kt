@@ -1,6 +1,8 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider
 
 import arrow.core.Either
+import arrow.core.Option
+import arrow.core.Try
 import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.SeasonTrakt
@@ -9,14 +11,13 @@ import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowUpdateTrakt
 import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.AsyncResult
 import java.time.LocalDate
-import java.util.*
 
 /**
  * @author sandjelkovic
  * @date 28.1.18.
  */
 interface TraktMediaProvider {
-    fun getShow(showId: String): Optional<ShowTrakt>
+    fun getShow(showId: String): Try<Option<ShowTrakt>>
     fun getShowEpisodes(showId: String): List<EpisodeTrakt>
     fun getSeasons(showId: String): List<SeasonTrakt>
     fun getSeasonsMinimal(showId: String): List<SeasonTrakt>
