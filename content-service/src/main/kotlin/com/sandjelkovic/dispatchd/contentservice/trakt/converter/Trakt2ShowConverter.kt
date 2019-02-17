@@ -16,6 +16,7 @@ class Trakt2ShowConverter : Converter<ShowTrakt, Show> {
         status = source.status ?: ""
         year = source.year
         lastLocalUpdate = ZonedDateTime.now()
+        traktSlug = source.ids.getOrDefault("slug", "")
         traktId = source.ids.getOrDefault("trakt", "")
         imdbId = source.ids.getOrDefault("imdb", "")
         tvdbId = source.ids.getOrDefault("tvdb", "")

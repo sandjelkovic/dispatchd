@@ -1,22 +1,30 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
 import arrow.core.Either
+import arrow.core.Option
+import arrow.core.Try
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
+import com.sandjelkovic.dispatchd.contentservice.isFailure
+import com.sandjelkovic.dispatchd.contentservice.isNone
+import com.sandjelkovic.dispatchd.contentservice.isSome
+import com.sandjelkovic.dispatchd.contentservice.isSuccess
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowUpdateTrakt
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
+import strikt.api.expectThat
+import strikt.assertions.isA
+import strikt.assertions.isEqualTo
 import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -50,41 +58,65 @@ class DefaultTraktMediaProviderTest {
     }
 
     @Test
-    fun `getShow should return retrieved show`() {
+    fun `getShow should return wrapped retrieved show`() {
         val preparedShow = showTrakt
         `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
-                .thenReturn(preparedShow)
+            .thenReturn(preparedShow)
 
-        val showOptional = provider.getShow(showId)
+        val attemptedShowOptional: Try<Option<ShowTrakt>> = provider.getShow(showId)
 
-        assertThat(showOptional)
-                .isPresent
-                .hasValue(preparedShow)
-        verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
-        verify(mockUriProvider).getShowUri(showId)
-    }
-
-    @Test
-    fun `getShow should return empty Optional because the Show couldn't be retrieved`() {
-        `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
-                .thenReturn(null)
-
-        val showOptional = provider.getShow(showId)
-
-        assertThat(showOptional).isNotPresent
+        expectThat(attemptedShowOptional)
+            .isSuccess {
+                isSome {
+                    isEqualTo(preparedShow)
+                }
+            }
 
         verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
         verify(mockUriProvider).getShowUri(showId)
     }
 
     @Test
-    fun `getShow should throw a RemoteServiceException because there was an HTTP Exception`() {
+    fun `getShow should return wrapped empty Option in case the Show is null`() {
         `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
-                .thenThrow(HttpClientErrorException::class.java)
+            .thenReturn(null)
 
-        val throwable = catchThrowable { provider.getShow(showId) }
+        val attemptedShowOptional: Try<Option<ShowTrakt>> = provider.getShow(showId)
 
-        assertThat(throwable).isInstanceOf(RemoteServiceException::class.java)
+        expectThat(attemptedShowOptional)
+            .isSuccess {
+                isNone()
+            }
+
+        verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
+        verify(mockUriProvider).getShowUri(showId)
+    }
+
+    @Test
+    fun `getShow should return wrapped empty Option in case of a Not Found response`() {
+        `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
+            .thenThrow(HttpClientErrorException(HttpStatus.NOT_FOUND))
+
+        val attemptedShowOptional: Try<Option<ShowTrakt>> = provider.getShow(showId)
+
+        expectThat(attemptedShowOptional)
+            .isSuccess {
+                isNone()
+            }
+
+        verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
+        verify(mockUriProvider).getShowUri(showId)
+    }
+
+    @Test
+    fun `getShow should return a Failure if there an unknown HTTP Exception is thrown`() {
+        `when`(mockRestTemplate.getForObject<ShowTrakt>(uri))
+            .thenThrow(HttpClientErrorException::class.java)
+
+        expectThat(provider.getShow(showId))
+            .isFailure {
+                isA<HttpClientErrorException>()
+            }
 
         verify(mockRestTemplate).getForObject<ShowTrakt>(uri)
         verify(mockUriProvider).getShowUri(showId)
@@ -95,7 +127,7 @@ class DefaultTraktMediaProviderTest {
         val fromDate = LocalDate.now().minusDays(1)
         val oneUpdate = ShowUpdateTrakt(ZonedDateTime.now().minusHours(10))
         `when`(mockRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri))
-                .thenReturn(arrayOf(oneUpdate))
+            .thenReturn(arrayOf(oneUpdate))
 
         val updates = provider.getUpdates(fromDate)
 
