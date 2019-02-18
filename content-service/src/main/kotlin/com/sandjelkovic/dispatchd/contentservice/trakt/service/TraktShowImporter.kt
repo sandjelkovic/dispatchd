@@ -36,8 +36,8 @@ open class TraktShowImporter(
 
     override fun getIdentifier(uri: URI): Option<String> =
         Option.fromNullable(UriComponentsBuilder.fromUri(uri).build())
-        .filter { it.pathSegments.size > 1 }
-        .map { it.pathSegments[1] }
+            .filter { it.pathSegments.size > 1 }
+            .map { it.pathSegments[1] }
 
 
     override fun supports(host: String): Boolean = host == traktHost
@@ -61,11 +61,11 @@ open class TraktShowImporter(
 
                 val seasonMap =
                     extractFromFutureOrDefault(seasonsFuture) { Success(emptyList()) }.getOrElse { emptyList() }
-                    .map { seasonTrakt -> conversionService.convert<Season>(seasonTrakt) }
-                    .onEach { season -> season.show = savedShow }
-                    .also { seasonRepository.saveAll(it) }
-                    .map { it.number to it }
-                    .toMap()
+                        .map { seasonTrakt -> conversionService.convert<Season>(seasonTrakt) }
+                        .onEach { season -> season.show = savedShow }
+                        .also { seasonRepository.saveAll(it) }
+                        .map { it.number to it }
+                        .toMap()
 
                 extractFromFutureOrDefault(episodesFuture) { emptyList() }
                     .map { episodeTrakt -> conversionService.convert<Episode>(episodeTrakt) }
