@@ -57,10 +57,12 @@ class TraktMediaProviderContractTest {
     @Test
     fun `Should get and deserialize seasons of a show`() {
         expectThat(provider.getSeasons(correctShowId))
-            .hasSize(8)
-            .all {
-                get { number }.isNotNull()
-                get { episodeCount }.isNotNull().isGreaterThan(0)
+            .isSuccess {
+                hasSize(8)
+                all {
+                    get { number }.isNotNull()
+                    get { episodeCount }.isNotNull().isGreaterThan(0)
+                }
             }
     }
 }

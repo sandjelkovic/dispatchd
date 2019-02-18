@@ -30,35 +30,13 @@ open class DefaultTraktMediaProvider(
     override fun getShow(showId: String): Try<Option<ShowTrakt>> {
         val uri = traktUriProvider.getShowUri(showId)
 
-        return Try { traktRestTemplate.getForObject<ShowTrakt>(uri) }
-            .map { it.toOption() }
-            .recoverWith(
-                partialRecovery(::isHttpClientErrorAndNotFound) { Success(Option.empty<ShowTrakt>()) }
-            )
+        return httpGetOption { traktRestTemplate.getForObject<ShowTrakt>(uri) }
     }
 
-    fun <T> partialRecovery(
-        predicate: (Throwable) -> Boolean,
-        success: (Throwable) -> Success<T>
-    ): (Throwable) -> Try<T> =
-        { throwable: Throwable ->
-            when {
-                predicate(throwable) -> success(throwable)
-                else -> Failure(throwable)
-            }
-        }
-
-    private fun isHttpClientErrorAndNotFound(it: Throwable) = it is HttpClientErrorException && isNotFound(it)
-
-    private fun isNotFound(it: HttpClientErrorException) = HttpStatus.NOT_FOUND == it.statusCode
-
-    override fun getSeasons(showId: String): List<SeasonTrakt> {
+    override fun getSeasons(showId: String): Try<List<SeasonTrakt>> {
         val uri = traktUriProvider.getSeasonsUri(showId)
-        val seasons: Array<SeasonTrakt>? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
 
-        logger.debug("Retrieved Seasons: $seasons")
-
-        return seasons?.toList() ?: listOf()
+        return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt>>(uri)?.toList() }
     }
 
     override fun getSeasonsMinimal(showId: String): List<SeasonTrakt> {
@@ -85,7 +63,7 @@ open class DefaultTraktMediaProvider(
         return episodes?.toList() ?: listOf()
     }
 
-    override fun getSeasonsAsync(showId: String): AsyncResult<List<SeasonTrakt>> =
+    override fun getSeasonsAsync(showId: String): AsyncResult<Try<List<SeasonTrakt>>> =
         AsyncResult(this.getSeasons(showId))
 
     override fun getShowEpisodesAsync(showId: String): AsyncResult<List<EpisodeTrakt>> =
@@ -98,14 +76,35 @@ open class DefaultTraktMediaProvider(
                 .toEither()
                 .mapLeft { RemoteServiceException(it) }
         }
-//
-//    override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =
-//            traktUriProvider.getUpdatesUri(fromDate).let { uri ->
-//                Try { traktRestTemplate.getForObject(uri, Array<ShowUpdateTrakt>::class.java) }
-//                        .map { it?.toList() ?: listOf() }
-//                        .toEither()
-//                        .mapLeft { RemoteServiceException(it) }
-//            }
+
+    private fun isHttpClientErrorAndNotFound(it: Throwable) = it is HttpClientErrorException && isNotFound(it)
+
+    private fun isNotFound(it: HttpClientErrorException) = HttpStatus.NOT_FOUND == it.statusCode
+
+    private fun <T> partialRecovery(
+        predicate: (Throwable) -> Boolean,
+        success: (Throwable) -> Success<T>
+    ): (Throwable) -> Try<T> =
+        { throwable: Throwable ->
+            when {
+                predicate(throwable) -> success(throwable)
+                else -> Failure(throwable)
+            }
+        }
+
+    private fun <T> httpGetList(block: () -> List<T>?): Try<List<T>> =
+        Try(f = block)
+            .map { it?.toList() ?: listOf() }
+            .recoverWith(
+                partialRecovery(::isHttpClientErrorAndNotFound) { Success(listOf<T>()) }
+            )
+
+    private fun <T> httpGetOption(block: () -> T?): Try<Option<T>> =
+        Try(f = block)
+            .map { Option.fromNullable(it) }
+            .recoverWith(
+                partialRecovery(::isHttpClientErrorAndNotFound) { Success(Option.empty<T>()) }
+            )
 
     protected fun <R> executeHttpOrMapException(block: () -> R): R =
         try {

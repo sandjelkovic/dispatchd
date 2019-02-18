@@ -19,13 +19,13 @@ import java.time.LocalDate
 interface TraktMediaProvider {
     fun getShow(showId: String): Try<Option<ShowTrakt>>
     fun getShowEpisodes(showId: String): List<EpisodeTrakt>
-    fun getSeasons(showId: String): List<SeasonTrakt>
+    fun getSeasons(showId: String): Try<List<SeasonTrakt>>
     fun getSeasonsMinimal(showId: String): List<SeasonTrakt>
     fun getSeasonEpisodes(showId: String, seasonNumber: String): List<EpisodeTrakt>
     fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>>
 
     @Async
-    fun getSeasonsAsync(showId: String): AsyncResult<List<SeasonTrakt>>
+    fun getSeasonsAsync(showId: String): AsyncResult<Try<List<SeasonTrakt>>>
 
     @Async
     fun getShowEpisodesAsync(showId: String): AsyncResult<List<EpisodeTrakt>>
