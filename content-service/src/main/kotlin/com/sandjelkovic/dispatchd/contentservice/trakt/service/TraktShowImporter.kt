@@ -67,7 +67,7 @@ open class TraktShowImporter(
                         .map { it.number to it }
                         .toMap()
 
-                extractFromFutureOrDefault(episodesFuture) { emptyList() }
+                extractFromFutureOrDefault(episodesFuture) { Success(emptyList()) }.getOrDefault { emptyList() }
                     .map { episodeTrakt -> conversionService.convert<Episode>(episodeTrakt) }
                     .onEach { episode ->
                         episode.show = savedShow
