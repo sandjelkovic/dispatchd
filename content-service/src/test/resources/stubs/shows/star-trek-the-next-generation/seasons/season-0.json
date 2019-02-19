@@ -1,0 +1,70 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/shows/star-trek-the-next-generation/seasons/0?extended=full,images"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "season": 0,
+        "number": 1,
+        "title": "Journey's End: The Saga of Star Trek The Next Generation",
+        "ids": {
+          "trakt": 2381411,
+          "tvdb": 5801485,
+          "imdb": "tt0292568",
+          "tmdb": 1101940,
+          "tvrage": 0
+        },
+        "number_abs": null,
+        "overview": "A behind the scenes look at TNG during its final days. Included are discussions of the history of TNG, some of what to expect in All Good Things, and the movie Generations, and a few words about Voyager, which kicked off a year later.",
+        "rating": 7.5,
+        "votes": 12,
+        "comment_count": 0,
+        "first_aired": "1994-05-22T01:00:00.000Z",
+        "updated_at": "2019-02-19T04:04:33.000Z",
+        "available_translations": [
+          "bg",
+          "bs",
+          "ca",
+          "cs",
+          "da",
+          "de",
+          "el",
+          "en",
+          "es",
+          "fi",
+          "fr",
+          "he",
+          "hr",
+          "hu",
+          "it",
+          "ja",
+          "ko",
+          "lt",
+          "nl",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sv",
+          "tr",
+          "uk",
+          "zh"
+        ],
+        "runtime": 45,
+        "images": {
+          "screenshot": {
+            "full": null,
+            "medium": null,
+            "thumb": null
+          }
+        }
+      }
+    ]
+  }
+}
