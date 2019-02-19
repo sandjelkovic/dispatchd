@@ -56,17 +56,6 @@ open class DefaultTraktMediaProvider(
             }
     }
 
-    private fun flattenSuccesses(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
-        attemptedEpisodeLists.map { it as Success }
-            .map { it.value }
-            .flatten()
-
-    private fun getFirstFailure(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
-        attemptedEpisodeLists.first { it is Failure } as Failure
-
-    private fun hasFailures(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
-        attemptedEpisodeLists.any { it is Failure }
-
     override fun getSeasonEpisodes(showId: String, seasonNumber: String): Try<List<EpisodeTrakt>> {
         val uri = traktUriProvider.getSeasonEpisodesUri(showId, seasonNumber)
         return httpGetList { traktRestTemplate.getForObject<Array<EpisodeTrakt>>(uri)?.toList() }
@@ -85,6 +74,17 @@ open class DefaultTraktMediaProvider(
                 .toEither()
                 .mapLeft { RemoteServiceException(it) }
         }
+
+    private fun flattenSuccesses(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
+        attemptedEpisodeLists.map { it as Success }
+            .map { it.value }
+            .flatten()
+
+    private fun getFirstFailure(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
+        attemptedEpisodeLists.first { it is Failure } as Failure
+
+    private fun hasFailures(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
+        attemptedEpisodeLists.any { it is Failure }
 
     private fun isHttpClientErrorAndNotFound(it: Throwable) = it is HttpClientErrorException && isNotFound(it)
 
