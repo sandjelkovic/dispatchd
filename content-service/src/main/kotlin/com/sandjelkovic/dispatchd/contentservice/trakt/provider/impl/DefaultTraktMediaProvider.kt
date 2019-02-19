@@ -39,34 +39,43 @@ open class DefaultTraktMediaProvider(
         return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt>>(uri)?.toList() }
     }
 
-    override fun getSeasonsMinimal(showId: String): List<SeasonTrakt> {
+    override fun getSeasonsMinimal(showId: String): Try<List<SeasonTrakt>> {
         val uri = traktUriProvider.getSeasonsMinimalUri(showId)
-        val seasons: Array<SeasonTrakt>? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
 
-        logger.debug("Retrieved minimal Seasons: $seasons")
-
-        return seasons?.toList() ?: listOf()
+        return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt>>(uri)?.toList() }
     }
 
-    override fun getShowEpisodes(showId: String): List<EpisodeTrakt> {
-        return this.getSeasonsMinimal(showId)
-            .map { season -> this.getSeasonEpisodes(showId, season.number ?: "") }
-            .flatMap { it.toList() }
+    override fun getShowEpisodes(showId: String): Try<List<EpisodeTrakt>> {
+        return getSeasonsMinimal(showId)
+            .flatMap { seasons ->
+                val attemptedEpisodeLists = seasons.map { season -> getSeasonEpisodes(showId, season.number ?: "") }
+                when {
+                    hasFailures(attemptedEpisodeLists) -> getFirstFailure(attemptedEpisodeLists)
+                    else -> flattenSuccesses(attemptedEpisodeLists).success()
+                }
+            }
     }
 
-    override fun getSeasonEpisodes(showId: String, seasonNumber: String): List<EpisodeTrakt> {
+    private fun flattenSuccesses(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
+        attemptedEpisodeLists.map { it as Success }
+            .map { it.value }
+            .flatten()
+
+    private fun getFirstFailure(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
+        attemptedEpisodeLists.first { it is Failure } as Failure
+
+    private fun hasFailures(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
+        attemptedEpisodeLists.any { it is Failure }
+
+    override fun getSeasonEpisodes(showId: String, seasonNumber: String): Try<List<EpisodeTrakt>> {
         val uri = traktUriProvider.getSeasonEpisodesUri(showId, seasonNumber)
-        val episodes: Array<EpisodeTrakt>? = executeHttpOrMapException { traktRestTemplate.getForObject(uri) }
-
-        logger.debug("Retrieved Season's Episodes: $episodes")
-
-        return episodes?.toList() ?: listOf()
+        return httpGetList { traktRestTemplate.getForObject<Array<EpisodeTrakt>>(uri)?.toList() }
     }
 
     override fun getSeasonsAsync(showId: String): AsyncResult<Try<List<SeasonTrakt>>> =
         AsyncResult(this.getSeasons(showId))
 
-    override fun getShowEpisodesAsync(showId: String): AsyncResult<List<EpisodeTrakt>> =
+    override fun getShowEpisodesAsync(showId: String): AsyncResult<Try<List<EpisodeTrakt>>> =
         AsyncResult(this.getShowEpisodes(showId))
 
     override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =

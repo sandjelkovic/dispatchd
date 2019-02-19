@@ -65,4 +65,32 @@ class TraktMediaProviderContractTest {
                 }
             }
     }
+
+    @Test
+    fun `Should get and deserialize minimal information seasons of a show`() {
+        expectThat(provider.getSeasonsMinimal(correctShowId))
+            .isSuccess {
+                hasSize(8)
+                all {
+                    get { number }.isNotNull().isNotEmpty()
+                    get { ids["trakt"] }.isNotNull().isNotEmpty()
+                }
+            }
+    }
+
+    @Test
+    fun `Should get and deserialize episodes of a show`() {
+        val numberOfSeasons = 7
+        val episodesPerSeason = 26
+        val seasonZeroNumberOfEpisodes = 1
+
+        expectThat(provider.getShowEpisodes(correctShowId))
+            .isSuccess {
+                hasSize(numberOfSeasons * episodesPerSeason + seasonZeroNumberOfEpisodes)
+                all {
+                    get { number }.isNotNull()
+                    get { title }.isNotNull()
+                }
+            }
+    }
 }
