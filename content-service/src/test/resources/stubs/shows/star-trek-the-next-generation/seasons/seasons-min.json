@@ -1,0 +1,86 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/shows/star-trek-the-next-generation/seasons?extended=min"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "number": 0,
+        "ids": {
+          "trakt": 2203,
+          "tvdb": 18937,
+          "tmdb": 1996,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 1,
+        "ids": {
+          "trakt": 2204,
+          "tvdb": 2298,
+          "tmdb": 1989,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 2,
+        "ids": {
+          "trakt": 2205,
+          "tvdb": 2299,
+          "tmdb": 1990,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 3,
+        "ids": {
+          "trakt": 2206,
+          "tvdb": 2300,
+          "tmdb": 1995,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 4,
+        "ids": {
+          "trakt": 2207,
+          "tvdb": 2301,
+          "tmdb": 1991,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 5,
+        "ids": {
+          "trakt": 2208,
+          "tvdb": 2302,
+          "tmdb": 1992,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 6,
+        "ids": {
+          "trakt": 2209,
+          "tvdb": 2303,
+          "tmdb": 1993,
+          "tvrage": null
+        }
+      },
+      {
+        "number": 7,
+        "ids": {
+          "trakt": 2210,
+          "tvdb": 2304,
+          "tmdb": 1994,
+          "tvrage": null
+        }
+      }
+    ]
+  }
+}
