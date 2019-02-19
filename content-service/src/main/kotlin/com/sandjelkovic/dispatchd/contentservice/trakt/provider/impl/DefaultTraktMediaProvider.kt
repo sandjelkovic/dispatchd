@@ -48,10 +48,11 @@ open class DefaultTraktMediaProvider(
     override fun getShowEpisodes(showId: String): Try<List<EpisodeTrakt>> {
         return getSeasonsMinimal(showId)
             .flatMap { seasons ->
-                val attemptedEpisodeLists = seasons.map { season -> getSeasonEpisodes(showId, season.number ?: "") }
+                // TODO parallelise, optimise unneeded calls in case one fails
+                val attemptedEpisodesLists = seasons.map { season -> getSeasonEpisodes(showId, season.number ?: "") }
                 when {
-                    hasFailures(attemptedEpisodeLists) -> getFirstFailure(attemptedEpisodeLists)
-                    else -> flattenSuccesses(attemptedEpisodeLists).success()
+                    hasFailures(attemptedEpisodesLists) -> getFirstFailure(attemptedEpisodesLists)
+                    else -> flattenSuccesses(attemptedEpisodesLists).success()
                 }
             }
     }
