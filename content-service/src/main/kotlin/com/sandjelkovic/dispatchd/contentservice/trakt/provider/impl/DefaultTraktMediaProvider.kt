@@ -114,29 +114,4 @@ open class DefaultTraktMediaProvider(
             .recoverWith(
                 partialRecovery(::isHttpClientErrorAndNotFound) { Success(Option.empty<T>()) }
             )
-
-    protected fun <R> executeHttpOrMapException(block: () -> R): R =
-        try {
-            block()
-        } catch (e: HttpClientErrorException) {
-            logger.warn("HTTPClient error occurred when contacting Tract.", e)
-            throw RemoteServiceException(e)
-        }
-
-    protected fun <R> executeHttpOrDefault(block: () -> R, default: (HttpClientErrorException) -> R): R =
-        try {
-            block()
-        } catch (e: HttpClientErrorException) {
-            logger.warn("HTTPClient error occurred when contacting Tract.", e)
-            default(e)
-        }
-
-    protected fun <R> executeHttpOrDefaultOnNotFound(block: () -> R, default: () -> R): R =
-        executeHttpOrDefault(block) {
-            if (HttpStatus.NOT_FOUND == it.statusCode) {
-                default()
-            } else {
-                throw RemoteServiceException(it)
-            }
-        }
 }
