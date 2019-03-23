@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice.service
 
-import arrow.core.Either
+import arrow.core.Try
+import com.sandjelkovic.dispatchd.contentservice.data.entity.Show
 
 /**
  * @author sandjelkovic
@@ -8,5 +9,5 @@ import arrow.core.Either
  */
 interface ContentRefreshService {
     fun updateAllContent(): Long
-    fun updateContentIfNeeded(): Either<RemoteServiceException, Int>
+    fun updateContentIfNeeded(): Try<List<Show>>
 }

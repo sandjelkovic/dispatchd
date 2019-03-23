@@ -1,6 +1,5 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
-import arrow.core.Either
 import arrow.core.Option
 import arrow.core.Try
 import com.nhaarman.mockito_kotlin.doReturn
@@ -11,7 +10,6 @@ import com.sandjelkovic.dispatchd.contentservice.isSome
 import com.sandjelkovic.dispatchd.contentservice.isSuccess
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowUpdateTrakt
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,8 +21,7 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import strikt.api.expectThat
-import strikt.assertions.isA
-import strikt.assertions.isEqualTo
+import strikt.assertions.*
 import java.net.URI
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -131,8 +128,12 @@ class DefaultTraktMediaProviderTest {
 
         val updates = provider.getUpdates(fromDate)
 
-        assert(updates.isRight())
-        assertThat((updates as Either.Right).b).isNotEmpty.hasSize(1).contains(oneUpdate)
+        expectThat(updates)
+            .isSuccess {
+                isNotEmpty()
+                hasSize(1)
+                contains(oneUpdate)
+            }
 
         verify(mockRestTemplate).getForObject<Array<ShowUpdateTrakt>>(uri)
         verify(mockUriProvider).getUpdatesUri(fromDate)
