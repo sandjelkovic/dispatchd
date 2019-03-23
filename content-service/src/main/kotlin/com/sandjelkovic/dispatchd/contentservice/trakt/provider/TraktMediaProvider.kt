@@ -1,9 +1,7 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider
 
-import arrow.core.Either
 import arrow.core.Option
 import arrow.core.Try
-import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
@@ -22,7 +20,7 @@ interface TraktMediaProvider {
     fun getSeasons(showId: String): Try<List<SeasonTrakt>>
     fun getSeasonsMinimal(showId: String): Try<List<SeasonTrakt>>
     fun getSeasonEpisodes(showId: String, seasonNumber: String): Try<List<EpisodeTrakt>>
-    fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>>
+    fun getUpdates(fromDate: LocalDate): Try<List<ShowUpdateTrakt>>
 
     @Async
     fun getSeasonsAsync(showId: String): AsyncResult<Try<List<SeasonTrakt>>>

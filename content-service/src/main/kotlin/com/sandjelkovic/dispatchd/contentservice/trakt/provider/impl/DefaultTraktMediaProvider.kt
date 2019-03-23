@@ -1,8 +1,6 @@
 package com.sandjelkovic.dispatchd.contentservice.trakt.provider.impl
 
 import arrow.core.*
-import arrow.syntax.function.pipe
-import com.sandjelkovic.dispatchd.contentservice.service.RemoteServiceException
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.contentservice.trakt.dto.ShowTrakt
@@ -68,13 +66,12 @@ open class DefaultTraktMediaProvider(
     override fun getShowEpisodesAsync(showId: String): AsyncResult<Try<List<EpisodeTrakt>>> =
         AsyncResult(this.getShowEpisodes(showId))
 
-    override fun getUpdates(fromDate: LocalDate): Either<RemoteServiceException, List<ShowUpdateTrakt>> =
-        traktUriProvider.getUpdatesUri(fromDate) pipe { uri ->
-            Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri) }
-                .map { it?.toList() ?: listOf() }
-                .toEither()
-                .mapLeft { RemoteServiceException(it) }
-        }
+    override fun getUpdates(fromDate: LocalDate): Try<List<ShowUpdateTrakt>> {
+        val uri = traktUriProvider.getUpdatesUri(fromDate)
+
+        return Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri) }
+            .map { it?.toList() ?: listOf() }
+    }
 
     private fun flattenSuccesses(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
         attemptedEpisodeLists.map { it as Success }
