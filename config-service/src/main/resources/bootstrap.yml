@@ -12,10 +12,10 @@ spring:
       server:
         native:
           search-locations: classpath:/configs/
-  boot:
-    admin:
-      client:
-        url: "http://localhost:8010"
+#  boot:
+#    admin:
+#      client:
+#        url: "http://localhost:8010"
 
 logging:
   level:

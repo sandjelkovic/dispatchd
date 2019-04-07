@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class DispatchdMonitorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DispatchdMonitorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DispatchdMonitorApplication.class, args);
+    }
 }
