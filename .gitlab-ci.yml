@@ -10,22 +10,35 @@ variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true"
   MAVEN_CLI_SECRETS: "-Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret"
   MAVEN_CLI_THIRD_PARTY: ""
+  # Disable the Gradle daemon for Continuous Integration servers as correctness
+  # is usually a priority over speed in CI environments. Using a fresh
+  # runtime for each build is more reliable since the runtime is completely
+  # isolated from any previous builds.
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
 
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_REF_NAME"'
 cache:
   paths:
     - .m2/repository
+    - .gradle/wrapper
+    - .gradle/caches
+
 
 # This will only validate and compile stuff and run es.g. maven-enforcer-plugin.
 # Because some enforcer rules might check dependency convergence and class duplications
 # we use `test-compile` here instead of `validate`, so the correct classpath is picked up.
-compile:
+mvn compile:
   stage: build
   script:
   - './mvnw $MAVEN_CLI_OPTS -DskipDocker test-compile $MAVEN_CLI_SECRETS'
+  - './gradlew '
 
-compile content service:
+mvn compile content service:
   stage: build
   script:
     - 'cd content-service'
@@ -33,7 +46,7 @@ compile content service:
 
 # Run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
-verify:
+mvn verify:
   stage: test
   script:
   - './mvnw $MAVEN_CLI_OPTS -DskipDocker verify'
@@ -41,7 +54,7 @@ verify:
     paths:
     - target/*.jar
 
-verify content-service:
+mvn verify content-service:
   stage: test
   script:
     - 'cd content-service'
@@ -49,11 +62,25 @@ verify content-service:
   artifacts:
     paths:
     - content-service/target/*.jar
-#org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipDocker -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN -Dspring.mail.username=$MAIL_USERNAME -Dspring.mail.password=$MAIL_PASSWORD -Dtrakt.appId=$traktAppId -Dtrakt.appSecret=$traktAppSecret
-#verify third party:
-#  stage: test
-#  script:
-#    - 'mvn $MAVEN_CLI_OPTS -DskipDocker verify $MAVEN_CLI_SECRETS -Dtests.profiles=third-party'
-#  artifacts:
-#    paths:
-#    - target/*.jar
+
+build:
+  stage: build
+  script:
+    - ./gradlew --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+
+test:
+  stage: test
+  script:
+    - ./gradlew check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
