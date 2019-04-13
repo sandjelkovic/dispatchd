@@ -4,15 +4,14 @@ Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges
  Application to notify when episodes go live or aggregate those notifications in reports
 
 #### Purpose
-Goal of this application is to provide updates for episodes air dates in the form of customisable reports.
+Functional goal of this application is to provide updates for episodes air dates in the form of user customisable reports.
+
+#### State
+The whole application is being migrated to a distributed architecture. While the core-service application might work for some use cases, the goal is to split the core-service.
 
 #### Media content provider services
 * Currently, only https://trakt.tv/ is being used to retrieve information about Shows, Seasons and Episodes, including air dates.
 * Importing of shows to local database is also supported only from trakt.
-
-#### Credentials to update
-* trakt.appId
-* trakt.appSecret
 
 #### Importing shows
 At this moment, only trakt is supported for imports. URL that needs to be provided to the importer endpoint is in form of `https://trakt.tv/shows/star-trek-the-next-generation`
@@ -22,6 +21,7 @@ At this moment, only trakt is supported for imports. URL that needs to be provid
 |----------	|-----:	|
 | Configuration service 	| 8888 	|
 | Eureka service 	| 8761 	|
-| Monitor service 	| 8010 	|
-| Core service 	| 8080 	|
+| Monitor (SBA) service 	| 8010 	|
+| ~~Core service~~ 	| ~~8080~~ 	|
 | Content service 	| - 	|
+| Report service 	| - 	|
