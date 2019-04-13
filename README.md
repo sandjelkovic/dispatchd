@@ -1,7 +1,5 @@
 # dispatchd 
-Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges/develop/pipeline.svg)](https://gitlab.com/sandjelkovic/dispatchd/commits/develop)
-
-Travis CI : [![Build Status](https://travis-ci.org/sandjelkovic/dispatchd.svg?branch=develop)](https://travis-ci.org/sandjelkovic/dispatchd)
+Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges/master/pipeline.svg)](https://gitlab.com/sandjelkovic/dispatchd/commits/develop)
 
  Application to notify when episodes go live or aggregate those notifications in reports
 
