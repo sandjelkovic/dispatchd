@@ -1,29 +1,9 @@
-server:
-  port: 0
 spring:
     application:
-        name: contentservice
+      name: content-service
     cloud:
       config:
         uri: http://localhost:8888
-trakt:
-  baseServiceUrl: https://api.trakt.tv
-  appId : superSecretAppIdFromTrakt
-  appSecret : superSecretAppSecretFromTrakt
-  apiVersion : 2
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 10
-    health-check-url-path: /actuator/health
-  client:
-    registryFetchIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+        username: user
+        password: 1234
+        fail-fast: true

@@ -1,8 +1,10 @@
 spring:
   application:
-    name: report-service
+    name: monitor-service
   cloud:
     config:
       uri: http://localhost:8888
       username: user
       password: 1234
+      fail-fast: true
+

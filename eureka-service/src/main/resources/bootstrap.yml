@@ -2,13 +2,20 @@ server:
   port: 8761
 spring:
     application:
-        name: eurekaservice
+      name: eureka-service
+    cloud:
+      config:
+        uri: http://localhost:8888
+        username: user
+        password: 1234
 management:
   endpoints:
     web:
       exposure:
         include: "*"
 eureka:
+  instance:
+    prefer-ip-address: true # when the application registers with eureka, it uses its IP address rather than its hostname # Maybe not needed
   client:
     register-with-eureka: false
     fetch-registry: false

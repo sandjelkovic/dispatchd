@@ -1,0 +1,8 @@
+server:
+  port: 8761
+eureka:
+  instance:
+  #    prefer-ip-address: true # when the application registers with eureka, it uses its IP address rather than its hostname # Maybe not needed
+  client:
+    register-with-eureka: false
+    fetch-registry: false
