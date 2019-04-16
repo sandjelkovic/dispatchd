@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.eurekaservice
+package com.sandjelkovic.dispatchd.eureka
 
 import org.junit.Test
 import org.junit.runner.RunWith
