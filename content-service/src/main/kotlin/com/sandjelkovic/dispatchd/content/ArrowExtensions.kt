@@ -9,5 +9,5 @@ import java.util.*
  * @date 21.4.18.
  */
 
-inline fun <T> Optional<T>.flatMapToOption(): Option<T> = this.map { it.toOption() }.orElse(Option.empty())
+fun <T> Optional<T>.flatMapToOption(): Option<T> = this.map { it.toOption() }.orElse(Option.empty())
 

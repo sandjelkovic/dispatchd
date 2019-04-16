@@ -42,6 +42,7 @@ fun <T> Assert<Option<T>>.isNotEmpty(f: (Assert<T>) -> Unit = {}) {
     assertk.assert(actual.orNull()!!, name = name).all(f)
 }
 
+// f is never used because Generics don't distinguish between Assert<Optional<T>> and  Assert<Option<T>> ... That's why we need f as just a marker to change the method signature
 fun <T> Assert<Option<T>>.isEmpty(f: (Assert<T>) -> Unit = {}) {
     assertk.assert(actual.isDefined()).isFalse()
 }
