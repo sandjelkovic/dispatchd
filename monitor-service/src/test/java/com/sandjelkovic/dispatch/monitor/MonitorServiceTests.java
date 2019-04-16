@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public class DispatchdMonitorApplicationTests {
+public class MonitorServiceTests {
 
 	@Test
 	public void contextLoads() {

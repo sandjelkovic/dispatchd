@@ -8,9 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableAdminServer
 @EnableDiscoveryClient
-public class DispatchdMonitorApplication {
+public class MonitorService {
 
     public static void main(String[] args) {
-        SpringApplication.run(DispatchdMonitorApplication.class, args);
+        SpringApplication.run(MonitorService.class, args);
     }
 }

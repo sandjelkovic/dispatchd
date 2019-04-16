@@ -15,8 +15,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableAsync
 @EnableScheduling
 @EnableDiscoveryClient
-class ContentServiceApplication
+class ContentService
 
 fun main(args: Array<String>) {
-    runApplication<ContentServiceApplication>(*args)
+    runApplication<ContentService>(*args)
 }

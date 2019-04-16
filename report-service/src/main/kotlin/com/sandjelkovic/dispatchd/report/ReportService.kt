@@ -6,8 +6,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 
 @SpringBootApplication
 @EnableEurekaClient
-class ReportServiceApplication
+class ReportService
 
 fun main(args: Array<String>) {
-	runApplication<ReportServiceApplication>(*args)
+	runApplication<ReportService>(*args)
 }

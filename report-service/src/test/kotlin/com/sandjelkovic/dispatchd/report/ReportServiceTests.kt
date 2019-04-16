@@ -1,20 +1,16 @@
-package com.sandjelkovic.dispatchd.contentservice
+package com.sandjelkovic.dispatchd.report
 
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 
-/**
- * @author sandjelkovic
- * @date 14.1.18.
- */
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class ContentServiceApplicationTests {
+class ReportServiceTests {
 
-    @Test
-    fun contextLoads() {
-    }
+	@Test
+	fun contextLoads() {
+	}
 
 }
