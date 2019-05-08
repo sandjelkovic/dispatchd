@@ -58,7 +58,7 @@ class DefaultContentRefreshService(
             .map { it as Either.Right }
             .map { it.b }
 
-    public fun executeContentUpdate(ids: List<String>): List<Either<ImportException, Show>> = ids
+    fun executeContentUpdate(ids: List<String>): List<Either<ImportException, Show>> = ids
         .map(importer::importShow)
         .also { createNewJobReport() }
 

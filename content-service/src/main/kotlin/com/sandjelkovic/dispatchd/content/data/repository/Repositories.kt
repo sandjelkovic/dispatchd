@@ -21,10 +21,7 @@ interface EpisodeRepository : PagingAndSortingRepository<Episode, Long> {
 
     fun findBySeason(season: Season): Stream<Episode>
 
-    fun findBySeason_Show_IdAndSeason_Number(
-        it: Long,
-        seasonNumber: String
-    ): Stream<Episode>
+    fun findBySeason_Show_IdAndSeason_Number(showId: Long, seasonNumber: String): Stream<Episode>
 }
 
 interface SeasonRepository : PagingAndSortingRepository<Season, Long> {
