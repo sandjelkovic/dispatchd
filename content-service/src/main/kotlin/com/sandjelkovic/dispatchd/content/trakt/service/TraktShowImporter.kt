@@ -10,7 +10,11 @@ import com.sandjelkovic.dispatchd.content.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.content.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.content.flatMapToOption
-import com.sandjelkovic.dispatchd.content.service.*
+import com.sandjelkovic.dispatchd.content.service.ImportException
+import com.sandjelkovic.dispatchd.content.service.ShowDoesNotExistTraktException
+import com.sandjelkovic.dispatchd.content.service.ShowImporter
+import com.sandjelkovic.dispatchd.content.service.UnknownImportException
+import com.sandjelkovic.dispatchd.content.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import mu.KLogging
 import org.springframework.core.convert.ConversionService
@@ -48,16 +52,15 @@ open class TraktShowImporter(
         return provider.getShow(showId)
             .toEither { UnknownImportException() }
             .flatMap { it.toEither { ShowDoesNotExistTraktException() } }
-            .flatMap { show ->
-                showRepository.findByTraktId(show.ids["trakt"] ?: showId)
-                    .flatMapToOption()
-                    .toEither { ShowAlreadyImportedException() }
-            }
             .flatMap { traktShow ->
                 val seasonsFuture = provider.getSeasonsAsync(showId)
                 val episodesFuture = provider.getShowEpisodesAsync(showId)
 
-                val savedShow = showRepository.save(conversionService.convert(traktShow))
+
+                val convertedShow = conversionService.convert<Show>(traktShow)
+                convertedShow.id = getLocalShow(traktShow).map(Show::id).orNull()
+
+                val savedShow = showRepository.save(convertedShow)
 
                 val seasonMap =
                     extractFromFutureOrDefault(seasonsFuture) { Success(emptyList()) }.getOrElse { emptyList() }
@@ -79,6 +82,11 @@ open class TraktShowImporter(
                     .toEither { UnknownImportException("Error during import -> Show with ID ${savedShow.id} is saved but can't be read") }
             }
     }
+
+    private fun getLocalShow(traktShow: ShowTrakt) =
+        traktShow.ids["trakt"].toOption()
+            .map(showRepository::findByTraktId)
+            .flatMap { it.flatMapToOption() }
 
     private fun <T> extractFromFutureOrDefault(future: Future<T>, default: (Unit) -> T): T =
         Try { future.get() }
