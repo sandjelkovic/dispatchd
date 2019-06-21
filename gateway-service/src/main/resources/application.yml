@@ -1,1 +1,14 @@
+## TODO convert to Functional Route def
+#routes:
+#  auth-service:
+#    path: /uaa/** #path that will be intercepted
+#    url: auth-service #which url the request will e mapped to
+#    stripPrefix: false #if zuul should replace the "/uaa/" segment
+#    sensitiveHeaders:
+#
+#  account-service:
+#    path: /accounts/**
+#    serviceId: account-service
+#    stripPrefix: false
+#    sensitiveHeaders:
 
