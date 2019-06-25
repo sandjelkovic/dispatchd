@@ -27,6 +27,10 @@ class Gateway {
                 }
                 uri("lb://content-service")
             }
+            route {
+                path("/uaa/**")
+                uri("lb://auth-service/")
+            }
         }
 }
 
