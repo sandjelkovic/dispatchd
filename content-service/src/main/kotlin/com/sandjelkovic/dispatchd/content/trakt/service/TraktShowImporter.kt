@@ -1,13 +1,6 @@
 package com.sandjelkovic.dispatchd.content.trakt.service
 
-import arrow.core.Either
-import arrow.core.Option
-import arrow.core.Success
-import arrow.core.Try
-import arrow.core.filterOrElse
-import arrow.core.flatMap
-import arrow.core.getOrDefault
-import arrow.core.getOrElse
+import arrow.core.*
 import arrow.syntax.function.pipe
 import com.sandjelkovic.dispatchd.content.convert
 import com.sandjelkovic.dispatchd.content.data.entity.Episode

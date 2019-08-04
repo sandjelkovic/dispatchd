@@ -8,7 +8,7 @@ import java.time.ZonedDateTime
  * @date 28.1.18.
  */
 data class ShowUpdateTrakt(
-        @JsonProperty("updated_at")
-        val updatedAt: ZonedDateTime? = null,
-        val show: ShowTrakt? = null
+    @JsonProperty("updated_at")
+    val updatedAt: ZonedDateTime? = null,
+    val show: ShowTrakt? = null
 )

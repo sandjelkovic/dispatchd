@@ -11,15 +11,15 @@ import javax.persistence.Id
  */
 @Entity
 data class ImagesGroup(
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long?,
-        var fanartFull: String?,
-        var fanartMedium: String?,
-        var fanartThumb: String?,
-        var fantartSmall: String?,
-        var posterFull: String?,
-        var posterMedium: String?,
-        var posterSmall: String?,
-        var posterThumb: String?
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long?,
+    var fanartFull: String?,
+    var fanartMedium: String?,
+    var fanartThumb: String?,
+    var fantartSmall: String?,
+    var posterFull: String?,
+    var posterMedium: String?,
+    var posterSmall: String?,
+    var posterThumb: String?
 )

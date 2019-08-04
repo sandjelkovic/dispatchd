@@ -10,15 +10,19 @@ import java.time.ZonedDateTime
  */
 data class ImportDto(val mediaUrl: String)
 
-data class ImportStatusWebDto(val statusId: Long,
-                              val mediaUrl: String,
-                              val initiationTime: ZonedDateTime,
-                              val finishTime: ZonedDateTime?,
-                              val status: ImportProgressStatus)
+data class ImportStatusWebDto(
+    val statusId: Long,
+    val mediaUrl: String,
+    val initiationTime: ZonedDateTime,
+    val finishTime: ZonedDateTime?,
+    val status: ImportProgressStatus
+)
 
-fun ImportStatus.toWebDto() = ImportStatusWebDto(statusId = id!!,
-        mediaUrl = mediaUrl,
-        initiationTime = initiationTime,
-        finishTime = finishTime,
-        status = status)
+fun ImportStatus.toWebDto() = ImportStatusWebDto(
+    statusId = id!!,
+    mediaUrl = mediaUrl,
+    initiationTime = initiationTime,
+    finishTime = finishTime,
+    status = status
+)
 

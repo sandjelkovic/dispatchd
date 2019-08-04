@@ -12,12 +12,12 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 data class UpdateJob(
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long? = null,
-        @Column(nullable = false)
-        @NotNull
-        var finishTime: ZonedDateTime = ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()),
-        @NotNull
-        var success: Boolean = false
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    var id: Long? = null,
+    @Column(nullable = false)
+    @NotNull
+    var finishTime: ZonedDateTime = ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()),
+    @NotNull
+    var success: Boolean = false
 )

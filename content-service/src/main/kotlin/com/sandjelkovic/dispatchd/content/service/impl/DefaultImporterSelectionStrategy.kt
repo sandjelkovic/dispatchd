@@ -15,9 +15,9 @@ class DefaultImporterSelectionStrategy(private val showImporters: List<ShowImpor
     companion object : KLogging()
 
     override fun getImporter(uri: URI): Either<ImportException, ShowImporter> =
-            showImporters.firstOrNull { importer ->
-                Try { importer.supports(uri.host) }.getOrElse { false }
-            }.toOption().toEither { UnsupportedBackendException() }
+        showImporters.firstOrNull { importer ->
+            Try { importer.supports(uri.host) }.getOrElse { false }
+        }.toOption().toEither { UnsupportedBackendException() }
 
 //            override fun getImporter(uri: URI): Option<() -> Show> =
 //            Option.fromNullable(showImporters.firstOrNull { it.supports(uri.host) })

@@ -51,7 +51,7 @@ class ContentController(
 
     @GetMapping("/{showId}/seasons")
     fun seasons(@PathVariable showId: String): ResponseEntity<Resources<SeasonDto>> =
-    //TODO Validate show Id
+        //TODO Validate show Id
         getShow(showId)
             .map(seasonRepository::findByShow)
             .map { it.map(Season::toDto).collect(toList()) }

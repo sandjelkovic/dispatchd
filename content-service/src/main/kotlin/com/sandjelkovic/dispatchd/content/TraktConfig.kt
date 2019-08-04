@@ -29,16 +29,19 @@ import org.springframework.web.client.RestTemplate
 @RefreshScope
 @EnableAsync
 class TraktConfig(
-        @Value("\${trakt.baseServiceUrl: }")
-        var baseServiceUrl: String,
-        @Value("\${trakt.appSecret: }")
-        var appSecret: String) {
+    @Value("\${trakt.baseServiceUrl: }")
+    var baseServiceUrl: String,
+    @Value("\${trakt.appSecret: }")
+    var appSecret: String
+) {
     companion object : KLogging()
 
     @Bean
-    fun traktImporter(showRepository: ShowRepository, seasonRepository: SeasonRepository,
-                      episodeRepository: EpisodeRepository, @Qualifier("mvcConversionService") conversionService: ConversionService, provider: TraktMediaProvider) =
-            TraktShowImporter(showRepository, seasonRepository, episodeRepository, conversionService, provider)
+    fun traktImporter(
+        showRepository: ShowRepository, seasonRepository: SeasonRepository,
+        episodeRepository: EpisodeRepository, @Qualifier("mvcConversionService") conversionService: ConversionService, provider: TraktMediaProvider
+    ) =
+        TraktShowImporter(showRepository, seasonRepository, episodeRepository, conversionService, provider)
 
     @Bean
     @RefreshScope
@@ -51,13 +54,16 @@ class TraktConfig(
     @Bean
     @RefreshScope
     fun traktRestTemplate(
-            @Value("\${trakt.appId: }") appId: String,
-            @Value("\${trakt.apiVersion: }") apiVersion: String): RestTemplate = RestTemplate().apply {
-        interceptors.addAll(listOf(
+        @Value("\${trakt.appId: }") appId: String,
+        @Value("\${trakt.apiVersion: }") apiVersion: String
+    ): RestTemplate = RestTemplate().apply {
+        interceptors.addAll(
+            listOf(
                 HeaderRequestInterceptor("Content-type", "application/json"),
                 HeaderRequestInterceptor("trakt-api-key", appId),
                 HeaderRequestInterceptor("trakt-api-version", apiVersion)
-        ))
+            )
+        )
     }
 
     @Bean

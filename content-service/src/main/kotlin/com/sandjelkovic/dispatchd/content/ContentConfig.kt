@@ -29,18 +29,24 @@ import java.util.concurrent.Executor
 @RefreshScope
 @EnableAsync
 class ContentConfig(
-        @Value("\${content.refresh.interval.minutes:1}")
-        var refreshInterval: Int) {
+    @Value("\${content.refresh.interval.minutes:1}")
+    var refreshInterval: Int
+) {
 
     companion object : KLogging()
 
     @Bean
-    fun contentRefreshService(updateJobRepository: UpdateJobRepository, traktMediaProvider: TraktMediaProvider, showRepository: ShowRepository, traktShowImporter: TraktShowImporter) =
-            DefaultContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter)
+    fun contentRefreshService(
+        updateJobRepository: UpdateJobRepository,
+        traktMediaProvider: TraktMediaProvider,
+        showRepository: ShowRepository,
+        traktShowImporter: TraktShowImporter
+    ) =
+        DefaultContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter)
 
     @Bean
     fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy, asyncService: SpringAsyncService) =
-            DefaultImportService(importStatusRepository, importerSelectionStrategy, asyncService)
+        DefaultImportService(importStatusRepository, importerSelectionStrategy, asyncService)
 
     @Bean
     fun importStrategy(showImporters: List<ShowImporter>) = DefaultImporterSelectionStrategy(showImporters)
@@ -50,17 +56,17 @@ class ContentConfig(
 
     @Bean
     fun taskExecutor(): Executor = ThreadPoolTaskExecutor()
-            .apply {
-                corePoolSize = 2
-                maxPoolSize = 10
-            }
+        .apply {
+            corePoolSize = 2
+            maxPoolSize = 10
+        }
 
     @Bean(name = arrayOf(contentRefreshTaskExecutorBeanName))
     fun contentRefreshTaskExecutor(): Executor = ThreadPoolTaskExecutor()
-            .apply {
-                corePoolSize = 1
-                maxPoolSize = 1
-            }
+        .apply {
+            corePoolSize = 1
+            maxPoolSize = 1
+        }
 
 
     //If the bean is defined this way, it can't be used for @RestClientTest.
