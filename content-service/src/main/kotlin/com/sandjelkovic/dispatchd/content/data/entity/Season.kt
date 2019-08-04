@@ -1,7 +1,16 @@
 package com.sandjelkovic.dispatchd.content.data.entity
 
 import java.time.ZonedDateTime
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.Lob
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 /**
  * @author sandjelkovic
@@ -30,7 +39,7 @@ data class Season(
         var episodesCount: Int = 0,
 
         @OneToMany(mappedBy = "season")
-        var episodes: List<Episode> = listOf(),
+        var episodes: List<Episode> = mutableListOf(), // JPA/Hibernate Specifics
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "imagesId")
