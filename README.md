@@ -1,5 +1,5 @@
 # dispatchd 
-Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges/master/pipeline.svg)](https://gitlab.com/sandjelkovic/dispatchd/commits/develop)
+Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges/master/pipeline.svg)](https://gitlab.com/sandjelkovic/dispatchd/commits/master)
 
  Application to notify when episodes go live or aggregate those notifications in reports
 
