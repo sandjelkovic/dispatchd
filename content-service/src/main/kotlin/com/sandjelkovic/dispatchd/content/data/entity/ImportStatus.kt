@@ -35,3 +35,5 @@ enum class ImportProgressStatus(val field: String) {
     ERROR_REMOTE_SERVER("ERROR_REMOTE_SERVER"),
     ERROR("ERROR");
 }
+
+inline class ImportStatusId(val value: Long)

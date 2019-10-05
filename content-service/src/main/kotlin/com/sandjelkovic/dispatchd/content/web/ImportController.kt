@@ -20,13 +20,12 @@ import java.net.URI
 @RequestMapping(value = ["/import"])
 class ImportController(private val importService: ImportService) {
     @PostMapping
-    fun newImport(@RequestBody requestBody: ImportDto): ResponseEntity<Resource<ImportStatusWebDto>> =
+    fun newImport(@RequestBody requestBody: ImportDto): ResponseEntity<Void> =
         validateImportRequest(requestBody)
             .flatMap { convertToUri(requestBody) }
             .flatMap(importService::importFromUri)
-            .map(ImportStatus::toWebDto)
-            .map { ResponseEntity(Resource(it), HttpStatus.ACCEPTED) }
-            .getOrElse { ResponseEntity(HttpStatus.BAD_REQUEST) }
+            .map { ResponseEntity.accepted().location(URI.create("/import/${it.value}")).build<Void>() }
+            .getOrElse { ResponseEntity.badRequest().build<Void>() }
 
     private fun validateImportRequest(requestBody: ImportDto): Either<Unit, String> =
         requestBody.mediaUrl.toOption()

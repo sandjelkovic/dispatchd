@@ -6,6 +6,7 @@ import arrow.core.flatMap
 import com.sandjelkovic.dispatchd.content.data.entity.ImportProgressStatus
 import com.sandjelkovic.dispatchd.content.data.entity.ImportProgressStatus.*
 import com.sandjelkovic.dispatchd.content.data.entity.ImportStatus
+import com.sandjelkovic.dispatchd.content.data.entity.ImportStatusId
 import com.sandjelkovic.dispatchd.content.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.content.flatMapToOption
 import com.sandjelkovic.dispatchd.content.service.*
@@ -20,13 +21,13 @@ class DefaultImportService(
     private val importerSelectionStrategy: ImporterSelectionStrategy,
     private val asyncService: SpringAsyncService
 ) : ImportService {
-    override fun importFromUri(uri: URI): Either<ImportException, ImportStatus> {
+    override fun importFromUri(uri: URI): Either<ImportException, ImportStatusId> {
         val importStatus = importStatusRepository.save(ImportStatus(mediaUrl = uri.toString(), status = QUEUED))
         return importerSelectionStrategy.getImporter(uri)
             .flatMap { importer ->
                 importer.getIdentifier(uri)
                     .map { asyncService.async { executeImport(importer, it, importStatus) } }
-                    .map { importStatusRepository.findById(importStatus.id!!).orElse(importStatus) }
+                    .map { ImportStatusId(importStatus.id!!) }
                     .toEither { InvalidImportUrlException() }
             }
     }
