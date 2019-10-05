@@ -9,5 +9,5 @@ import com.sandjelkovic.dispatchd.content.data.entity.Show
  */
 interface ContentRefreshService {
     fun updateAllContent(): Long
-    fun updateContentIfNeeded(): Try<List<Show>>
+    fun updateContentIfStale(): Try<List<Show>>
 }

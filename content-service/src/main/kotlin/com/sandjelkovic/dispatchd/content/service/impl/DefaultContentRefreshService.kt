@@ -29,7 +29,7 @@ class DefaultContentRefreshService(
     val showRepository: ShowRepository,
     val importer: ShowImporter
 ) : ContentRefreshService {
-    override fun updateContentIfNeeded(): Try<List<Show>> {
+    override fun updateContentIfStale(): Try<List<Show>> {
         return refreshExistingContent()
     }
 
@@ -62,7 +62,7 @@ class DefaultContentRefreshService(
         .map(importer::importShow)
         .also { createNewJobReport() }
 
-    private fun getIdsForUpdate(it: List<ShowUpdateTrakt>): List<String> = it
+    private fun getIdsForUpdate(updates: List<ShowUpdateTrakt>): List<String> = updates
         .map(::extractTraktId)
         .mapNotNull(Option<String>::orNull)
         .filter(::showExists)
