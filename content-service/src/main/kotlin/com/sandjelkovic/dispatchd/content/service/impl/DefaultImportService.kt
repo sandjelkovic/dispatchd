@@ -34,6 +34,7 @@ class DefaultImportService(
 
     private fun executeImport(importer: ShowImporter, showIdentifier: String, oldStatus: ImportStatus) =
         importStatusRepository.findById(oldStatus.id!!).orElse(oldStatus)
+            .let { importStatusRepository.save(it.copy(status = IN_PROGRESS)) }
             .let { status ->
                 importer.importShow(showIdentifier)
                     .fold(::mapExceptionToProgressStatus) { SUCCESS }
@@ -44,10 +45,11 @@ class DefaultImportService(
 
     private fun mapExceptionToProgressStatus(exception: ImportException): ImportProgressStatus =
         when (exception) {
-            is UnknownImportException -> ERROR
             is ShowAlreadyImportedException -> ERROR_SHOW_ALREADY_EXISTS
             is ShowDoesNotExistTraktException -> ERROR_REMOTE_SERVER
-            else -> ERROR
+            is UnknownImportException -> ERROR
+            is UnsupportedBackendException -> ERROR
+            is InvalidImportUrlException -> ERROR
         }
 
     override fun getImportStatus(id: Long): Option<ImportStatus> = importStatusRepository.findById(id).flatMapToOption()
