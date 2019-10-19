@@ -20,7 +20,7 @@ import strikt.assertions.*
  */
 @RunWith(SpringRunner::class)
 @SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    webEnvironment = SpringBootTest.WebEnvironment.MOCK,
     properties = ["trakt.baseServiceUrl=http://localhost:${TraktMediaProviderContractTest.wireMockPort}"]
 )
 @AutoConfigureWireMock(port = TraktMediaProviderContractTest.wireMockPort, stubs = ["classpath:/stubs/shows"])

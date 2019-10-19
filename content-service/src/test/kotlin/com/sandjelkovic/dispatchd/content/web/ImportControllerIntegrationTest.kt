@@ -99,6 +99,6 @@ class ImportControllerIntegrationTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("\$.mediaUrl").value(mediaUrl))
             .andExpect(jsonPath("\$.statusId").isNotEmpty)
-            .andExpect(jsonPath("\$.status").value(ImportProgressStatus.QUEUED.toString()))
+            .andExpect(jsonPath("\$.status").value(ImportProgressStatus.IN_PROGRESS.toString()))
     }
 }
