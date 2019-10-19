@@ -6,8 +6,7 @@ import com.sandjelkovic.dispatchd.content.service.ImportService
 import com.sandjelkovic.dispatchd.content.web.dto.ImportDto
 import com.sandjelkovic.dispatchd.content.web.dto.ImportStatusWebDto
 import com.sandjelkovic.dispatchd.content.web.dto.toWebDto
-import org.springframework.hateoas.Resource
-import org.springframework.http.HttpStatus
+import org.springframework.hateoas.EntityModel
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -38,9 +37,9 @@ class ImportController(private val importService: ImportService) {
             .toEither()
 
     @GetMapping("/{statusId}")
-    fun getImportStatus(@PathVariable statusId: Long): ResponseEntity<Resource<ImportStatusWebDto>> =
+    fun getImportStatus(@PathVariable statusId: Long): ResponseEntity<EntityModel<ImportStatusWebDto>> =
         importService.getImportStatus(statusId)
             .map(ImportStatus::toWebDto)
-            .map { ResponseEntity(Resource(it), HttpStatus.OK) }
-            .getOrElse { ResponseEntity(HttpStatus.NOT_FOUND) }
+            .map { ResponseEntity.ok(EntityModel(it)) }
+            .getOrElse { ResponseEntity.notFound().build() }
 }

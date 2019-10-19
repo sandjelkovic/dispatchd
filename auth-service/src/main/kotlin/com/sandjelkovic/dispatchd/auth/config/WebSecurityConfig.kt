@@ -13,20 +13,20 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 class WebSecurityConfig(
-        val userDetailsService: CustomUserDetailsService
+    val userDetailsService: CustomUserDetailsService
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http
-                .authorizeRequests().anyRequest().authenticated()
-                .antMatchers("/oauth/**").permitAll()
-                .and()
-                .csrf().disable()
+            .authorizeRequests().antMatchers("/oauth/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .csrf().disable()
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService<CustomUserDetailsService>(userDetailsService)
-                .passwordEncoder(passwordEncoder())
+            .passwordEncoder(passwordEncoder())
     }
 
     @Bean

@@ -16,8 +16,8 @@ import com.sandjelkovic.dispatchd.content.web.dto.ShowDto
 import com.sandjelkovic.dispatchd.content.web.dto.toDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.hateoas.Resource
-import org.springframework.hateoas.Resources
+import org.springframework.hateoas.CollectionModel
+import org.springframework.hateoas.EntityModel
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -38,24 +38,24 @@ class ContentController(
     val showRepository: ShowRepository
 ) {
     @GetMapping
-    fun shows(page: Pageable): ResponseEntity<Resource<Page<ShowDto>>> = showRepository.findAll(page)
+    fun shows(page: Pageable): ResponseEntity<EntityModel<Page<ShowDto>>> = showRepository.findAll(page)
         .map(Show::toDto)
-        .let { okResponse(Resource(it)) }
+        .let { okResponse(EntityModel(it)) }
 
     @GetMapping("/{showId}")
     fun show(@PathVariable showId: String) = getShow(showId)
-        .map { Resource(it.toDto()) }
+        .map { EntityModel(it.toDto()) }
         .map(::okResponse)
         .getOrElse(::notFoundResponse)
 
 
     @GetMapping("/{showId}/seasons")
-    fun seasons(@PathVariable showId: String): ResponseEntity<Resources<SeasonDto>> =
+    fun seasons(@PathVariable showId: String): ResponseEntity<CollectionModel<SeasonDto>> =
         //TODO Validate show Id
         getShow(showId)
             .map(seasonRepository::findByShow)
             .map { it.map(Season::toDto).collect(toList()) }
-            .map { Resources(it) }
+            .map { CollectionModel(it) }
             .map(::okResponse)
             .getOrElse(::notFoundResponse)
 
@@ -64,7 +64,7 @@ class ContentController(
         getShow(showId)
             .map { episodeRepository.findBySeason_Show_IdAndSeason_Number(it.id!!, seasonNumber) }
             .map { it.map(Episode::toDto).collect(toList()) }
-            .map { Resources(it) }
+            .map { CollectionModel(it) }
             .map(::okResponse)
             .getOrElse(::notFoundResponse)
     }

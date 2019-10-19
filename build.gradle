@@ -1,39 +1,39 @@
 plugins {
-	id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.31' apply false
-	id 'org.springframework.boot' version '2.1.4.RELEASE' apply false
-	id 'org.jetbrains.kotlin.jvm' version '1.3.31' apply false
-	id 'org.jetbrains.kotlin.plugin.spring' version '1.3.31' apply false
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.50' apply false
+    id 'org.springframework.boot' version '2.2.0.RELEASE' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.50' apply false
 }
 
 ext {
-	set('springBootAdminVersion', '2.1.3')
-	set('springCloudVersion', 'Greenwich.SR1')
-	set('arrowVersion', '0.8.2')
-	set('mockkVersion', '1.9.3')
-	set('striktVersion', '0.20.0')
-	set('kxjtimeVersion', '0.1.0')
-	set('muLoggingVersion', '1.6.26')
-	set('assertkVersion', '0.10')
-	set('mockitoKotlinVersion', '1.5.0')
+    set('springBootAdminVersion', '2.1.6')
+    set('springCloudVersion', 'Hoxton.M3')
+    set('arrowVersion', '0.8.2')
+    set('mockkVersion', '1.9.3')
+    set('striktVersion', '0.20.0')
+    set('kxjtimeVersion', '0.1.0')
+    set('muLoggingVersion', '1.6.26')
+    set('assertkVersion', '0.10')
+    set('mockitoKotlinVersion', '1.5.0')
 }
 
 allprojects {
-	group = 'com.sandjelkovic.dispatchd'
-	version = '0.0.1-SNAPSHOT'
+    group = 'com.sandjelkovic.dispatchd'
+    version = '0.0.1-SNAPSHOT'
 
-	repositories {
-		mavenCentral()
-		jcenter()
-		maven { url 'https://repo.spring.io/snapshot' }
-		maven { url 'https://repo.spring.io/milestone' }
-	}
-	apply plugin: 'io.spring.dependency-management'
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+    apply plugin: 'io.spring.dependency-management'
 }
 subprojects {
-	dependencyManagement {
-		imports {
-			mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
-			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-		}
-	}
+    dependencyManagement {
+        imports {
+            mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
 }

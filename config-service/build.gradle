@@ -14,7 +14,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 //	Monitoring
-	implementation("de.codecentric:spring-boot-admin-starter-client")
+    implementation("de.codecentric:spring-boot-admin-starter-client")
 }
 
 compileKotlin {

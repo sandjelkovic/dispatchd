@@ -1,7 +1,6 @@
 package com.sandjelkovic.dispatchd.content.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sandjelkovic.dispatchd.content.data.entity.ImportProgressStatus
 import com.sandjelkovic.dispatchd.content.web.dto.ImportDto
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -99,6 +98,5 @@ class ImportControllerIntegrationTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("\$.mediaUrl").value(mediaUrl))
             .andExpect(jsonPath("\$.statusId").isNotEmpty)
-            .andExpect(jsonPath("\$.status").value(ImportProgressStatus.IN_PROGRESS.toString()))
     }
 }

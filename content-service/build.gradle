@@ -1,56 +1,56 @@
 plugins {
-	id 'org.jetbrains.kotlin.plugin.jpa'
-	id 'org.springframework.boot'
-	id 'org.jetbrains.kotlin.jvm'
-	id 'org.jetbrains.kotlin.plugin.spring'
+    id 'org.jetbrains.kotlin.plugin.jpa'
+    id 'org.springframework.boot'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.spring'
 }
 
 dependencies {
-	implementation( "org.springframework.boot:spring-boot-starter-actuator")
-	implementation( "org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation( "org.springframework.boot:spring-boot-starter-hateoas")
-	implementation( "org.springframework.boot:spring-boot-starter-web")
-	implementation( "org.jetbrains.kotlin:kotlin-reflect")
-	implementation( "org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation( "org.springframework.cloud:spring-cloud-starter-config")
-	implementation( "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-	implementation( "com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation( "io.github.microutils:kotlin-logging:${muLoggingVersion}")
-	implementation( "com.sandjelkovic.kxjtime:kxjtime:${kxjtimeVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.github.microutils:kotlin-logging:${muLoggingVersion}")
+    implementation("com.sandjelkovic.kxjtime:kxjtime:${kxjtimeVersion}")
 
-	runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.h2database:h2'
 
-	implementation("io.arrow-kt:arrow-core:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-syntax:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-typeclasses:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-data:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-instances-core:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-instances-data:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-optics:${arrowVersion}")
-	implementation("io.arrow-kt:arrow-generic:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-core:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-syntax:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-typeclasses:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-data:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-instances-core:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-instances-data:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-optics:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-generic:${arrowVersion}")
 
 //	Testing
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
-	testImplementation("com.willowtreeapps.assertk:assertk:${assertkVersion}")
-	testImplementation("com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}")
-	testImplementation("io.mockk:mockk:${mockkVersion}")
-	testImplementation("io.strikt:strikt-core:${striktVersion}")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+    testImplementation("com.willowtreeapps.assertk:assertk:${assertkVersion}")
+    testImplementation("com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}")
+    testImplementation("io.mockk:mockk:${mockkVersion}")
+    testImplementation("io.strikt:strikt-core:${striktVersion}")
 
 //	Monitoring
-	implementation("de.codecentric:spring-boot-admin-starter-client")
+    implementation("de.codecentric:spring-boot-admin-starter-client")
 }
 
 compileKotlin {
-	kotlinOptions {
-		freeCompilerArgs = ['-Xjsr305=strict']
-		jvmTarget = '1.8'
-	}
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '1.8'
+    }
 }
 
 compileTestKotlin {
-	kotlinOptions {
-		freeCompilerArgs = ['-Xjsr305=strict']
-		jvmTarget = '1.8'
-	}
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '1.8'
+    }
 }

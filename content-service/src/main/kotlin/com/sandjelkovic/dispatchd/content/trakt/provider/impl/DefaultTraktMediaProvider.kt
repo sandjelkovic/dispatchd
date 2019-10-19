@@ -28,19 +28,21 @@ open class DefaultTraktMediaProvider(
     override fun getShow(showId: String): Try<Option<ShowTrakt>> {
         val uri = traktUriProvider.getShowUri(showId)
 
-        return httpGetOption { traktRestTemplate.getForObject<ShowTrakt>(uri) }
+        return httpGetOption { traktRestTemplate.getForObject<ShowTrakt?>(uri) }
     }
 
     override fun getSeasons(showId: String): Try<List<SeasonTrakt>> {
         val uri = traktUriProvider.getSeasonsUri(showId)
 
-        return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt>>(uri)?.toList() }
+        return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt?>>(uri).toList() }
+            .map { it.filterNotNull() }
     }
 
     override fun getSeasonsMinimal(showId: String): Try<List<SeasonTrakt>> {
         val uri = traktUriProvider.getSeasonsMinimalUri(showId)
 
-        return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt>>(uri)?.toList() }
+        return httpGetList { traktRestTemplate.getForObject<Array<SeasonTrakt?>>(uri).toList() }
+            .map { it.filterNotNull() }
     }
 
     override fun getShowEpisodes(showId: String): Try<List<EpisodeTrakt>> {
@@ -57,7 +59,8 @@ open class DefaultTraktMediaProvider(
 
     override fun getSeasonEpisodes(showId: String, seasonNumber: String): Try<List<EpisodeTrakt>> {
         val uri = traktUriProvider.getSeasonEpisodesUri(showId, seasonNumber)
-        return httpGetList { traktRestTemplate.getForObject<Array<EpisodeTrakt>>(uri)?.toList() }
+        return httpGetList { traktRestTemplate.getForObject<Array<EpisodeTrakt?>>(uri).toList() }
+            .map { it.filterNotNull() }
     }
 
     override fun getSeasonsAsync(showId: String): AsyncResult<Try<List<SeasonTrakt>>> =
@@ -69,8 +72,9 @@ open class DefaultTraktMediaProvider(
     override fun getUpdates(fromDate: LocalDate): Try<List<ShowUpdateTrakt>> {
         val uri = traktUriProvider.getUpdatesUri(fromDate)
 
-        return Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt>>(uri) }
-            .map { it?.toList() ?: listOf() }
+        return Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt?>>(uri) }
+            .map { it.toList() ?: listOf() }
+            .map { it.filterNotNull() }
     }
 
     private fun flattenSuccesses(attemptedEpisodeLists: List<Try<List<EpisodeTrakt>>>) =
