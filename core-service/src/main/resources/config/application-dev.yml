@@ -1,7 +1,0 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-logging:
-  level:
-    com.sandjelkovic: DEBUG
