@@ -5,17 +5,18 @@ import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.content.data.repository.UpdateJobRepository
 import com.sandjelkovic.dispatchd.content.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.content.service.ShowImporter
-import com.sandjelkovic.dispatchd.content.service.impl.DefaultContentRefreshService
-import com.sandjelkovic.dispatchd.content.service.impl.DefaultImportService
-import com.sandjelkovic.dispatchd.content.service.impl.DefaultImporterSelectionStrategy
-import com.sandjelkovic.dispatchd.content.service.impl.SpringAsyncService
+import com.sandjelkovic.dispatchd.content.service.impl.*
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.content.trakt.service.TraktShowImporter
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.event.ApplicationEventMulticaster
+import org.springframework.context.event.SimpleApplicationEventMulticaster
+import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.concurrent.Executor
@@ -40,9 +41,10 @@ class ContentConfig(
         updateJobRepository: UpdateJobRepository,
         traktMediaProvider: TraktMediaProvider,
         showRepository: ShowRepository,
-        traktShowImporter: TraktShowImporter
+        traktShowImporter: TraktShowImporter,
+        eventPublisher: ApplicationEventPublisher
     ) =
-        DefaultContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter)
+        DefaultContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter, eventPublisher)
 
     @Bean
     fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy, asyncService: SpringAsyncService) =
@@ -68,6 +70,12 @@ class ContentConfig(
             maxPoolSize = 1
         }
 
+    @Bean(name = [applicationEventMulticaster])
+    fun simpleApplicationEventMulticaster(): ApplicationEventMulticaster =
+        SimpleApplicationEventMulticaster().apply { setTaskExecutor(SimpleAsyncTaskExecutor()) }
+
+    @Bean
+    fun eventRouter() = EventRouter()
 
     //If the bean is defined this way, it can't be used for @RestClientTest.
 //    @Bean
@@ -75,3 +83,4 @@ class ContentConfig(
 }
 
 const val contentRefreshTaskExecutorBeanName = "contentRefreshTaskExecutor"
+const val applicationEventMulticaster = "applicationEventMulticaster"

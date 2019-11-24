@@ -19,6 +19,7 @@ import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import mu.KLogging
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.convert.ConversionService
 import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.web.util.UriComponentsBuilder
@@ -35,7 +36,8 @@ open class TraktShowImporter(
     private val seasonRepository: SeasonRepository,
     private val episodeRepository: EpisodeRepository,
     private val conversionService: ConversionService,
-    private val provider: TraktMediaProvider
+    private val provider: TraktMediaProvider,
+    val eventPublisher: ApplicationEventPublisher
 ) : ShowImporter {
     companion object : KLogging() {
         const val traktHost = "trakt.tv"
@@ -53,6 +55,7 @@ open class TraktShowImporter(
         return getShow(showId)
             .flatMap(this@TraktShowImporter::enhanceShowWithData)
             .flatMap(this@TraktShowImporter::saveImportedShow)
+            .map { it.also { eventPublisher.publishEvent(it.id!!) } }
     }
 
     // TODO move the logic to ShowService.

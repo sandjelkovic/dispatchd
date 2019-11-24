@@ -15,6 +15,7 @@ import mu.KLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.context.config.annotation.RefreshScope
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.ConversionService
@@ -39,9 +40,9 @@ class TraktConfig(
     @Bean
     fun traktImporter(
         showRepository: ShowRepository, seasonRepository: SeasonRepository,
-        episodeRepository: EpisodeRepository, @Qualifier("mvcConversionService") conversionService: ConversionService, provider: TraktMediaProvider
-    ) =
-        TraktShowImporter(showRepository, seasonRepository, episodeRepository, conversionService, provider)
+        episodeRepository: EpisodeRepository, @Qualifier("mvcConversionService") conversionService: ConversionService, provider: TraktMediaProvider,
+        applicationEventPublisher: ApplicationEventPublisher
+    ) = TraktShowImporter(showRepository, seasonRepository, episodeRepository, conversionService, provider, applicationEventPublisher)
 
     @Bean
     @RefreshScope

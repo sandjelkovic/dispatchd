@@ -8,6 +8,7 @@ import com.sandjelkovic.dispatchd.content.data.entity.Show
 import com.sandjelkovic.dispatchd.content.data.entity.UpdateJob
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.content.data.repository.UpdateJobRepository
+import com.sandjelkovic.dispatchd.content.event.JobReportCreated
 import com.sandjelkovic.dispatchd.content.service.ContentRefreshService
 import com.sandjelkovic.dispatchd.content.service.ImportException
 import com.sandjelkovic.dispatchd.content.service.ShowImporter
@@ -15,6 +16,7 @@ import com.sandjelkovic.dispatchd.content.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowUpdateTrakt
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import mu.KLogging
+import org.springframework.context.ApplicationEventPublisher
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -27,7 +29,8 @@ class DefaultContentRefreshService(
     val updateJobRepository: UpdateJobRepository,
     val provider: TraktMediaProvider,
     val showRepository: ShowRepository,
-    val importer: ShowImporter
+    val importer: ShowImporter,
+    val eventPublisher: ApplicationEventPublisher
 ) : ContentRefreshService {
     override fun updateContentIfStale(): Try<List<Show>> {
         return refreshExistingContent()
@@ -40,8 +43,7 @@ class DefaultContentRefreshService(
     companion object : KLogging()
 
     fun refreshExistingContent(): Try<List<Show>> =
-        getLastUpdateTime()
-            .also { logger.debug("Refreshing content. Last update was: $it") }
+        getLastUpdateTime().also { logger.debug("Refreshing content. Last update was: $it") }
             .let { fromTime ->
                 provider.getUpdates(fromTime.toLocalDate())
                     .map { getIdsForUpdate(it) }
@@ -60,7 +62,7 @@ class DefaultContentRefreshService(
 
     fun executeContentUpdate(ids: List<String>): List<Either<ImportException, Show>> = ids
         .map(importer::importShow)
-        .also { createNewJobReport() }
+        .also { createNewJobReport().also { eventPublisher.publishEvent(JobReportCreated(it.copy())) } }
 
     private fun getIdsForUpdate(updates: List<ShowUpdateTrakt>): List<String> = updates
         .map(::extractTraktId)
