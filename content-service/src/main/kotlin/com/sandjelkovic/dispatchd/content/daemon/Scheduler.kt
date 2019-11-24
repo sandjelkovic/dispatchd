@@ -20,8 +20,11 @@ class Scheduler(val contentRefreshService: ContentRefreshService) {
     fun invokeContentRefresh() {
         logger.info("Content refresh started.")
         try {
-            val count = contentRefreshService.updateContentIfStale()
-            logger.info("Content refresh finished. Updated $count shows.", count)
+            contentRefreshService.updateContentIfStale()
+                .fold(
+                    { logger.warn("Exception occurred during content refresh", it) },
+                    { logger.info("Content refresh finished. Updated ${it.size} shows.") }
+                )
         } catch (e: RuntimeException) {
             logger.info("Exception occurred during content refresh", e)
         }
