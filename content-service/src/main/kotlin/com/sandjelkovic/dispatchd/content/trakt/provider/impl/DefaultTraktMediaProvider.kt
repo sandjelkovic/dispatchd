@@ -73,7 +73,7 @@ open class DefaultTraktMediaProvider(
         val uri = traktUriProvider.getUpdatesUri(fromDate)
 
         return Try { traktRestTemplate.getForObject<Array<ShowUpdateTrakt?>>(uri) }
-            .map { it.toList() ?: listOf() }
+            .map { it.toList() }
             .map { it.filterNotNull() }
     }
 
