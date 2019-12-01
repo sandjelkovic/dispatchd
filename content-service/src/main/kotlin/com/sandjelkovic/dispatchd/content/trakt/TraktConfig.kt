@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.content
+package com.sandjelkovic.dispatchd.content.trakt
 
 import com.sandjelkovic.dispatchd.content.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.content.data.repository.SeasonRepository

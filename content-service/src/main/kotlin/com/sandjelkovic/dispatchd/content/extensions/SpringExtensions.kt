@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.content
+package com.sandjelkovic.dispatchd.content.extensions
 
 import org.springframework.core.convert.ConversionService
 

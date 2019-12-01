@@ -8,7 +8,7 @@ import com.sandjelkovic.dispatchd.content.data.entity.ImportProgressStatus.*
 import com.sandjelkovic.dispatchd.content.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.content.data.entity.ImportStatusId
 import com.sandjelkovic.dispatchd.content.data.repository.ImportStatusRepository
-import com.sandjelkovic.dispatchd.content.flatMapToOption
+import com.sandjelkovic.dispatchd.content.extensions.flatMapToOption
 import com.sandjelkovic.dispatchd.content.service.*
 import java.net.URI
 

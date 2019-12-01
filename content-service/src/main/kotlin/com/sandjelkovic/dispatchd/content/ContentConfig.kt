@@ -1,8 +1,10 @@
 package com.sandjelkovic.dispatchd.content
 
+import com.sandjelkovic.dispatchd.content.daemon.ContentRefreshDaemon
 import com.sandjelkovic.dispatchd.content.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.content.data.repository.UpdateJobRepository
+import com.sandjelkovic.dispatchd.content.service.ContentRefreshService
 import com.sandjelkovic.dispatchd.content.service.ImporterSelectionStrategy
 import com.sandjelkovic.dispatchd.content.service.ShowImporter
 import com.sandjelkovic.dispatchd.content.service.impl.*
@@ -52,6 +54,9 @@ class ContentConfig(
 
     @Bean
     fun importStrategy(showImporters: List<ShowImporter>) = DefaultImporterSelectionStrategy(showImporters)
+
+    @Bean
+    fun contentRefreshDaemon(contentRefreshService: ContentRefreshService) = ContentRefreshDaemon(contentRefreshService)
 
     @Bean(name = arrayOf("threadPoolTaskExecutor"))
     fun threadPoolTaskExecutor(): Executor = ThreadPoolTaskExecutor()

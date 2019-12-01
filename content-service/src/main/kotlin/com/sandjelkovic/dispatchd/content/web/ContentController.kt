@@ -10,7 +10,7 @@ import com.sandjelkovic.dispatchd.content.data.entity.Show
 import com.sandjelkovic.dispatchd.content.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.content.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
-import com.sandjelkovic.dispatchd.content.flatMapToOption
+import com.sandjelkovic.dispatchd.content.extensions.flatMapToOption
 import com.sandjelkovic.dispatchd.content.web.dto.SeasonDto
 import com.sandjelkovic.dispatchd.content.web.dto.ShowDto
 import com.sandjelkovic.dispatchd.content.web.dto.toDto

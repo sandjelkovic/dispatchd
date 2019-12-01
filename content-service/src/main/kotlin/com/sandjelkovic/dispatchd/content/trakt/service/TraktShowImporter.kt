@@ -2,14 +2,14 @@ package com.sandjelkovic.dispatchd.content.trakt.service
 
 import arrow.core.*
 import arrow.syntax.function.pipe
-import com.sandjelkovic.dispatchd.content.convert
 import com.sandjelkovic.dispatchd.content.data.entity.Episode
 import com.sandjelkovic.dispatchd.content.data.entity.Season
 import com.sandjelkovic.dispatchd.content.data.entity.Show
 import com.sandjelkovic.dispatchd.content.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.content.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
-import com.sandjelkovic.dispatchd.content.flatMapToOption
+import com.sandjelkovic.dispatchd.content.extensions.convert
+import com.sandjelkovic.dispatchd.content.extensions.flatMapToOption
 import com.sandjelkovic.dispatchd.content.service.ImportException
 import com.sandjelkovic.dispatchd.content.service.ShowDoesNotExistTraktException
 import com.sandjelkovic.dispatchd.content.service.ShowImporter

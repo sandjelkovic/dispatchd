@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.content
+package com.sandjelkovic.dispatchd.content.extensions
 
 import arrow.core.Option
 import arrow.core.toOption

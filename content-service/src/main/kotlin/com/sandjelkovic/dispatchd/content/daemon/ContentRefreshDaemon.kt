@@ -5,19 +5,17 @@ import com.sandjelkovic.dispatchd.content.service.ContentRefreshService
 import mu.KLogging
 import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Component
 
 /**
  * @author sandjelkovic
  * @date 10.2.18.
  */
-@Component
-class Scheduler(val contentRefreshService: ContentRefreshService) {
+open class ContentRefreshDaemon(private val contentRefreshService: ContentRefreshService) {
     companion object : KLogging()
 
     @Async(contentRefreshTaskExecutorBeanName)
     @Scheduled(fixedDelayString = "#{\${content.refresh.interval.minutes:1}*1000*60}", initialDelay = (1000 * 5).toLong())
-    fun invokeContentRefresh() {
+    open fun invokeContentRefresh() {
         logger.info("Content refresh started.")
         try {
             contentRefreshService.updateContentIfStale()
