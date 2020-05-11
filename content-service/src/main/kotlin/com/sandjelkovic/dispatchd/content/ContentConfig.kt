@@ -12,6 +12,7 @@ import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.content.trakt.service.TraktShowImporter
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
@@ -31,6 +32,7 @@ import java.util.concurrent.Executor
 @Configuration
 @RefreshScope
 @EnableAsync
+@ConfigurationPropertiesScan
 class ContentConfig(
     @Value("\${content.refresh.interval.minutes:1}")
     var refreshInterval: Int

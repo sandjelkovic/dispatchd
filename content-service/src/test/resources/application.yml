@@ -1,0 +1,9 @@
+content:
+  refresh:
+    interval:
+      minutes: 1
+trakt:
+  baseServiceUrl: https://api.trakt.tv
+  appId: ${trakt_appId}
+  appSecret: ${trakt_appSecret}
+  apiVersion: 2
