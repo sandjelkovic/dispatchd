@@ -1,7 +1,7 @@
 # dispatchd 
-Gitlab CI : [![pipeline status](https://gitlab.com/sandjelkovic/dispatchd/badges/master/pipeline.svg)](https://gitlab.com/sandjelkovic/dispatchd/commits/master)
+![Dispatchd build status](https://github.com/sandjelkovic/dispatchd/workflows/Dispatchd%20CI/badge.svg)
 
- Application to notify when episodes go live or aggregate those notifications in reports
+Application that notifies when episodes go live or aggregate those notifications in reports
 
 #### Purpose
 Functional goal of this application is to provide updates for episodes air dates in the form of user customisable reports.

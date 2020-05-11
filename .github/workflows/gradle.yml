@@ -1,4 +1,4 @@
-name: Dispatchd CI
+name: Dispatchd build flow
 
 on: [push]
 
