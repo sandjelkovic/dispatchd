@@ -22,6 +22,6 @@ At this moment, only trakt is supported for imports. URL that needs to be provid
 | Configuration service 	| 8888 	|
 | Eureka service 	| 8761 	|
 | Monitor (SBA) service 	| 8010 	|
-| ~~Core service~~ 	| ~~8080~~ 	|
 | Content service 	| - 	|
 | Report service 	| - 	|
+Port `-` is dynamics port and can be discovered from Eureka instance. Those services also support horizontal scaling.
