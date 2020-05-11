@@ -1,9 +1,6 @@
 package com.sandjelkovic.dispatchd.content
 
 import arrow.core.*
-import arrow.data.Invalid
-import arrow.data.Valid
-import arrow.data.Validated
 import strikt.api.Assertion
 import strikt.assertions.isA
 

@@ -1,9 +1,9 @@
 package com.sandjelkovic.dispatchd.content.web
 
 import arrow.core.Try
+import arrow.core.Validated
 import arrow.core.getOrElse
-import arrow.data.Validated
-import arrow.data.invalid
+import arrow.core.invalid
 import com.sandjelkovic.dispatchd.content.data.entity.Episode
 import com.sandjelkovic.dispatchd.content.data.entity.Season
 import com.sandjelkovic.dispatchd.content.data.entity.Show

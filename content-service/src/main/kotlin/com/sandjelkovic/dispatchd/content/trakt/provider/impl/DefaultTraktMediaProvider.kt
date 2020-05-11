@@ -1,6 +1,7 @@
 package com.sandjelkovic.dispatchd.content.trakt.provider.impl
 
 import arrow.core.*
+import arrow.core.extensions.`try`.applicativeError.handleErrorWith
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowTrakt
@@ -106,14 +107,14 @@ open class DefaultTraktMediaProvider(
     private fun <T> httpGetList(block: () -> List<T>?): Try<List<T>> =
         Try(f = block)
             .map { it?.toList() ?: listOf() }
-            .recoverWith(
+            .handleErrorWith(
                 partialRecovery(::isHttpClientErrorAndNotFound) { Success(listOf<T>()) }
             )
 
     private fun <T> httpGetOption(block: () -> T?): Try<Option<T>> =
         Try(f = block)
             .map { Option.fromNullable(it) }
-            .recoverWith(
+            .handleErrorWith(
                 partialRecovery(::isHttpClientErrorAndNotFound) { Success(Option.empty<T>()) }
             )
 }
