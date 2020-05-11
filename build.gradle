@@ -1,18 +1,18 @@
 plugins {
-    id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.61' apply false
-    id 'org.springframework.boot' version '2.2.0.RELEASE' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.3.61' apply false
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.61' apply false
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.72' apply false
+    id 'org.springframework.boot' version '2.2.6.RELEASE' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.3.72' apply false
 }
 
 ext {
     set('springBootAdminVersion', '2.1.6')
-    set('springCloudVersion', 'Hoxton.M3')
+    set('springCloudVersion', 'Hoxton.SR4')
     set('arrowVersion', '0.8.2')
-    set('mockkVersion', '1.9.3')
+    set('mockkVersion', '1.10.0')
     set('striktVersion', '0.20.0')
     set('kxjtimeVersion', '0.1.0')
-    set('muLoggingVersion', '1.6.26')
+    set('muLoggingVersion', '1.7.7')
     set('assertkVersion', '0.10')
     set('mockitoKotlinVersion', '1.5.0')
 }
