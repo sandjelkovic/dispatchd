@@ -1,9 +1,18 @@
 plugins {
-    id 'org.jetbrains.kotlin.plugin.jpa'
-    id 'org.springframework.boot'
-    id 'org.jetbrains.kotlin.jvm'
-    id 'org.jetbrains.kotlin.plugin.spring'
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("plugin.jpa")
 }
+
+val muLoggingVersion: String by rootProject.extra
+val kxjtimeVersion: String by rootProject.extra
+val arrowVersion: String by rootProject.extra
+val assertkVersion: String by rootProject.extra
+val mockitoKotlinVersion: String by rootProject.extra
+val mockkVersion: String by rootProject.extra
+val striktVersion: String by rootProject.extra
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -18,16 +27,10 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:${muLoggingVersion}")
     implementation("com.sandjelkovic.kxjtime:kxjtime:${kxjtimeVersion}")
 
-    runtimeOnly 'com.h2database:h2'
+    runtimeOnly("com.h2database:h2")
 
-    implementation("io.arrow-kt:arrow-core:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-syntax:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-typeclasses:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-data:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-instances-core:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-instances-data:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-optics:${arrowVersion}")
-    implementation("io.arrow-kt:arrow-generic:${arrowVersion}")
+    implementation("io.arrow-kt:arrow-core:$arrowVersion")
+    implementation("io.arrow-kt:arrow-syntax:$arrowVersion")
 
 //	Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -41,16 +44,9 @@ dependencies {
     implementation("de.codecentric:spring-boot-admin-starter-client")
 }
 
-compileKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ['-Xjsr305=strict']
-        jvmTarget = '1.8'
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ['-Xjsr305=strict']
-        jvmTarget = '1.8'
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("de.codecentric:spring-boot-admin-dependencies:${property("springBootAdminVersion")}")
     }
 }
