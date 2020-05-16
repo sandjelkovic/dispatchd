@@ -3,6 +3,6 @@ include("report-service")
 include("content-service")
 include("eureka-service")
 include("config-service")
-//include("monitor-service") // TODO Re-include the service after support for Boot 2.2 has been implemented in SBA server side
+include("monitor-service")
 include("gateway-service")
 include("auth-service")
