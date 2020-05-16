@@ -1,4 +1,4 @@
-image: java:8
+image: java:11
 
 variables:
   # Disable the Gradle daemon for Continuous Integration servers as correctness
