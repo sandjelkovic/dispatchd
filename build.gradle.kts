@@ -18,9 +18,6 @@ extra["muLoggingVersion"] = "1.7.7"
 extra["assertkVersion"] = "0.10"
 extra["mockitoKotlinVersion"] = "1.5.0"
 
-//implementation("io.arrow-kt:arrow-core:$arrowVersion")
-//implementation("io.arrow-kt:arrow-syntax:$arrowVersion")
-
 allprojects {
     group = "com.sandjelkovic.dispatchd"
     version = "0.0.1-SNAPSHOT"
