@@ -20,11 +20,11 @@ open class ContentRefreshDaemon(private val contentRefreshService: ContentRefres
         try {
             contentRefreshService.updateContentIfStale()
                 .fold(
-                    { logger.warn("Exception occurred during content refresh", it) },
+                    { logger.error("Exception occurred during content refresh", it) },
                     { logger.info("Content refresh finished. Updated ${it.size} shows.") }
                 )
         } catch (e: RuntimeException) {
-            logger.info("Exception occurred during content refresh", e)
+            logger.error("Exception occurred during content refresh", e)
         }
     }
 }

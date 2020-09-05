@@ -3,7 +3,6 @@ package com.sandjelkovic.dispatchd.content.data.repository
 import com.sandjelkovic.dispatchd.content.data.entity.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 import java.util.*
 import java.util.stream.Stream
@@ -42,8 +41,16 @@ interface ShowRepository : PagingAndSortingRepository<Show, Long> {
 
 interface ImportStatusRepository : PagingAndSortingRepository<ImportStatus, Long>
 
-interface UpdateJobRepository : CrudRepository<UpdateJob, Long> {
+interface UpdateJobRepository : PagingAndSortingRepository<UpdateJob, Long> {
+    /**
+     * First by Desc -> Last entry
+     */
     fun findFirstByOrderByFinishTimeDesc(): Optional<UpdateJob>
+
+    /**
+     * First by Desc -> Last entry
+     */
+    fun findFirstByOrderByStartTimeDesc(): Optional<UpdateJob>
 
     fun findFirstBySuccessOrderByFinishTimeDesc(success: Boolean): Optional<UpdateJob>
 }

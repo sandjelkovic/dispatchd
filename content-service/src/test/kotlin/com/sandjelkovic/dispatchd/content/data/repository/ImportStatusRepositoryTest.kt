@@ -9,13 +9,15 @@ import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isInLast
 import com.sandjelkovic.dispatchd.isPresent
 import com.sandjelkovic.dispatchd.isPresentAndExtracted
-import com.sandjelkovic.kxjtime.seconds
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
+import java.time.Duration
+import kotlin.time.seconds
+import kotlin.time.toJavaDuration
 
 /**
  * @author sandjelkovic
@@ -23,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner
  */
 @RunWith(SpringRunner::class)
 @DataJpaTest
+@OptIn(kotlin.time.ExperimentalTime::class)
 class ImportStatusRepositoryTest {
     @Autowired
     lateinit var repository: ImportStatusRepository
@@ -44,7 +47,7 @@ class ImportStatusRepositoryTest {
         with(savedStatus) {
             assert(id).isNotNull()
             assert(finishTime).isNull()
-            assert(initiationTime).isInLast(10.seconds)
+            assert(initiationTime).isInLast(10.seconds.toJavaDuration())
             assert(mediaUrl).isEqualTo(mediaUrl)
         }
     }
@@ -60,7 +63,7 @@ class ImportStatusRepositoryTest {
                 with(it) {
                     assert(id).isNotNull { it.isEqualTo(savedStatus.id!!) }
                     assert(finishTime).isNull()
-                    assert(initiationTime).isInLast(10.seconds)
+                    assert(initiationTime).isInLast(Duration.ofSeconds(10))
                     assert(mediaUrl).isEqualTo(mediaUrl)
                 }
             }

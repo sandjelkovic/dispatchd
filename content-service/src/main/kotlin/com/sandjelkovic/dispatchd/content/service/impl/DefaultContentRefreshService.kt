@@ -74,8 +74,7 @@ class DefaultContentRefreshService(
     private fun extractTraktId(update: ShowUpdateTrakt): Option<String> = update.toOption()
         .flatMap { it.show.toOption() }
         .map(ShowTrakt::ids)
-        .filter { it.containsKey("trakt") }
-        .map { it["trakt"]!! }
+        .mapNotNull { it["trakt"] }
 
     private fun getLastUpdateTime(): ZonedDateTime =
         updateJobRepository.findFirstBySuccessOrderByFinishTimeDesc(true)

@@ -25,7 +25,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.github.microutils:kotlin-logging:${muLoggingVersion}")
-    implementation("com.sandjelkovic.kxjtime:kxjtime:${kxjtimeVersion}")
 
     runtimeOnly("com.h2database:h2")
 
@@ -39,6 +38,7 @@ dependencies {
     testImplementation("com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}")
     testImplementation("io.mockk:mockk:${mockkVersion}")
     testImplementation("io.strikt:strikt-core:${striktVersion}")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
 //	Monitoring
     implementation("de.codecentric:spring-boot-admin-starter-client")

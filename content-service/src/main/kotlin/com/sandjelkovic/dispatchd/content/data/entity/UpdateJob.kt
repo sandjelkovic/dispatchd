@@ -18,6 +18,9 @@ data class UpdateJob(
     @Column(nullable = false)
     @NotNull
     var finishTime: ZonedDateTime = ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()),
+    @Column(nullable = false)
+    @NotNull
+    var startTime: ZonedDateTime = ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()),
     @NotNull
     var success: Boolean = false
 )
