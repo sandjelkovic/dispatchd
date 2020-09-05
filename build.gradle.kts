@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.3.3.RELEASE"
+    id("org.springframework.boot") version "2.3.3.RELEASE" apply false
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
     kotlin("jvm") version "1.3.72"
     kotlin("plugin.spring") version "1.3.72" apply false
@@ -13,8 +13,7 @@ extra["springCloudVersion"] = "Hoxton.SR8"
 extra["arrowVersion"] = "0.10.4"
 extra["mockkVersion"] = "1.10.0"
 extra["striktVersion"] = "0.20.0"
-extra["kxjtimeVersion"] = "0.1.0"
-extra["muLoggingVersion"] = "1.7.7"
+extra["muLoggingVersion"] = "1.8.3"
 extra["assertkVersion"] = "0.10"
 extra["mockitoKotlinVersion"] = "1.5.0"
 
@@ -49,6 +48,5 @@ subprojects {
     repositories {
         mavenCentral()
         jcenter()
-//        maven { url = uri("https://repo.spring.io/milestone") }
     }
 }
