@@ -1,15 +1,15 @@
 package com.sandjelkovic.dispatchd.content.trakt.service
 
 import arrow.core.*
+import com.sandjelkovic.dispatchd.content.api.ShowCreated
+import com.sandjelkovic.dispatchd.content.api.ShowUpdateFailed
+import com.sandjelkovic.dispatchd.content.api.ShowUpdated
 import com.sandjelkovic.dispatchd.content.data.entity.Episode
 import com.sandjelkovic.dispatchd.content.data.entity.Season
 import com.sandjelkovic.dispatchd.content.data.entity.Show
 import com.sandjelkovic.dispatchd.content.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.content.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
-import com.sandjelkovic.dispatchd.content.event.ShowCreated
-import com.sandjelkovic.dispatchd.content.event.ShowUpdateFailed
-import com.sandjelkovic.dispatchd.content.event.ShowUpdated
 import com.sandjelkovic.dispatchd.content.extensions.convert
 import com.sandjelkovic.dispatchd.content.extensions.flatMapToOption
 import com.sandjelkovic.dispatchd.content.service.*

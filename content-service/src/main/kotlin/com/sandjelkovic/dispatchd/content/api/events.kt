@@ -1,4 +1,4 @@
-package com.sandjelkovic.dispatchd.content.event
+package com.sandjelkovic.dispatchd.content.api
 
 import com.sandjelkovic.dispatchd.content.data.entity.UpdateJob
 

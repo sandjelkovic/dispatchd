@@ -9,9 +9,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.sandjelkovic.dispatchd.content.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.content.data.repository.ImportStatusRepository
-import com.sandjelkovic.dispatchd.content.service.ImporterSelectionStrategy
-import com.sandjelkovic.dispatchd.content.service.InvalidImportUrlException
-import com.sandjelkovic.dispatchd.content.service.UnsupportedBackendException
+import com.sandjelkovic.dispatchd.content.service.*
 import com.sandjelkovic.dispatchd.isEmpty
 import com.sandjelkovic.dispatchd.isNotEmpty
 import org.junit.Before
@@ -28,7 +26,7 @@ import java.util.*
  */
 
 @RunWith(SpringRunner::class)
-class DefaultImportServiceTest {
+class ImportServiceTest {
 
     private val kotlinLangURI = URI.create("https://kotlinlang.org/")
     private val traktShowURI = URI.create("https://trakt.tv/shows/the-expanse")
@@ -45,11 +43,11 @@ class DefaultImportServiceTest {
     }
     private val mockSpringAsyncService: SpringAsyncService = mock {}
 
-    private lateinit var service: DefaultImportService
+    private lateinit var service: ImportService
 
     @Before
     fun setUp() {
-        service = DefaultImportService(mockRepository, mockImporterSelectionStrategy, mockSpringAsyncService)
+        service = ImportService(mockRepository, mockImporterSelectionStrategy, mockSpringAsyncService)
     }
 
     @Test

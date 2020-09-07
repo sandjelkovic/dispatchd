@@ -1,6 +1,6 @@
-package com.sandjelkovic.dispatchd.content.service.impl
+package com.sandjelkovic.dispatchd.content.service
 
-import com.sandjelkovic.dispatchd.content.event.*
+import com.sandjelkovic.dispatchd.content.api.*
 import org.springframework.context.event.EventListener
 
 

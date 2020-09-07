@@ -4,10 +4,7 @@ import com.sandjelkovic.dispatchd.content.daemon.ContentRefreshDaemon
 import com.sandjelkovic.dispatchd.content.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
 import com.sandjelkovic.dispatchd.content.data.repository.UpdateJobRepository
-import com.sandjelkovic.dispatchd.content.service.ContentRefreshService
-import com.sandjelkovic.dispatchd.content.service.ImporterSelectionStrategy
-import com.sandjelkovic.dispatchd.content.service.ShowImporter
-import com.sandjelkovic.dispatchd.content.service.impl.*
+import com.sandjelkovic.dispatchd.content.service.*
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.content.trakt.service.TraktShowImporter
 import mu.KLogging
@@ -48,14 +45,14 @@ class ContentConfig(
         traktShowImporter: TraktShowImporter,
         eventPublisher: ApplicationEventPublisher
     ) =
-        DefaultContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter, eventPublisher)
+        ContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter, eventPublisher)
 
     @Bean
     fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy, asyncService: SpringAsyncService) =
-        DefaultImportService(importStatusRepository, importerSelectionStrategy, asyncService)
+        ImportService(importStatusRepository, importerSelectionStrategy, asyncService)
 
     @Bean
-    fun importStrategy(showImporters: List<ShowImporter>) = DefaultImporterSelectionStrategy(showImporters)
+    fun importStrategy(showImporters: List<ShowImporter>) = ImporterSelectionStrategy(showImporters)
 
     @Bean
     fun contentRefreshDaemon(contentRefreshService: ContentRefreshService) = ContentRefreshDaemon(contentRefreshService)
