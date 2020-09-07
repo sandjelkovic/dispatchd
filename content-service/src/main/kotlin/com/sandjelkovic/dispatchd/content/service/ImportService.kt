@@ -9,29 +9,32 @@ import com.sandjelkovic.dispatchd.content.data.entity.ImportStatus
 import com.sandjelkovic.dispatchd.content.data.entity.ImportStatusId
 import com.sandjelkovic.dispatchd.content.data.repository.ImportStatusRepository
 import com.sandjelkovic.dispatchd.content.extensions.flatMapToOption
+import org.springframework.core.task.TaskExecutor
 import java.net.URI
+import java.util.concurrent.CompletableFuture
 
 /**
  * @author sandjelkovic
  * @date 24.3.18.
  */
-class ImportService(
+open class ImportService(
     private val importStatusRepository: ImportStatusRepository,
     private val importerSelectionStrategy: ImporterSelectionStrategy,
-    private val asyncService: SpringAsyncService
+    private val showImportTaskExecutor: TaskExecutor
 ) {
     fun importFromUri(uri: URI): Either<ImportException, ImportStatusId> {
         val importStatus = importStatusRepository.save(ImportStatus(mediaUrl = uri.toString(), status = QUEUED))
+        // everything should be async
         return importerSelectionStrategy.getImporter(uri)
             .flatMap { importer ->
                 importer.getIdentifier(uri)
-                    .map { asyncService.async { executeImport(importer, it, importStatus) } }
-                    .map { ImportStatusId(importStatus.id!!) }
                     .toEither { InvalidImportUrlException() }
+                    .map { CompletableFuture.runAsync({ executeImport(importer, it, importStatus) }, showImportTaskExecutor) }
+                    .map { ImportStatusId(importStatus.id!!) }
             }
     }
 
-    private fun executeImport(importer: ShowImporter, showIdentifier: String, oldStatus: ImportStatus) =
+    private fun executeImport(importer: ShowImporter, showIdentifier: String, oldStatus: ImportStatus): ImportStatus =
         importStatusRepository.findById(oldStatus.id!!).orElse(oldStatus)
             .let { importStatusRepository.save(it.copy(status = IN_PROGRESS)) }
             .let { status ->

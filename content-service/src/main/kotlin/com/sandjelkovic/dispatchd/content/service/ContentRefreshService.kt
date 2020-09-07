@@ -22,7 +22,7 @@ import java.time.ZonedDateTime
  * @author sandjelkovic
  * @date 10.2.18.
  */
-class ContentRefreshService(
+open class ContentRefreshService(
     val updateJobRepository: UpdateJobRepository,
     val provider: TraktMediaProvider,
     val showRepository: ShowRepository,

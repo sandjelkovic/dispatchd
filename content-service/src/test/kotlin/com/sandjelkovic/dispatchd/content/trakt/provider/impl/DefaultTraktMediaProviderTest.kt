@@ -2,8 +2,6 @@ package com.sandjelkovic.dispatchd.content.trakt.provider.impl
 
 import arrow.core.Option
 import arrow.core.Try
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
 import com.sandjelkovic.dispatchd.content.isFailure
 import com.sandjelkovic.dispatchd.content.isNone
 import com.sandjelkovic.dispatchd.content.isSome
@@ -42,9 +40,9 @@ class DefaultTraktMediaProviderTest {
 
     private val mockRestTemplate: RestTemplate = mockk()
 
-    private val mockUriProvider: DefaultTraktUriProvider = mock {
-        on(it.getShowUri(showId)) doReturn uri
-        on(it.getUpdatesUri(LocalDate.now().minusDays(1))) doReturn uri
+    private val mockUriProvider: DefaultTraktUriProvider = mockk {
+        every { getShowUri(showId) } returns uri
+        every { getUpdatesUri(LocalDate.now().minusDays(1)) } returns uri
     }
     private lateinit var provider: DefaultTraktMediaProvider
 

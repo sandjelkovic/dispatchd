@@ -33,6 +33,7 @@ dependencies {
 
     implementation("io.arrow-kt:arrow-core:$arrowVersion")
     implementation("io.arrow-kt:arrow-syntax:$arrowVersion")
+    implementation("io.arrow-kt:arrow-fx:$arrowVersion")
 
 //	Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")

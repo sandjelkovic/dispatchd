@@ -7,7 +7,7 @@ import arrow.core.toOption
 import mu.KLogging
 import java.net.URI
 
-class ImporterSelectionStrategy(private val showImporters: List<ShowImporter>) {
+open class ImporterSelectionStrategy(private val showImporters: List<ShowImporter>) {
     companion object : KLogging()
 
     fun getImporter(uri: URI): Either<ImportException, ShowImporter> =

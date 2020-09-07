@@ -8,6 +8,7 @@ import com.sandjelkovic.dispatchd.content.service.*
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
 import com.sandjelkovic.dispatchd.content.trakt.service.TraktShowImporter
 import mu.KLogging
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.cloud.context.config.annotation.RefreshScope
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ApplicationEventMulticaster
 import org.springframework.context.event.SimpleApplicationEventMulticaster
 import org.springframework.core.task.SimpleAsyncTaskExecutor
+import org.springframework.core.task.TaskExecutor
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.concurrent.Executor
@@ -44,12 +46,14 @@ class ContentConfig(
         showRepository: ShowRepository,
         traktShowImporter: TraktShowImporter,
         eventPublisher: ApplicationEventPublisher
-    ) =
-        ContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter, eventPublisher)
+    ) = ContentRefreshService(updateJobRepository, traktMediaProvider, showRepository, traktShowImporter, eventPublisher)
 
     @Bean
-    fun importService(importStatusRepository: ImportStatusRepository, importerSelectionStrategy: ImporterSelectionStrategy, asyncService: SpringAsyncService) =
-        ImportService(importStatusRepository, importerSelectionStrategy, asyncService)
+    fun importService(
+        importStatusRepository: ImportStatusRepository,
+        importerSelectionStrategy: ImporterSelectionStrategy,
+        @Qualifier(showImportTaskExecutorBeanName) showImportTaskExecutor: TaskExecutor
+    ) = ImportService(importStatusRepository, importerSelectionStrategy, showImportTaskExecutor)
 
     @Bean
     fun importStrategy(showImporters: List<ShowImporter>) = ImporterSelectionStrategy(showImporters)
@@ -57,7 +61,7 @@ class ContentConfig(
     @Bean
     fun contentRefreshDaemon(contentRefreshService: ContentRefreshService) = ContentRefreshDaemon(contentRefreshService)
 
-    @Bean(name = arrayOf("threadPoolTaskExecutor"))
+    @Bean(name = ["threadPoolTaskExecutor"])
     fun threadPoolTaskExecutor(): Executor = ThreadPoolTaskExecutor()
 
     @Bean
@@ -67,11 +71,18 @@ class ContentConfig(
             maxPoolSize = 10
         }
 
-    @Bean(name = arrayOf(contentRefreshTaskExecutorBeanName))
-    fun contentRefreshTaskExecutor(): Executor = ThreadPoolTaskExecutor()
+    @Bean(name = [contentRefreshTaskExecutorBeanName])
+    fun contentRefreshTaskExecutor(): TaskExecutor = ThreadPoolTaskExecutor()
         .apply {
             corePoolSize = 1
             maxPoolSize = 1
+        }
+
+    @Bean(name = [showImportTaskExecutorBeanName])
+    fun showImportTaskExecutor(): TaskExecutor = ThreadPoolTaskExecutor()
+        .apply {
+            corePoolSize = 1
+            maxPoolSize = 8
         }
 
     @Bean(name = [applicationEventMulticaster])
@@ -87,4 +98,5 @@ class ContentConfig(
 }
 
 const val contentRefreshTaskExecutorBeanName = "contentRefreshTaskExecutor"
+const val showImportTaskExecutorBeanName = "showImportTaskExecutor"
 const val applicationEventMulticaster = "applicationEventMulticaster"
