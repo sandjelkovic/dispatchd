@@ -37,9 +37,9 @@ class ImportControllerIntegrationTest {
         val importRequestDto = ImportDto(mediaUrl = mediaUrl)
         mockMvc.perform(
             post("/import")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(jacksonMapper.writeValueAsString(importRequestDto))
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isAccepted)
     }
@@ -49,9 +49,9 @@ class ImportControllerIntegrationTest {
         val importRequestDto = ImportDto(mediaUrl = "http::///something.net")
         mockMvc.perform(
             post("/import")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(jacksonMapper.writeValueAsString(importRequestDto))
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isBadRequest)
     }
@@ -61,9 +61,9 @@ class ImportControllerIntegrationTest {
         val importRequestDto = ImportDto(mediaUrl = "https://www.imdb.com/title/tt0092455/?ref_=nv_sr_1")
         mockMvc.perform(
             post("/import")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(jacksonMapper.writeValueAsString(importRequestDto))
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isBadRequest)
     }
@@ -72,8 +72,8 @@ class ImportControllerIntegrationTest {
     fun `Should fail on empty request`() {
         mockMvc.perform(
             post("/import")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isBadRequest)
     }
@@ -83,19 +83,19 @@ class ImportControllerIntegrationTest {
         val importRequestDto = ImportDto(mediaUrl = mediaUrl)
         val locationUrl = mockMvc.perform(
             post("/import")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(jacksonMapper.writeValueAsString(importRequestDto))
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isAccepted)
             .andReturn().response.getHeader(HttpHeaders.LOCATION)
 
         mockMvc.perform(
             get(locationUrl!!)
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isOk)
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("\$.mediaUrl").value(mediaUrl))
             .andExpect(jsonPath("\$.statusId").isNotEmpty)
     }
