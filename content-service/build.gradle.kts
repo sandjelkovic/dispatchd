@@ -10,7 +10,6 @@ val muLoggingVersion: String by rootProject.extra
 val kxjtimeVersion: String by rootProject.extra
 val arrowVersion: String by rootProject.extra
 val assertkVersion: String by rootProject.extra
-val mockitoKotlinVersion: String by rootProject.extra
 val mockkVersion: String by rootProject.extra
 val striktVersion: String by rootProject.extra
 
@@ -39,7 +38,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
     testImplementation("com.willowtreeapps.assertk:assertk:${assertkVersion}")
-    testImplementation("com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}")
     testImplementation("io.mockk:mockk:${mockkVersion}")
     testImplementation("io.strikt:strikt-core:${striktVersion}")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")

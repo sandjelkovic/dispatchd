@@ -15,7 +15,6 @@ extra["mockkVersion"] = "1.10.0"
 extra["striktVersion"] = "0.27.0"
 extra["muLoggingVersion"] = "1.8.3"
 extra["assertkVersion"] = "0.10"
-extra["mockitoKotlinVersion"] = "1.5.0"
 
 allprojects {
     group = "com.sandjelkovic.dispatchd"
