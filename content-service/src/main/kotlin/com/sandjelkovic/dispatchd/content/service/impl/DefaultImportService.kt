@@ -50,6 +50,7 @@ class DefaultImportService(
             is UnknownImportException -> ERROR
             is UnsupportedBackendException -> ERROR
             is InvalidImportUrlException -> ERROR
+            is RemoteServiceException -> ERROR
         }
 
     override fun getImportStatus(id: Long): Option<ImportStatus> = importStatusRepository.findById(id).flatMapToOption()

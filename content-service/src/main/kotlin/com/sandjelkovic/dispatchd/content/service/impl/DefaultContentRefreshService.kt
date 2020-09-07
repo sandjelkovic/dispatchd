@@ -42,7 +42,7 @@ class DefaultContentRefreshService(
 
     companion object : KLogging()
 
-    fun refreshExistingContent(): Try<List<Show>> =
+    private fun refreshExistingContent(): Try<List<Show>> =
         getLastUpdateTime().also { logger.debug("Refreshing content. Last update was: $it") }
             .let { fromTime ->
                 provider.getUpdates(fromTime.toLocalDate())
@@ -60,9 +60,9 @@ class DefaultContentRefreshService(
             .map { it as Either.Right }
             .map { it.b }
 
-    fun executeContentUpdate(ids: List<String>): List<Either<ImportException, Show>> = ids
-        .map(importer::importShow)
-        .also { createNewJobReport().also { eventPublisher.publishEvent(JobReportCreated(it.copy())) } }
+    private fun executeContentUpdate(ids: List<String>): List<Either<ImportException, Show>> = ids
+        .map(importer::refreshImportedShow)
+        .also { createAndSaveNewJobReport().also { eventPublisher.publishEvent(JobReportCreated(it.copy())) } }
 
     private fun getIdsForUpdate(updates: List<ShowUpdateTrakt>): List<String> = updates
         .map(::extractTraktId)
@@ -81,13 +81,8 @@ class DefaultContentRefreshService(
             .map(UpdateJob::finishTime)
             .orElseGet { ZonedDateTime.of(LocalDateTime.MIN, ZoneId.systemDefault()) }
 
-    private fun createNewJobReport() =
-        updateJobRepository.save(
-            UpdateJob().apply {
-                finishTime = ZonedDateTime.now()
-                success = true
-            }
-        ).also {
+    private fun createAndSaveNewJobReport() =
+        updateJobRepository.save(UpdateJob(finishTime = ZonedDateTime.now(), success = true)).also {
             logger.debug("Saved job: $it")
         }
 }

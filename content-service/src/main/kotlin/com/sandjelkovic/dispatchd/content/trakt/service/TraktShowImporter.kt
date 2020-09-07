@@ -1,23 +1,23 @@
 package com.sandjelkovic.dispatchd.content.trakt.service
 
 import arrow.core.*
-import arrow.syntax.function.pipe
 import com.sandjelkovic.dispatchd.content.data.entity.Episode
 import com.sandjelkovic.dispatchd.content.data.entity.Season
 import com.sandjelkovic.dispatchd.content.data.entity.Show
 import com.sandjelkovic.dispatchd.content.data.repository.EpisodeRepository
 import com.sandjelkovic.dispatchd.content.data.repository.SeasonRepository
 import com.sandjelkovic.dispatchd.content.data.repository.ShowRepository
+import com.sandjelkovic.dispatchd.content.event.ShowCreated
+import com.sandjelkovic.dispatchd.content.event.ShowUpdateFailed
+import com.sandjelkovic.dispatchd.content.event.ShowUpdated
 import com.sandjelkovic.dispatchd.content.extensions.convert
 import com.sandjelkovic.dispatchd.content.extensions.flatMapToOption
-import com.sandjelkovic.dispatchd.content.service.ImportException
-import com.sandjelkovic.dispatchd.content.service.ShowDoesNotExistTraktException
-import com.sandjelkovic.dispatchd.content.service.ShowImporter
-import com.sandjelkovic.dispatchd.content.service.UnknownImportException
+import com.sandjelkovic.dispatchd.content.service.*
 import com.sandjelkovic.dispatchd.content.trakt.dto.EpisodeTrakt
 import com.sandjelkovic.dispatchd.content.trakt.dto.SeasonTrakt
 import com.sandjelkovic.dispatchd.content.trakt.dto.ShowTrakt
 import com.sandjelkovic.dispatchd.content.trakt.provider.TraktMediaProvider
+import kotlinx.coroutines.runBlocking
 import mu.KLogging
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.convert.ConversionService
@@ -25,7 +25,7 @@ import org.springframework.scheduling.annotation.AsyncResult
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 import java.util.*
-import java.util.concurrent.Future
+import java.util.concurrent.TimeUnit
 
 /**
  * @author sandjelkovic
@@ -37,7 +37,7 @@ open class TraktShowImporter(
     private val episodeRepository: EpisodeRepository,
     private val conversionService: ConversionService,
     private val provider: TraktMediaProvider,
-    val eventPublisher: ApplicationEventPublisher
+    private val eventPublisher: ApplicationEventPublisher
 ) : ShowImporter {
     companion object : KLogging() {
         const val traktHost = "trakt.tv"
@@ -51,20 +51,31 @@ open class TraktShowImporter(
 
     override fun supports(host: String): Boolean = host == traktHost
 
-    override fun importShow(showId: String): Either<ImportException, Show> {
-        return getShow(showId)
+    override fun importShow(showId: String): Either<ImportException, Show> =
+        if (showRepository.findByTraktId(showId).isPresent) {
+            Left(ShowAlreadyImportedException())
+        } else getShowFromTrakt(showId)
             .flatMap(this@TraktShowImporter::enhanceShowWithData)
-            .flatMap(this@TraktShowImporter::saveImportedShow)
-            .map { it.also { eventPublisher.publishEvent(it.id!!) } }
-    }
+            .flatMap { show -> saveImportedShow(show) }
+            .map { it.also { eventPublisher.publishEvent(ShowCreated(it.id.toString())) } }
+
+    override fun refreshImportedShow(showId: String): Either<ImportException, Show> =
+        showRepository.findByTraktId(showId).flatMapToOption().toEither { ShowDoesNotExistTraktException() }
+            .flatMap { getShowFromTrakt(showId) }
+            .flatMap(::enhanceShowWithData)
+            .flatMap(::saveImportedShow)
+            .map { it.also { eventPublisher.publishEvent(ShowUpdated(it.id.toString())) } }
+            .mapLeft { it.also { eventPublisher.publishEvent(ShowUpdateFailed(showId)) } }
 
     // TODO move the logic to ShowService.
-    fun saveImportedShow(show: Show): Either<UnknownImportException, Show> {
+    fun saveImportedShow(show: Show): Either<ImportException, Show> {
         Optional.ofNullable(show.traktId)
             .flatMap(showRepository::findByTraktId)
             .ifPresent {
                 show.id = it.id
+                // TODO Merge
                 seasonRepository.deleteAll(it.seasons) // delete old seasons
+                // TODO Merge
                 episodeRepository.deleteAll(it.episodes) // delete old episodes
                 it.seasons = mutableListOf() // JPA/Hibernate Specifics
                 it.episodes = mutableListOf() // JPA/Hibernate Specifics
@@ -80,18 +91,22 @@ open class TraktShowImporter(
             .toEither { UnknownImportException("Error during import -> Show with ID ${savedShow.id} is saved but can't be read") }
     }
 
+    // TODO Refactor to make it easier to read.
     private fun enhanceShowWithData(show: Show): Either<ImportException, Show> =
         Either.right(show)
             .filterOrElse({ show.traktId != null }, { UnknownImportException() })
-            .map {
+            .flatMap {
                 val seasonsFuture = provider.getSeasonsAsync(show.traktId!!)
                 val episodesFuture = provider.getShowEpisodesAsync(show.traktId!!)
-
-                val convertedSeasons = getAndConvertSeasons(seasonsFuture)
-
-                show.apply {
-                    seasons = convertedSeasons
-                    episodes = getAndConvertEpisodes(episodesFuture)
+                runBlocking {
+                    getAndConvertSeasons(seasonsFuture)
+                        .map { show.copy(seasons = it) }
+                        .flatMap { innerShow ->
+                            runBlocking {
+                                getAndConvertEpisodes(episodesFuture)
+                                    .map { innerShow.copy(episodes = it) }
+                            }
+                        }
                 }
             }
 
@@ -108,26 +123,24 @@ open class TraktShowImporter(
             }
     }
 
-    private fun getShow(showId: String) = getTraktShow(showId)
+    private fun getShowFromTrakt(showId: String) = getTraktShow(showId)
         .map { traktShow -> conversionService.convert<Show>(traktShow) }
 
-    private fun getAndConvertEpisodes(episodesFuture: AsyncResult<Try<List<EpisodeTrakt>>>): List<Episode> =
-        extractFromFutureOrDefault(episodesFuture) { Success(emptyList()) }.getOrDefault { emptyList() }
-            .map { episodeTrakt -> conversionService.convert<Episode>(episodeTrakt) }
+    private suspend fun getAndConvertEpisodes(episodesFuture: AsyncResult<Try<List<EpisodeTrakt>>>): Either<ImportException, List<Episode>> =
+        Either.catch { episodesFuture.get(10, TimeUnit.SECONDS)!! }
+            .flatMap { it.toEither() }
+            .mapLeft { RemoteServiceException(it.message ?: "") }
+            .map { episodeTrakt -> conversionService.convert(episodeTrakt) }
 
-    private fun getAndConvertSeasons(seasonsFuture: AsyncResult<Try<List<SeasonTrakt>>>): List<Season> {
-        val seasons = extractFromFutureOrDefault(seasonsFuture) { Success(emptyList()) }.getOrElse { emptyList() }
-
-        return seasons.map { seasonTrakt -> conversionService.convert<Season>(seasonTrakt) }
-    }
+    private suspend fun getAndConvertSeasons(seasonsFuture: AsyncResult<Try<List<SeasonTrakt>>>): Either<ImportException, List<Season>> =
+        Either.catch { seasonsFuture.get(10, TimeUnit.SECONDS)!! }
+            .flatMap { it.toEither() }
+            .mapLeft { RemoteServiceException(it.message ?: "") }
+            .map { seasons -> seasons.map { conversionService.convert(it) } }
 
     private fun getTraktShow(showId: String): Either<ImportException, ShowTrakt> {
         return provider.getShow(showId)
             .toEither { UnknownImportException() }
             .flatMap { it.toEither { ShowDoesNotExistTraktException() } }
     }
-
-    private fun <T> extractFromFutureOrDefault(future: Future<T>, default: (Unit) -> T): T =
-        Try { future.get() }
-            .getOrElse { logger.warn(it.message, it) pipe default }
 }

@@ -11,6 +11,7 @@ import java.net.URI
  */
 interface ShowImporter {
     fun importShow(showId: String): Either<ImportException, Show>
+    fun refreshImportedShow(showId: String): Either<ImportException, Show>
     fun supports(host: String): Boolean
     fun getIdentifier(uri: URI): Option<String>
 }

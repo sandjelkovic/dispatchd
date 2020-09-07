@@ -22,6 +22,7 @@ interface TraktMediaProvider {
     fun getSeasonEpisodes(showId: String, seasonNumber: String): Try<List<EpisodeTrakt>>
     fun getUpdates(fromDate: LocalDate): Try<List<ShowUpdateTrakt>>
 
+    //TODO convert to coroutines or Arrow.IO
     @Async
     fun getSeasonsAsync(showId: String): AsyncResult<Try<List<SeasonTrakt>>>
 
