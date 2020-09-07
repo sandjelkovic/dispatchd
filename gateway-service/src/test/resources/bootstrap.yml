@@ -1,7 +1,7 @@
 #Disable discovery
-#eureka:
-#  client:
-#    enabled: false
+eureka:
+  client:
+    enabled: false
 
 #Disable cloud config and config discovery
 spring:
