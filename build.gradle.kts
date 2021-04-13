@@ -13,7 +13,7 @@ extra["springCloudVersion"] = "Hoxton.SR8"
 extra["arrowVersion"] = "0.10.4"
 extra["mockkVersion"] = "1.10.0"
 extra["striktVersion"] = "0.27.0"
-extra["muLoggingVersion"] = "1.8.3"
+extra["muLoggingVersion"] = "2.0.6"
 extra["assertkVersion"] = "0.10"
 
 allprojects {
