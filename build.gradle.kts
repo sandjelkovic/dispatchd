@@ -10,7 +10,7 @@ plugins {
 
 extra["springBootAdminVersion"] = "2.3.0"
 extra["springCloudVersion"] = "Hoxton.SR8"
-extra["arrowVersion"] = "0.10.4"
+extra["arrowVersion"] = "0.12.1"
 extra["mockkVersion"] = "1.11.0"
 extra["striktVersion"] = "0.30.1"
 extra["muLoggingVersion"] = "2.0.6"
