@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.spring") version "1.5.21" apply false
-    kotlin("plugin.jpa") version "1.4.32"
+    kotlin("plugin.jpa") version "1.5.21"
 }
 
 extra["springBootAdminVersion"] = "2.3.0"
@@ -13,7 +13,7 @@ extra["springCloudVersion"] = "Hoxton.SR8"
 extra["arrowVersion"] = "0.10.4"
 extra["mockkVersion"] = "1.11.0"
 extra["striktVersion"] = "0.30.1"
-extra["muLoggingVersion"] = "2.0.6"
+extra["muLoggingVersion"] = "2.0.10"
 extra["assertkVersion"] = "0.10"
 
 allprojects {
