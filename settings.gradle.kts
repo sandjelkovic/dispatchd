@@ -1,4 +1,4 @@
-rootProject.name = 'dispatchd'
+rootProject.name = "dispatchd"
 include("report-service")
 include("content-service")
 include("eureka-service")
