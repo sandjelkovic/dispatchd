@@ -14,7 +14,7 @@ extra["arrowVersion"] = "0.10.4"
 extra["mockkVersion"] = "1.11.0"
 extra["striktVersion"] = "0.30.1"
 extra["muLoggingVersion"] = "2.0.11"
-extra["assertkVersion"] = "0.10"
+extra["assertkVersion"] = "0.24"
 
 allprojects {
     group = "com.sandjelkovic.dispatchd"
