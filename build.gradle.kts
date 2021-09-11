@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.3.3.RELEASE" apply false
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    kotlin("jvm") version "1.4.32"
+    kotlin("jvm") version "1.5.30"
     kotlin("plugin.spring") version "1.4.0" apply false
-    kotlin("plugin.jpa") version "1.5.21"
+    kotlin("plugin.jpa") version "1.5.30"
 }
 
 extra["springBootAdminVersion"] = "2.3.0"
@@ -13,7 +13,7 @@ extra["springCloudVersion"] = "Hoxton.SR8"
 extra["arrowVersion"] = "0.10.4"
 extra["mockkVersion"] = "1.11.0"
 extra["striktVersion"] = "0.30.1"
-extra["muLoggingVersion"] = "2.0.10"
+extra["muLoggingVersion"] = "2.0.11"
 extra["assertkVersion"] = "0.10"
 
 allprojects {
