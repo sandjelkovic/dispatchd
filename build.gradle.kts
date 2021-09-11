@@ -12,7 +12,7 @@ extra["springBootAdminVersion"] = "2.3.0"
 extra["springCloudVersion"] = "Hoxton.SR8"
 extra["arrowVersion"] = "0.10.4"
 extra["mockkVersion"] = "1.12.0"
-extra["striktVersion"] = "0.30.1"
+extra["striktVersion"] = "0.32.0"
 extra["muLoggingVersion"] = "2.0.11"
 extra["assertkVersion"] = "0.10"
 
