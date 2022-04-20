@@ -5,7 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.5.30"
     kotlin("plugin.spring") version "1.5.30" apply false
-    kotlin("plugin.jpa") version "1.5.30"
+    kotlin("plugin.jpa") version "1.6.21"
 }
 
 extra["springBootAdminVersion"] = "2.3.0"
